@@ -1,0 +1,19 @@
+<ion-view>
+	<ion-nav-title>{{data.pageTitle}}</ion-nav-title>
+	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': filtered.length === 0 }">
+		<ion-refresher on-refresh="updateView()"></ion-refresher>
+		<div class="list" ng-show="filtered.length">
+			<div class="item item-thumbnail-left" ng-click="setController( {{controller}} )" ng-repeat="controller in filtered track by controller.mac">
+		      <h2 class="item-text-center center" notranslate>{{controller.Name}}</h2>
+		    </div>
+		</div>
+		<div ng-hide="filtered.length">
+			<h1>No Controllers</h1>
+		</div>
+	</ion-content>
+	<ion-footer-bar class="bar-stable">
+		<h5 class="center padding pointer" ng-click="showAddController()">
+			Add Controller
+		</h5>
+	</ion-footer-bar>
+</ion-view>

@@ -1,0 +1,36 @@
+/*
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100;
+  src: local("Roboto Thin"), local("Roboto-Thin"), url(../img/Roboto-Thin.woff2) format("woff2"), url(../img/Roboto-Thin.ttf) format("truetype");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    src: local("Roboto Light"), local("Roboto-Light"), url(../img/Roboto-Light.woff2) format("woff2"), url(../img/Roboto-Light.ttf) format("truetype");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Roboto"), local("Roboto-Regular"), url(../img/Roboto-Regular.woff2) format("woff2"), url(../img/Roboto-Regular.ttf) format("truetype");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+$font-family-base: "Roboto", sans-serif !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+/* ============================== BEGIN: Global Overrides ============================== */
+textarea {
+  background: none
+}
+/* ============================== END: Global Overrides ============================== */
+

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.albahra.opengarage"
+        version="1.0.0"
+        android-versionCode="1"
+        versionCode="1" >
+
+	<!-- Add required short version string to iOS configuration -->
+	<config-file platform="ios" parent="CFBundleShortVersionString">
+		<string>1</string>
+	</config-file>
+
+	<name>OpenGarage</name>
+	<description>
+		Designed to allow intuitive control of the OpenGarage garage door opener.
+	</description>
+	<author email="salbahra@gmail.com" href="http://OpenGarage.io/">
+		Samer Albahra
+	</author>
+	<content src="index.html"/>
+
+	<!-- Allow CORS requests -->
+	<access origin="*"/>
+	<allow-navigation href="*" />
+
+	<!-- Declare PhoneGap Version -->
+	<preference name="phonegap-version" value="cli-6.3.0" />
+
+	<!-- Disable web security in Blackberry 10 allowing CORS -->
+	<preference name="WebSecurity" value="disable"/>
+
+	<!-- Disable iCloud backup of data on iOS -->
+	<preference name="BackupWebStorage" value="local" />
+
+	<!-- Stop the app in the background -->
+	<preference name="KeepRunning" value="false"/>
+
+	<!-- Set the background color -->
+	<preference name="BackgroundColor" value="0x00333333"/>
+
+	<!-- Prevent bounce scroll effect -->
+	<preference name="DisallowOverscroll" value="true"/>
+	<preference name="webviewbounce" value="false"/>
+	<preference name="UIWebViewBounce" value="false"/>
+
+	<!-- Set splash screen settings -->
+	<preference name="AutoHideSplashScreen" value="false" />
+	<preference name="SplashScreenDelay" value="10000"/>
+	<preference name="SplashScreen" value="splash"/>
+	<preference name="ShowSplashScreenSpinner" value="false" />
+	<preference name="FadeSplashScreen" value="false" />
+
+	<!-- Define OS X settings -->
+	<preference name="HideMousePointer" value="1" />
+	<preference name="WindowSize" value="900x760" />
+	<preference name="EnableWebGL" value="true" />
+
+	<!-- Declare app as a universal windows app -->
+	<preference name="windows-appx-target" value="uap" />
+	<preference name="WindowsStorePublisherName" value="" />
+	<preference name="windows-identity-name" value="" />
+	<preference name="SplashScreenBackgroundColor" value="0x333333" />
+
+	<!-- Allow the keyboard to be opened by the app -->
+	<preference name="KeyboardDisplayRequiresUserAction" value="false" />
+
+	<!-- Allow a grace period for Android devices to load JS -->
+	<preference name="loadUrlTimeoutValue" value="700000" />
+
+	<!-- Declare required plugins -->
+	<plugin name="cordova-plugin-statusbar" source="npm" />
+	<plugin name="cordova-plugin-splashscreen" source="npm" />
+	<plugin name="cordova-plugin-whitelist" source="npm" />
+	<plugin name="cordova-plugin-device" source="npm" />
+	<plugin name="cordova-plugin-inappbrowser" source="npm" />
+	<plugin name="cordova-plugin-network-information" source="npm" />
+	<plugin name="ionic-plugin-keyboard" source="npm" />
+
+	<platform name="ios">
+		<preference name="Orientation" value="all" />
+		<icon src="resources/ios/icon/icon-40.png" width="40" height="40"/>
+		<icon src="resources/ios/icon/icon-40@2x.png" width="80" height="80"/>
+		<icon src="resources/ios/icon/icon-50.png" width="50" height="50"/>
+		<icon src="resources/ios/icon/icon-50@2x.png" width="100" height="100"/>
+		<icon src="resources/ios/icon/icon-57.png" width="57" height="57"/>
+		<icon src="resources/ios/icon/icon-57@2x.png" width="114" height="114"/>
+		<icon src="resources/ios/icon/icon-60.png" width="60" height="60"/>
+		<icon src="resources/ios/icon/icon-60@2x.png" width="120" height="120"/>
+		<icon src="resources/ios/icon/icon-60@3x.png" width="180" height="180"/>
+		<icon src="resources/ios/icon/icon-72.png" width="72" height="72"/>
+		<icon src="resources/ios/icon/icon-72@2x.png" width="144" height="144"/>
+		<icon src="resources/ios/icon/icon-76.png" width="76" height="76"/>
+		<icon src="resources/ios/icon/icon-76@2x.png" width="152" height="152"/>
+		<icon src="resources/ios/icon/icon-small.png" width="29" height="29"/>
+		<icon src="resources/ios/icon/icon-small@2x.png" width="58" height="58"/>
+		<icon src="resources/ios/icon/icon-small@3x.png" width="87" height="87"/>
+		<splash src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
+		<splash src="resources/ios/splash/Default-667h.png" width="750" height="1334"/>
+		<splash src="resources/ios/splash/Default-736h.png" width="1242" height="2208"/>
+		<splash src="resources/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
+		<splash src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" height="1536"/>
+		<splash src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" height="768"/>
+		<splash src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" height="2048"/>
+		<splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
+		<splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
+		<splash src="resources/ios/splash/Default.png" width="320" height="480"/>
+	</platform>
+
+	<platform name="android">
+		<icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
+		<icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
+		<icon src="resources/android/icon/drawable-hdpi-icon.png" density="hdpi"/>
+		<icon src="resources/android/icon/drawable-xhdpi-icon.png" density="xhdpi"/>
+		<icon src="resources/android/icon/drawable-xxhdpi-icon.png" density="xxhdpi"/>
+		<icon src="resources/android/icon/drawable-xxxhdpi-icon.png" density="xxxhdpi"/>
+        <splash src="resources/android/splash/ldpi.9.png" density="ldpi" />
+        <splash src="resources/android/splash/mdpi.9.png" density="mdpi" />
+        <splash src="resources/android/splash/hdpi.9.png" density="hdpi" />
+        <splash src="resources/android/splash/xhdpi.9.png" density="xhdpi" />
+        <splash src="resources/android/splash/xxhdpi.9.png" density="xxhdpi" />
+	</platform>
+
+	<platform name="windows">
+        <icon src="resources/windows/icon/icon50.png" width="50" height="50" />
+        <icon src="resources/windows/icon/icon30.png" width="30" height="30" />
+        <icon src="resources/windows/icon/icon44.png" width="44" height="44" />
+        <icon src="resources/windows/icon/icon70.png" width="70" height="70" />
+        <icon src="resources/windows/icon/icon71.png" width="71" height="71" />
+        <icon src="resources/windows/icon/icon150.png" width="150" height="150" />
+        <icon src="resources/windows/icon/icon310.png" width="310" height="310" />
+        <icon src="resources/windows/icon/iconw.png" width="310" height="150" />
+		<splash src="resources/windows/splash/landscape.png" width="620" height="300" />
+		<splash src="resources/windows/splash/portrait.png" width="1152" height="1920" />
+	</platform>
+
+	<!-- Android specific Configuration -->
+	<config-file platform="android" parent="/manifest" mode="merge">
+
+		<!-- Declare SDK -->
+		<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="22" />
+
+		<!-- Declare supported screens -->
+		<supports-screens
+			android:xlargeScreens="true"
+			android:largeScreens="true"
+			android:smallScreens="true" />
+
+		<!-- Declare theme which fixes select menu background color -->
+		<application android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+			<activity android:theme="@android:style/Theme.Holo.Light.NoActionBar" android:windowSoftInputMode="adjustResize"></activity>
+		</application>
+
+	</config-file>
+</widget>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: local: blob: http: https:; script-src 'self' data: gap: blob: local: https: ms-appx-web: 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https: blob:; media-src *; img-src 'self' https: http: blob: data: ms-appdata:; connect-src 'self' blob: data: gap: local: http: https: wss:">
+		<meta name="apple-itunes-app" content="app-id=">
+        <title>OpenGarage</title>
+
+        <!-- Compiled css output -->
+        <link href="css/ionic.app.min.css" rel="stylesheet">
+
+        <!-- Define the app version and debug flag -->
+        <script>
+			window.appVersion={"name":"1.0.0","number":1};
+		</script>
+
+        <!-- Fix unsafe errors in Windows apps -->
+        <script src="lib/win-jscompat.js"></script>
+
+        <!-- Ionic / AngularJS bundle -->
+        <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+
+        <!-- Cordova script (TODO: prevent 404 for browsers) -->
+        <script src="cordova.js"></script>
+
+        <!-- Application minified JS -->
+        <script src="js/app.min.js"></script>
+    </head>
+
+    <body ng-app="opengarage">
+        <ion-nav-view class="startpage" id="navView"></ion-nav-view>
+    </body>
+</html>

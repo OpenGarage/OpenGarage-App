@@ -1,0 +1,30 @@
+CACHE MANIFEST
+
+CACHE:
+css/ionic.app.min.css
+img/Roboto-Light.ttf
+img/Roboto-Light.woff2
+img/Roboto-Regular.ttf
+img/Roboto-Regular.woff2
+img/Roboto-Thin.ttf
+img/Roboto-Thin.woff2
+js/app.min.js
+templates/changePass.html
+templates/controllerSelect.html
+templates/help.html
+templates/home.html
+templates/menu.html
+templates/settings.html
+templates/setup.html
+lib/win-jscompat.js
+lib/ionic/js/ionic.bundle.min.js
+lib/ionic/fonts/ionicons.eot?v=2.0.1
+lib/ionic/fonts/ionicons.svg?v=2.0.1
+lib/ionic/fonts/ionicons.ttf?v=2.0.1
+lib/ionic/fonts/ionicons.woff?v=2.0.1
+index.html
+
+NETWORK:
+*
+
+# hash: 295572f88b08b1d4eafb8b45184f06ad8eafecb362c2c565062aa124ea65b63c

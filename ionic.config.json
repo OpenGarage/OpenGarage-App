@@ -1,0 +1,13 @@
+{
+  "name": "opengarage",
+  "app_id": "56c2d0eb",
+  "gulpStartupTasks": [
+    "sass",
+    "uglify",
+    "manifest",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*"
+  ]
+}

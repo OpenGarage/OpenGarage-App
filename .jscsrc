@@ -1,0 +1,11 @@
+{
+	"preset": "jquery",
+	"requireParenthesesAroundIIFE": true,
+	"requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+	"maximumLineLength": 250,
+	"disallowImplicitTypeConversion": ["string"],
+	"excludeFiles": [ "hooks/after_prepare/uglify.js" ],
+	"requireCapitalizedComments": {
+		"allExcept": [ "global", "jshint" ]
+	}
+}
