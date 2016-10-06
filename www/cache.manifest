@@ -9,13 +9,11 @@ img/Roboto-Regular.woff2
 img/Roboto-Thin.ttf
 img/Roboto-Thin.woff2
 js/app.min.js
-templates/changePass.html
 templates/controllerSelect.html
 templates/help.html
 templates/home.html
 templates/menu.html
 templates/settings.html
-templates/setup.html
 lib/win-jscompat.js
 lib/ionic/js/ionic.bundle.min.js
 lib/ionic/fonts/ionicons.eot?v=2.0.1
@@ -27,4 +25,4 @@ index.html
 NETWORK:
 *
 
-# hash: 295572f88b08b1d4eafb8b45184f06ad8eafecb362c2c565062aa124ea65b63c
+# hash: 9c1deaa40e7bdd86a3443592ec567501e0100548d973014c40ead45f576bc685
