@@ -1,4 +1,17 @@
 <ion-view class="center" view-title="Help">
-	<ion-content has-bouncing="false">
+	<ion-content has-bouncing="false" class="vertical-center">
+		<div class="card">
+			<div class="item item-text-wrap">
+				User manual for OpenGarage is available <a href="https://github.com/OpenGarage/OpenGarage-Firmware/raw/master/docs/OGManual.pdf" target="_blank">here</a>.
+			</div>
+		</div>
+		<div class="card">
+			<div class="item item-text-wrap">
+				This is open source software: source code and changelog for this application can be found at <a href="https://github.com/OpenGarage/OpenGarage-App/" target='_blank'>here</a>.
+			</div>
+		</div>
+		<div>
+			App Version: {{ $root.version.name }}
+		</div>
 	</ion-content>
 </ion-view>
