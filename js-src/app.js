@@ -22,7 +22,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		        window.StatusBar.styleLightContent();
 
 		        //Change the status bar color to match the header
-		        Utils.updateStatusBarColor();
+                window.StatusBar.backgroundColorByHexString( "#444" );
 
 		        // Scroll to the top of the page when the status bar is tapped
 				angular.element( $window ).on( "statusTap", function() {
