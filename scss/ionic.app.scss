@@ -1,4 +1,3 @@
-/*
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
@@ -26,11 +25,24 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $font-family-base: "Roboto", sans-serif !default;
 
 // Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+@import "../www/lib/ionic/scss/ionic";
 
-/* ============================== BEGIN: Global Overrides ============================== */
 textarea {
   background: none
 }
-/* ============================== END: Global Overrides ============================== */
 
+.center {
+  text-align: center;
+  justify-content: center
+}
+
+.vertical-center .scroll {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+}
+
+.scroll-content:not(.cancel-height) > .scroll, .full-height {
+  height: 100%
+}

@@ -86,9 +86,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		// Handle loading of the first page
 		var firstLoadHandler = $rootScope.$on( "$stateChangeStart", function( event ) {
 
-			// Find and cache the parent view container
-			var navView = angular.element( document.querySelector( "#navView" ) );
-
 			// Unbind event handler so this check is only performed on the first app load
 		    firstLoadHandler();
 
@@ -107,16 +104,10 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 					Utils.setController( data.activeController );
 
-					// Remove the initial background before the first page is loaded
-					navView.removeClass( "startpage" );
-
 					// If a user object is cached, proceed to load the app while updating user object in the background
 					$state.go( "app.home" );
 		        } else {
-
-					// If no controllers are saved, remove the initial background and show the setup page
-					navView.removeClass( "startpage" );
-					$state.go( "setup" );
+					$state.go( "app.controllerSelect" );
 		        }
 		    } );
 		} );
@@ -154,23 +145,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 		// Define all available routes and their associated controllers
 		$stateProvider
-			.state( "setup", {
-				url: "/setup",
-				templateUrl: "templates/setup.html",
-				controller: "SetupCtrl"
-			} )
-
-			.state( "help", {
-				url: "/help",
-				templateUrl: "templates/help.html",
-				controller: "HelpCtrl"
-			} )
-
-			.state( "changePass", {
-				url: "/changePass",
-				templateUrl: "templates/changePass.html",
-				controller: "ChangePassCtrl"
-			} )
 
 			// Used as the parent route after authentication is complete allowing the same header
 			// and side menu's to be used throughout all child views
@@ -233,6 +207,23 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 						templateUrl: "templates/settings.html",
 						controller: "SettingsCtrl"
 					}
+				},
+				resolve: {
+					checkValid: function( $rootScope, $q ) {
+						if ( !$rootScope.activeController ) {
+							return $q.reject();
+						}
+					}
+				}
+			} )
+
+			.state( "app.help", {
+				url: "/help",
+				views: {
+					menuContent: {
+						templateUrl: "templates/help.html",
+						controller: "HelpCtrl"
+					}
 				}
 			} )
 
@@ -245,7 +236,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 					if ( $rootScope.activeController ) {
 						$state.go( "app.home" );
 					} else {
-						$state.go( "setup" );
+						$state.go( "app.controllerSelect" );
 					}
 				}
 			} );

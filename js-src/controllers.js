@@ -2,23 +2,13 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
-	.controller( "SetupCtrl", function() {
-	} )
-
-	.controller( "HelpCtrl", function() {
-	} )
-
-	.controller( "ChangePassCtrl", function() {
-	} )
-
 	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory, Utils ) {
 		var orderFilter = $filter( "orderBy" );
 
 		$scope.data = {};
 
 		$scope.updateView = function() {
-			$scope.filtered = orderFilter( $rootScope.controllers, "Name" );
-			$scope.$broadcast( "scroll.refreshComplete" );
+			$scope.filtered = orderFilter( $rootScope.controllers || [], "Name" );
 		};
 
 		$scope.setController = function( controller ) {
@@ -55,6 +45,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	} )
 
 	.controller( "SettingsCtrl", function() {
+	} )
+
+	.controller( "HelpCtrl", function() {
 	} )
 
 	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate ) {
