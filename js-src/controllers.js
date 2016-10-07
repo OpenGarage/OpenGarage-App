@@ -22,6 +22,12 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 		};
 
+		$scope.moveItem = function( item, fromIndex, toIndex ) {
+			$rootScope.controllers.splice( fromIndex, 1 );
+			$rootScope.controllers.splice( toIndex, 0, item );
+			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+		};
+
 		// Update each time the page is viewed
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			if ( $rootScope.activeController ) {
