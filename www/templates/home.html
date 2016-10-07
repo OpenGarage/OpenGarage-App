@@ -1,4 +1,5 @@
 <ion-view view-title="{{$root.activeController.name}}">
-	<ion-content has-bouncing="false" ng-class="{'vertical-center': $root.controllers.length === 0 }">
+	<ion-content has-bouncing="false" class="vertical-center">
+		Status: {{ $root.activeController.door ? "Open" : "Closed" }}
 	</ion-content>
 </ion-view>

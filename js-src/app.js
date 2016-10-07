@@ -173,6 +173,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 						if ( !$rootScope.activeController && total === 1 ) {
 							$rootScope.activeController = $rootScope.controllers[ 0 ];
+							Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
 							return;
 						}
 

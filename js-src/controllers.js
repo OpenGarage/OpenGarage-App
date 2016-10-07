@@ -9,6 +9,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 		$scope.setController = function( index ) {
 			$rootScope.activeController = $rootScope.controllers[ index ];
+			Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
 
 			$ionicHistory.nextViewOptions( {
 				historyRoot: true
