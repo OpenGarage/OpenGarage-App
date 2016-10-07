@@ -12,8 +12,6 @@ Designed to allow intuitive control of the OpenGarage garage door opener.
 [changelog]: https://github.com/OpenGarage/OpenGarage-App/releases
 [salbahra]: http://albahra.com
 
----
-
 1) Brief
 ------------------------------------------
 
