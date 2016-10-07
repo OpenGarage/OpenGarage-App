@@ -1,12 +1,12 @@
 <ion-view>
 	<ion-nav-title>{{data.pageTitle}}</ion-nav-title>
-	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': filtered.length === 0 }">
-		<div class="list" ng-show="filtered.length">
-			<div class="item item-thumbnail-left" ng-click="setController( {{controller}} )" ng-repeat="controller in filtered track by controller.mac">
-		      <h2 class="item-text-center center" notranslate>{{controller.Name}}</h2>
+	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': $root.controllers.length === 0 }">
+		<div class="list" ng-show="$root.controllers.length">
+			<div class="item item-thumbnail-left" ng-click="setController( $index )" ng-repeat="controller in $root.controllers">
+		      <h2 class="item-text-center center" notranslate>{{controller.name}}</h2>
 		    </div>
 		</div>
-		<div ng-hide="filtered.length">
+		<div ng-hide="$root.controllers.length">
 			<h1>No Controllers</h1>
 		</div>
 	</ion-content>

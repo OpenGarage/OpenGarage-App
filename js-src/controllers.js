@@ -3,13 +3,7 @@
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory, Utils ) {
-		var orderFilter = $filter( "orderBy" );
-
 		$scope.data = {};
-
-		$scope.updateView = function() {
-			$scope.filtered = orderFilter( $rootScope.controllers, "Name" );
-		};
 
 		$scope.setController = function( controller ) {
 			Utils.setController( controller );
@@ -24,7 +18,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		};
 
 		$rootScope.$on( "updateData", function() {
-			$scope.updateView();
 			if ( $ionicHistory.currentView().stateId === "app.controllerSelect" ) {
 				$state.go( "app.home" );
 			}
@@ -37,8 +30,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			} else {
 				$scope.data.pageTitle = "Select Controller";
 			}
-
-			$scope.updateView();
 		} );
 	} )
 

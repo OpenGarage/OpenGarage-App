@@ -59,10 +59,42 @@ angular.module( "opengarage.utils", [] )
                     callback( true );
 	            }
 	        },
+			addController = function( data, callback ) {
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
+				if ( !data.ip || !data.password ) {
+					$ionicPopup.alert( {
+						template: "<p class='center'>Both an IP and password are required.</p>"
+					} );
+					callback( false );
+					return;
+				}
+
+				$http = $http || $injector.get( "$http" );
+
+	            $http( {
+	                method: "GET",
+	                url: "http://" + data.ip + "/jc"
+	            } ).then(
+					function( result ) {
+						if ( result.data.fwv ) {
+							result.data.ip = data.ip;
+							result.data.password = data.password;
+							$rootScope.controllers.push( result.data );
+							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+							callback( true );
+						} else {
+							callback( false );
+						}
+					},
+					function() {
+						callback( false );
+					}
+				);
+			},
 	        setController = function() {
 	        },
-	        $ionicPopup;
+			$http, $ionicPopup;
 
 	    if ( isFireFox ) {
 			HTMLElement.prototype.click = function() {
@@ -114,10 +146,6 @@ angular.module( "opengarage.utils", [] )
 									e.preventDefault();
 									return;
 								}
-
-								if ( !scope.data.name ) {
-									scope.data.name = "Controller " + ( $rootScope.controllers.length + 1 );
-								}
 							}
 						}
 					]
@@ -126,9 +154,6 @@ angular.module( "opengarage.utils", [] )
 						addController( scope.data, callback );
 					}
 				);
-			},
-			addController: function( data, callback ) {
-
 			}
 	    };
 } ] );

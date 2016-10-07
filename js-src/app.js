@@ -98,7 +98,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		    Utils.storage.get( [ "activeController", "controllers" ], function( data ) {
 
 				try {
-					data.controllers = JSON.parse( data.controllers );
+					$rootScope.controllers = JSON.parse( data.controllers );
 					data.activeController = JSON.parse( data.activeController );
 				} catch ( err ) {}
 
