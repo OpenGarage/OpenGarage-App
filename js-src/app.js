@@ -99,13 +99,11 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 				try {
 					$rootScope.controllers = JSON.parse( data.controllers );
-					data.activeController = JSON.parse( data.activeController );
+					$rootScope.activeController = JSON.parse( data.activeController );
 				} catch ( err ) {}
 
 				// Restore the active controller, if available
-		        if ( data.activeController && typeof data.activeController === "object" ) {
-
-					Utils.setController( data.activeController );
+		        if ( $rootScope.activeController && typeof $rootScope.activeController === "object" ) {
 
 					// If a user object is cached, proceed to load the app while updating user object in the background
 					$state.go( "app.home" );
@@ -173,7 +171,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 							invalidOrg = ( $rootScope.activeController && filterFilter( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ).length === 0 ) ? true : false;
 
 						if ( !$rootScope.activeController && total === 1 ) {
-							Utils.setController( $rootScope.controllers[ 0 ] );
+							$rootScope.activeController = $rootScope.controllers[ 0 ];
 							return;
 						}
 

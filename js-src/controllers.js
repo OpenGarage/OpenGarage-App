@@ -2,26 +2,18 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory, Utils ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory ) {
 		$scope.data = {};
 
-		$scope.setController = function( controller ) {
-			Utils.setController( controller );
+		$scope.setController = function( index ) {
+			$rootScope.activeController = $rootScope.controllers[ index ];
 
 			$ionicHistory.nextViewOptions( {
 				historyRoot: true
 			} );
 
-			// Tells the controller's to drop their cached data as the controller has changed
-			$rootScope.$broadcast( "updateData", { controllerChange: true } );
 			$state.go( "app.home" );
 		};
-
-		$rootScope.$on( "updateData", function() {
-			if ( $ionicHistory.currentView().stateId === "app.controllerSelect" ) {
-				$state.go( "app.home" );
-			}
-		} );
 
 		// Update each time the page is viewed
 		$scope.$on( "$ionicView.beforeEnter", function() {

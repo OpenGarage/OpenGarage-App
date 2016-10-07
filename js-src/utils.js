@@ -92,8 +92,6 @@ angular.module( "opengarage.utils", [] )
 					}
 				);
 			},
-	        setController = function() {
-	        },
 			$http, $ionicPopup;
 
 	    if ( isFireFox ) {
@@ -108,7 +106,6 @@ angular.module( "opengarage.utils", [] )
 	    return {
 			isIE: isIE,
 	        storage: storage,
-	        setController: setController,
 			networkDown: function() {
 				if ( $rootScope.networkStatus === "down" ) {
 					return;
