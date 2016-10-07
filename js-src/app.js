@@ -9,7 +9,9 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		$ionicPlatform.ready( function() {
 
 			// Map inAppBrowser to rootScope
-			$rootScope.open = window.open;
+			$rootScope.open = function( url ) {
+				window.open( url, "_blank", "toolbarposition=top" );
+			};
 
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)

@@ -27,6 +27,12 @@ $font-family-base: "Roboto", sans-serif !default;
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
 
+.link {
+    color: #387ef5;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 textarea {
   background: none
 }
