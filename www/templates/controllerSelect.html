@@ -4,7 +4,7 @@
         <button class="button" type="button" ng-click="data.showDelete = !data.showDelete">{{ data.showDelete ? "Done" : "Edit" }}</button>
     </ion-nav-buttons>
 	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': $root.controllers.length === 0 }">
-		<ion-list show-delete="data.showDelete" show-reorder="true" ng-show="$root.controllers.length">
+		<ion-list show-delete="data.showDelete" show-reorder="data.showDelete" ng-show="$root.controllers.length">
 			<ion-item class="center" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
 				<ion-delete-button class="ion-minus-circled" ng-click="deleteController($index)"></ion-delete-button>
 				{{controller.name}}

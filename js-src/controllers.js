@@ -56,4 +56,5 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	} )
 
 	.controller( "HomeCtrl", function() {
+
 	} );
