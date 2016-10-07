@@ -2,8 +2,10 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory ) {
-		$scope.data = {};
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory, Utils ) {
+		$scope.data = {
+			showDelete: false
+		};
 
 		$scope.setController = function( index ) {
 			$rootScope.activeController = $rootScope.controllers[ index ];
@@ -13,6 +15,11 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			} );
 
 			$state.go( "app.home" );
+		};
+
+		$scope.deleteController = function( index ) {
+			$rootScope.controllers.splice( index, 1 );
+			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 		};
 
 		// Update each time the page is viewed
