@@ -50,9 +50,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		// Define version, build number and debug state
 		$rootScope.version = window.appVersion;
 
-	    // Define the offline status on the rootScope
-	    $rootScope.networkStatus = $window.navigator.onLine ? "up" : "down";
-
 	    // Define total loading requests
 	    $rootScope.loadingCount = 0;
 
@@ -83,8 +80,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		$rootScope.$on( "$ionicView.afterEnter", function() {
 			$document[ 0 ].title = "OpenGarage";
 		} );
-
-		angular.element( $window ).on( "online", Utils.networkUp ).on( "offline", Utils.networkDown );
 
 		// Handle loading of the first page
 		var firstLoadHandler = $rootScope.$on( "$stateChangeStart", function( event ) {
@@ -243,7 +238,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 			} );
 
 		// Add an HTTP interceptor
-		$httpProvider.interceptors.push( function( $rootScope, $q, $injector, Utils ) {
+		$httpProvider.interceptors.push( function( $rootScope, $q, $injector ) {
 			return {
 				request: function( config ) {
 
@@ -274,7 +269,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 						if ( !response.config.suppressLoader ) {
 							$rootScope.$broadcast( "loading:hide" );
 						}
-						Utils.networkUp();
 					}
 
 					return response;
@@ -293,16 +287,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 						if ( !error.config.suppressLoader ) {
 							$rootScope.$broadcast( "loading:hide" );
 						}
-
-						if ( error.status > 0 ) {
-							Utils.networkUp();
-						}
-
-						// If the request returns a 401, redirect to the login page
-						if ( error.status === 401 ) {
-							Utils.logout();
-							return $q.reject( error );
-						}
 					}
 
 					// If the request timed out and is not user canceled, retry the request up to three times
@@ -320,9 +304,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 							error.retryFailed = true;
 							error.canceled = true;
 
-							if ( isAPI ) {
-								Utils.networkDown();
-							}
 							return $q.reject( error );
 						}
 					}

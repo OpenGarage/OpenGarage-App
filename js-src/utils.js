@@ -106,22 +106,6 @@ angular.module( "opengarage.utils", [] )
 	    return {
 			isIE: isIE,
 	        storage: storage,
-			networkDown: function() {
-				if ( $rootScope.networkStatus === "down" ) {
-					return;
-				}
-
-				$rootScope.networkStatus = "down";
-				$rootScope.$broadcast( "networkDown" );
-			},
-			networkUp: function() {
-				if ( $rootScope.networkStatus === "up" ) {
-					return;
-				}
-
-				$rootScope.networkStatus = "up";
-				$rootScope.$broadcast( "networkUp" );
-			},
 			showAddController: function( callback ) {
 				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
