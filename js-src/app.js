@@ -99,6 +99,10 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 					$rootScope.activeController = JSON.parse( data.activeController );
 				} catch ( err ) {}
 
+				if ( !$rootScope.controllers ) {
+					$rootScope.controllers = [];
+				}
+
 				// Restore the active controller, if available
 		        if ( $rootScope.activeController && typeof $rootScope.activeController === "object" ) {
 
