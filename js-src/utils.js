@@ -61,7 +61,8 @@ angular.module( "opengarage.utils", [] )
 	        },
 
 	        setController = function() {
-	        };
+	        },
+	        $ionicPopup;
 
 	    if ( isFireFox ) {
 			HTMLElement.prototype.click = function() {
@@ -91,6 +92,43 @@ angular.module( "opengarage.utils", [] )
 
 				$rootScope.networkStatus = "up";
 				$rootScope.$broadcast( "networkUp" );
+			},
+			showAddController: function( callback ) {
+				callback = callback || function() {};
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				var scope = $rootScope.$new();
+				scope.data = {};
+
+				$ionicPopup.show( {
+					templateUrl: "templates/addController.html",
+					title: "Add Controller",
+					scope: scope,
+					buttons: [
+						{ text: "Cancel" },
+						{
+							text: "<b>Add</b>",
+							type: "button-positive",
+							onTap: function( e ) {
+								if ( !scope.data.ip || !scope.data.password ) {
+									e.preventDefault();
+									return;
+								}
+
+								if ( !scope.data.name ) {
+									scope.data.name = "Controller " + ( $rootScope.controllers.length + 1 );
+								}
+							}
+						}
+					]
+				} ).then(
+					function() {
+						addController( scope.data, callback );
+					}
+				);
+			},
+			addController: function( data, callback ) {
+
 			}
 	    };
 } ] );

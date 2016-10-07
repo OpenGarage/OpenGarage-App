@@ -9,6 +9,7 @@ img/Roboto-Regular.woff2
 img/Roboto-Thin.ttf
 img/Roboto-Thin.woff2
 js/app.min.js
+templates/addController.html
 templates/controllerSelect.html
 templates/help.html
 templates/home.html
@@ -26,4 +27,4 @@ index.html
 NETWORK:
 *
 
-# hash: 0a2f75ae03fe614d3bc50e72dfb761b6027df92eb0dec4ac2deff2311295eb57
+# hash: 36831c9c9e6708b1440d8174596a34f2cc779aade998a415e775c09854d83de8

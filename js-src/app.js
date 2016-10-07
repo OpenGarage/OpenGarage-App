@@ -56,6 +56,9 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 	    // Define total loading requests
 	    $rootScope.loadingCount = 0;
 
+	    // Initialize controllers array
+	    $rootScope.controllers = [];
+
 		// Automatically show a loading message on any AJAX request
 		$rootScope.$on( "loading:show", function( e, data ) {
 

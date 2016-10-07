@@ -8,7 +8,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		$scope.data = {};
 
 		$scope.updateView = function() {
-			$scope.filtered = orderFilter( $rootScope.controllers || [], "Name" );
+			$scope.filtered = orderFilter( $rootScope.controllers, "Name" );
 		};
 
 		$scope.setController = function( controller ) {
@@ -22,8 +22,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			$rootScope.$broadcast( "updateData", { controllerChange: true } );
 			$state.go( "app.home" );
 		};
-
-		$scope.showAddController = Utils.addController;
 
 		$rootScope.$on( "updateData", function() {
 			$scope.updateView();
@@ -50,7 +48,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	.controller( "HelpCtrl", function() {
 	} )
 
-	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate ) {
+	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate, Utils ) {
+
+		$scope.showAddController = Utils.showAddController;
 
 		// Function to close the menu which is fired after a side menu link is clicked.
 		// This is done instead of using the menu-close directive to preserve the root history stack
