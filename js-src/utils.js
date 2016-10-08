@@ -149,7 +149,7 @@ angular.module( "opengarage.utils", [] )
 
 	            $http( {
 	                method: "GET",
-	                url: "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "click=1"
+	                url: "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1"
 	            } ).then(
 					function( result ) {
 						callback( true );
