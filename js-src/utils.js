@@ -88,6 +88,9 @@ angular.module( "opengarage.utils", [] )
 						}
 					},
 					function() {
+						$ionicPopup.alert( {
+							template: "<p class='center'>Unable to find device. Please verify the IP/password and try again.</p>"
+						} );
 						callback( false );
 					}
 				);
@@ -127,12 +130,16 @@ angular.module( "opengarage.utils", [] )
 									e.preventDefault();
 									return;
 								}
+
+								return true;
 							}
 						}
 					]
 				} ).then(
-					function() {
-						addController( scope.data, callback );
+					function( isValid ) {
+						if ( isValid ) {
+							addController( scope.data, callback );
+						}
 					}
 				);
 			}

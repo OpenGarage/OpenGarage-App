@@ -11,8 +11,9 @@
 				<ion-reorder-button class="ion-navicon" on-reorder="moveItem(controller, $fromIndex, $toIndex)"></ion-reorder-button>
 		    </ion-item>
 		</ion-list>
-		<div ng-hide="$root.controllers.length">
+		<div ng-hide="$root.controllers.length" class="center">
 			<h1>No Controllers</h1>
+			<p>Get started by adding a controller by tapping 'Add Controller' below.</p>
 		</div>
 	</ion-content>
 	<ion-footer-bar class="bar-stable center">
