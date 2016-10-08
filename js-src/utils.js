@@ -142,6 +142,22 @@ angular.module( "opengarage.utils", [] )
 						}
 					}
 				);
+			},
+			toggleDoor: function( callback ) {
+				callback = callback || function() {};
+				$http = $http || $injector.get( "$http" );
+
+	            $http( {
+	                method: "GET",
+	                url: "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "click=1"
+	            } ).then(
+					function( result ) {
+						callback( true );
+					},
+					function() {
+						callback( false );
+					}
+				);
 			}
 	    };
 } ] );

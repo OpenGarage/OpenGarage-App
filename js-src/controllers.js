@@ -56,6 +56,14 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	    };
 	} )
 
-	.controller( "HomeCtrl", function() {
+	.controller( "HomeCtrl", function( $scope, Utils ) {
+		$scope.changing = false;
 
+		$scope.toggleDoor = function() {
+			$scope.changing = true;
+
+			Utils.toggleDoor( function( result ) {
+				$scope.changing = false;
+			} );
+		};
 	} );
