@@ -1,0 +1,13 @@
+bundler_args: --retry 3
+language: objective-c
+before_install:
+ - export TZ=America/Chicago
+ - npm install -g grunt-cli
+install: npm install
+before_script:
+ - travis_retry gulp
+script:
+ - cordova platform add osx
+ - cordova build osx
+notifications:
+  on_failure: change
