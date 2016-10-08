@@ -3,6 +3,7 @@ language: objective-c
 before_install:
  - export TZ=America/Chicago
  - npm install -g gulp-cli
+ - npm install -g cordova
 install: npm install
 before_script:
  - travis_retry gulp
