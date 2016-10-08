@@ -59,6 +59,67 @@ angular.module( "opengarage.utils", [] )
                     callback( true );
 	            }
 	        },
+	        getControllerSettings = function( callback, ip ) {
+				if ( !ip && !$rootScope.activeController ) {
+					callback( false );
+					return;
+				}
+
+				$http = $http || $injector.get( "$http" );
+
+	            return $http( {
+	                method: "GET",
+	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jc",
+	                suppressLoader: true
+	            } ).then(
+					function( result ) {
+						callback( result.data );
+					},
+					function() {
+						callback( false );
+					}
+				);
+	        },
+	        getControllerOptions = function( callback, ip ) {
+				if ( !ip && !$rootScope.activeController ) {
+					callback( false );
+					return;
+				}
+
+				$http = $http || $injector.get( "$http" );
+
+	            return $http( {
+	                method: "GET",
+	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jo",
+	                suppressLoader: true
+	            } ).then(
+					function( result ) {
+						callback( result.data );
+					},
+					function() {
+						callback( false );
+					}
+				);
+	        },
+	        updateController = function( callback ) {
+				$q = $q || $injector.get( "$q" );
+
+				var controller = angular.copy( $rootScope.activeController ),
+					save = function( data ) { angular.extend( controller, data ); };
+
+				$q.when()
+					.then( function() { return getControllerSettings( save ); } )
+					.then( function() { return getControllerOptions( save ); } )
+					.then( function() {
+						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
+
+						$rootScope.controllers.splice( index, 1 );
+						$rootScope.controllers.splice( index, 0, controller );
+						$rootScope.activeController = controller;
+
+						storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+					} );
+	        },
 			addController = function( data, callback ) {
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
@@ -70,32 +131,25 @@ angular.module( "opengarage.utils", [] )
 					return;
 				}
 
-				$http = $http || $injector.get( "$http" );
-
-	            $http( {
-	                method: "GET",
-	                url: "http://" + data.ip + "/jc"
-	            } ).then(
-					function( result ) {
-						if ( result.data.fwv ) {
-							result.data.ip = data.ip;
-							result.data.password = data.password;
-							$rootScope.controllers.push( result.data );
+				getControllerSettings( function( result ) {
+					if ( result && result.fwv ) {
+						result.ip = data.ip;
+						result.password = data.password;
+						getControllerOptions( function( reply ) {
+							angular.extend( result, reply );
+							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 							callback( true );
-						} else {
-							callback( false );
-						}
-					},
-					function() {
+						}, data.ip );
+					} else {
 						$ionicPopup.alert( {
 							template: "<p class='center'>Unable to find device. Please verify the IP/password and try again.</p>"
 						} );
 						callback( false );
 					}
-				);
+				}, data.ip );
 			},
-			$http, $ionicPopup;
+			$http, $q, $ionicPopup;
 
 	    if ( isFireFox ) {
 			HTMLElement.prototype.click = function() {
@@ -109,6 +163,9 @@ angular.module( "opengarage.utils", [] )
 	    return {
 			isIE: isIE,
 	        storage: storage,
+	        getControllerSettings: getControllerSettings,
+	        getControllerOptions: getControllerOptions,
+	        updateController: updateController,
 			showAddController: function( callback ) {
 				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );

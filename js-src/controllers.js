@@ -57,6 +57,8 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	} )
 
 	.controller( "HomeCtrl", function( $scope, Utils ) {
+		var interval;
+
 		$scope.changing = false;
 
 		$scope.toggleDoor = function() {
@@ -66,4 +68,12 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 				$scope.changing = false;
 			} );
 		};
+
+		$scope.$on( "$ionicView.beforeLeave", function() {
+			clearInterval( interval );
+		} );
+
+		$scope.$on( "$ionicView.beforeEnter", function() {
+			interval = setInterval( Utils.updateController, 5000 );
+		} );
 	} );
