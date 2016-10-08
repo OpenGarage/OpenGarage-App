@@ -64,7 +64,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		$scope.toggleDoor = function() {
 			$scope.changing = true;
 
-			Utils.toggleDoor( function( result ) {
+			Utils.toggleDoor( function() {
 				$scope.changing = false;
 			} );
 		};

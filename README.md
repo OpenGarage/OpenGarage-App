@@ -1,10 +1,10 @@
 <img align="left" height="150" src="https://github.com/OpenGarage/OpenGarage-App/blob/master/resources/icon.png?raw=true"><h3>&nbsp;OpenGarage App [![GitHub version](https://badge.fury.io/gh/OpenGarage%2FOpenGarage-App.svg)](http://badge.fury.io/gh/OpenGarage%2FOpenGarage-App)</h3>
-&nbsp;[![Build Status](https://api.travis-ci.org/OpenGarage/OpenGarage-App.svg?branch=master)](https://travis-ci.org/) [![devDependency Status](https://david-dm.org/OpenGarage/OpenGarage-App/dev-status.svg)](https://david-dm.org/OpenGarage/OpenGarage-App#info=devDependencies)  
-&nbsp;[Official Site][official] | [Support][help] | [Changelog][changelog]  
-&nbsp;&copy; 2016 [Samer Albahra][salbahra] ([@salbahra](https://twitter.com/salbahra))  
+&nbsp;[![Build Status](https://travis-ci.org/OpenGarage/OpenGarage-App.svg?branch=master)](https://travis-ci.org/OpenGarage/OpenGarage-App) [![devDependency Status](https://david-dm.org/OpenGarage/OpenGarage-App/dev-status.svg)](https://david-dm.org/OpenGarage/OpenGarage-App#info=devDependencies)
+&nbsp;[Official Site][official] | [Support][help] | [Changelog][changelog]
+&nbsp;&copy; 2016 [Samer Albahra][salbahra] ([@salbahra](https://twitter.com/salbahra))
 <br>
 Designed to allow intuitive control of the OpenGarage garage door opener.
-  
+
 ---
 
 [official]: https://opengarage.io

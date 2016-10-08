@@ -101,7 +101,7 @@ angular.module( "opengarage.utils", [] )
 					}
 				);
 	        },
-	        updateController = function( callback ) {
+	        updateController = function() {
 				$q = $q || $injector.get( "$q" );
 
 				var controller = angular.copy( $rootScope.activeController ),
@@ -219,7 +219,7 @@ angular.module( "opengarage.utils", [] )
 	                method: "GET",
 	                url: "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1"
 	            } ).then(
-					function( result ) {
+					function() {
 						callback( true );
 					},
 					function() {

@@ -12,6 +12,7 @@ js/app.min.js
 templates/addController.html
 templates/controllerSelect.html
 templates/help.html
+templates/history.html
 templates/home.html
 templates/menu.html
 templates/settings.html
@@ -27,4 +28,4 @@ index.html
 NETWORK:
 *
 
-# hash: 36f1a2514df102945f8c231cf2a0c6194da87c22556cf8ce96429a5c1c862735
+# hash: cdc2ab3ad174eaf3f053b1af289d0ff79ad2a11265e2e2af5b1d14b6d00abcf2
