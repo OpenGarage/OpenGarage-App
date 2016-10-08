@@ -132,9 +132,20 @@ angular.module( "opengarage.utils", [] )
 				}
 
 				getControllerSettings( function( result ) {
-					if ( result && result.fwv ) {
+					if ( result && result.cid ) {
 						result.ip = data.ip;
 						result.password = data.password;
+
+						$filter = $filter || $injector.get( "$filter" );
+
+						if ( $filter( "filter" )( $rootScope.controllers, { "cid": result.cid } ) ) {
+							$ionicPopup.alert( {
+								template: "<p class='center'>Device already added to site list.</p>"
+							} );
+							callback( false );
+							return;
+						}
+
 						getControllerOptions( function( reply ) {
 							angular.extend( result, reply );
 							$rootScope.controllers.push( result );
@@ -149,7 +160,7 @@ angular.module( "opengarage.utils", [] )
 					}
 				}, data.ip );
 			},
-			$http, $q, $ionicPopup;
+			$http, $q, $filter, $ionicPopup;
 
 	    if ( isFireFox ) {
 			HTMLElement.prototype.click = function() {

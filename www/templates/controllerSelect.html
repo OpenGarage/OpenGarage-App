@@ -5,7 +5,7 @@
     </ion-nav-buttons>
 	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': $root.controllers.length === 0 }">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showDelete" ng-show="$root.controllers.length">
-			<ion-item class="center" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
+			<ion-item class="center" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by controller.cid">
 				<ion-delete-button class="ion-minus-circled" ng-click="deleteController($index)"></ion-delete-button>
 				{{controller.name}}
 				<ion-reorder-button class="ion-navicon" on-reorder="moveItem(controller, $fromIndex, $toIndex)"></ion-reorder-button>
