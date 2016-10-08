@@ -203,6 +203,23 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 				}
 			} )
 
+			.state( "app.history", {
+				url: "/history",
+				views: {
+					menuContent: {
+						templateUrl: "templates/history.html",
+						controller: "HistoryCtrl"
+					}
+				},
+				resolve: {
+					checkValid: function( $rootScope, $q ) {
+						if ( !$rootScope.activeController ) {
+							return $q.reject();
+						}
+					}
+				}
+			} )
+
 			.state( "app.settings", {
 				url: "/settings",
 				views: {
@@ -224,8 +241,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 				url: "/help",
 				views: {
 					menuContent: {
-						templateUrl: "templates/help.html",
-						controller: "HelpCtrl"
+						templateUrl: "templates/help.html"
 					}
 				}
 			} )

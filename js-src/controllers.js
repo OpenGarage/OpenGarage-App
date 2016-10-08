@@ -39,10 +39,10 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		} );
 	} )
 
-	.controller( "SettingsCtrl", function() {
+	.controller( "HistoryCtrl", function() {
 	} )
 
-	.controller( "HelpCtrl", function() {
+	.controller( "SettingsCtrl", function() {
 	} )
 
 	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate, Utils ) {
