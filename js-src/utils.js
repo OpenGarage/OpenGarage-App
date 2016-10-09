@@ -69,7 +69,7 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( !ip && $rootScope.activeController.auth ) {
+				if ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
 					promise = $http( {
 						method: "POST",
 						url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
@@ -87,7 +87,7 @@ angular.module( "opengarage.utils", [] )
 
 	            return promise.then(
 					function( result ) {
-						if ( $rootScope.activeController.auth ) {
+						if ( $rootScope.activeController && $rootScope.activeController.auth ) {
 							$filter = $filter || $injector.get( "$filter" );
 							var filter = $filter( "filter" );
 
@@ -243,7 +243,7 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( $rootScope.activeController.auth ) {
+				if ( $rootScope.activeController && $rootScope.activeController.auth ) {
 					promise = $http( {
 						method: "POST",
 						url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
