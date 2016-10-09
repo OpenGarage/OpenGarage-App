@@ -164,7 +164,7 @@ angular.module( "opengarage.utils", [] )
 
 						$filter = $filter || $injector.get( "$filter" );
 
-						if ( $filter( "filter" )( $rootScope.controllers, { "cid": result.cid } ) ) {
+						if ( $filter( "filter" )( $rootScope.controllers, { "cid": result.cid } ).length > 0 ) {
 							$ionicPopup.alert( {
 								template: "<p class='center'>Device already added to site list.</p>"
 							} );
