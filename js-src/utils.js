@@ -67,13 +67,30 @@ angular.module( "opengarage.utils", [] )
 
 				$http = $http || $injector.get( "$http" );
 
+				var url = "http://" + ( ip || $rootScope.activeController.ip ) + "/jc";
+
+				if ( !ip && $rootScope.activeController.auth ) {
+					url = "http://blynk-cloud.com/" + $rootScope.activeController.auth + "/query";
+				}
+
 	            return $http( {
 	                method: "GET",
-	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jc",
+	                url: url,
 	                suppressLoader: true
 	            } ).then(
 					function( result ) {
-						callback( result.data );
+						if ( $rootScope.activeController.auth ) {
+							var filter = $filter( "filter" );
+
+							result = result.data[ 0 ].pins;
+							callback( {
+								door: filter( result, { "pin": 0 } )[ 0 ].value,
+								dist: filter( result, { "pin": 3 } )[ 0 ].value,
+								rcnt: filter( result, { "pin": 4 } )[ 0 ].value
+							} );
+						} else {
+							callback( result.data );
+						}
 					},
 					function() {
 						callback( false );
@@ -215,12 +232,18 @@ angular.module( "opengarage.utils", [] )
 				callback = callback || function() {};
 				$http = $http || $injector.get( "$http" );
 
-	            $http( {
-	                method: "GET",
-	                url: "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1"
-	            } ).then(
+				var url = "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1";
+
+				if ( $rootScope.activeController.auth ) {
+					url = "http://blynk-cloud.com/" + $rootScope.activeController.auth + "/update/V1?value=1";
+				}
+
+	            $http.get( url ).then(
 					function() {
 						callback( true );
+						if ( $rootScope.activeController.auth ) {
+							$http.get( "http://blynk-cloud.com/" + $rootScope.activeController.auth + "/update/V1?value=0" );
+						}
 					},
 					function() {
 						callback( false );

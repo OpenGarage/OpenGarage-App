@@ -74,6 +74,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		} );
 
 		$scope.$on( "$ionicView.beforeEnter", function() {
-			interval = setInterval( Utils.updateController, 5000 );
+			interval = setInterval( Utils.updateController, 3000 );
 		} );
 	} );
