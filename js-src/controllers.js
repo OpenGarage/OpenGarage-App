@@ -19,6 +19,11 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		};
 
 		$scope.deleteController = function( index ) {
+			if ( $rootScope.controllers.indexOf( $rootScope.activeController ) === index ) {
+				delete $rootScope.activeController;
+				Utils.storage.remove( "activeController" );
+			}
+
 			$rootScope.controllers.splice( index, 1 );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 		};
@@ -44,6 +49,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 	.controller( "SettingsCtrl", function( $scope, $state, $ionicPopup, Utils ) {
 		$scope.settings = {};
+
+		$scope.changePassword = Utils.changePassword;
+		$scope.restart = Utils.restartController;
 
 		$scope.submit = function() {
 			Utils.saveOptions( $scope.settings, function( reply ) {

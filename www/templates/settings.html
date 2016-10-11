@@ -1,5 +1,5 @@
 <ion-view view-title="Settings">
-	<ion-content has-bouncing="false" ng-class="{'vertical-center': !isLocal }">
+	<ion-content has-bouncing="false" class="padding limit-width" ng-class="{'vertical-center': !isLocal }">
 		<div ng-show="!isLocal" class="center">
 			<h1>Local Connection Required</h1>
 			<p>OpenGarage can only be configured when on the app is on the same network. Please ensure the same WiFi network is being used and try again.</p>
@@ -11,7 +11,7 @@
 				</div>
 				<label class="item item-input">
 					<span class="input-label">Name</span>
-					<input class="right" type="text" placeholder="Name" ng-model="settings.name">
+					<input type="text" placeholder="Name" ng-model="settings.name">
 				</label>
 				<label class="item item-input item-select">
 					<span class="input-label">Mount Type</span>
@@ -26,15 +26,15 @@
 				</div>
 				<label class="item item-input">
 					<span class="input-label">Threshold (cm)</span>
-					<input class="right" type="number" placeholder="Threshold (cm)" ng-maxlength="4" ng-model="settings.dth">
+					<input type="number" placeholder="Threshold (cm)" ng-maxlength="4" ng-model="settings.dth">
 				</label>
 				<label class="item item-input">
 					<span class="input-label">Update Frequency (s)</span>
-					<input class="right" type="number" placeholder="Update Frequency (s)" ng-maxlength="3" ng-model="settings.riv">
+					<input type="number" placeholder="Update Frequency (s)" ng-maxlength="3" ng-model="settings.riv">
 				</label>
 				<label class="item item-input">
 					<span class="input-label">Button Hold Time (ms)</span>
-					<input class="right" type="number" placeholder="Button Hold Time (ms)" ng-maxlength="5" ng-model="settings.cdt">
+					<input type="number" placeholder="Button Hold Time (ms)" ng-maxlength="5" ng-model="settings.cdt">
 				</label>
 				<label class="item item-input item-select">
 					<span class="input-label">Connection Method</span>
@@ -42,14 +42,16 @@
 				</label>
 				<label class="item item-input" ng-show="settings.acc > 0">
 					<span class="input-label">Blynk Token</span>
-					<input class="right" type="text" placeholder="Blynk Token" ng-maxlength="32" ng-model="settings.auth">
+					<input type="text" placeholder="Blynk Token" ng-maxlength="32" ng-model="settings.auth">
 				</label>
 				<label class="item item-input" ng-show="settings.acc < 2">
 					<span class="input-label">HTTP Port</span>
-					<input class="right" type="number" placeholder="HTTP Port" ng-maxlength="5" ng-model="settings.htp">
+					<input type="number" placeholder="HTTP Port" ng-maxlength="5" ng-model="settings.htp">
 				</label>
 			</div>
-			<button ng-disabled="form.$invalid" ng-click="submit()" class="button center button-block button-stable text" type="submit">Save</button>
+			<button ng-disabled="form.$invalid" ng-click="submit()" class="button center button-block button-dark text" type="submit">Save</button>
+			<button ng-click="changePassword()" class="button center button-block button-positive text">Change Password</button>
+			<button ng-click="restart()" class="button center button-block button-assertive text">Restart Controller</button>
 		</form>
 	</ion-content>
 </ion-view>

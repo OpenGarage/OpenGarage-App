@@ -87,7 +87,7 @@ angular.module( "opengarage.utils", [] )
 
 	            return promise.then(
 					function( result ) {
-						if ( $rootScope.activeController && $rootScope.activeController.auth ) {
+						if ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
 							$filter = $filter || $injector.get( "$filter" );
 							var filter = $filter( "filter" );
 
@@ -286,6 +286,50 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
+			},
+			changePassword: function() {
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				var scope = $rootScope.$new();
+				scope.pwd = {};
+
+				$ionicPopup.show( {
+					templateUrl: "templates/changePassword.html",
+					title: "Change Password",
+					scope: scope,
+					buttons: [
+						{ text: "Cancel" },
+						{
+							text: "<b>Go</b>",
+							type: "button-positive"
+						}
+					]
+				} ).then( function() {
+					if ( !scope.pwd.nkey || !scope.pwd.ckey || scope.pwd.nkey !== scope.pwd.ckey  ) {
+						return;
+					}
+
+					$http = $http || $injector.get( "$http" );
+
+		            $http( {
+		                method: "GET",
+		                url: "http://" + $rootScope.activeController.ip + "/co?dkey=" + $rootScope.activeController.password,
+						params: scope.pwd,
+						paramSerializer: "$httpParamSerializerJQLike"
+		            } ).then( function() {
+						$rootScope.activeController.password = scope.pwd.nkey;
+
+						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
+						$rootScope.controllers.splice( index, 1 );
+						$rootScope.controllers.splice( index, 0, $rootScope.activeController );
+
+						storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+
+						$ionicPopup.alert( {
+							template: "<p class='center'>Password updated succesfully!</p>"
+						} );
+					} );
+				} );
 			}
 	    };
 } ] );

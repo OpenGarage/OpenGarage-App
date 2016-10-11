@@ -10,6 +10,7 @@ img/Roboto-Thin.ttf
 img/Roboto-Thin.woff2
 js/app.min.js
 templates/addController.html
+templates/changePassword.html
 templates/controllerSelect.html
 templates/help.html
 templates/history.html
@@ -28,4 +29,4 @@ index.html
 NETWORK:
 *
 
-# hash: 1ca129bb73eae77b47f0ad41081831b2972c791187e6b64b35540d2dffb3324c
+# hash: f93a6604aee0868cf5582be817f6192867882e12d36d924785d43b2bdd54d7bb

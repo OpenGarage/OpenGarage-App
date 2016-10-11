@@ -42,10 +42,6 @@ textarea {
   justify-content: center
 }
 
-.right {
-  text-align: right
-}
-
 .vertical-center .scroll {
   display: flex;
   flex-direction: column;
@@ -55,6 +51,11 @@ textarea {
 
 .scroll-content:not(.cancel-height) > .scroll, .full-height {
   height: 100%
+}
+
+.limit-width {
+  max-width: 800px;
+  margin: 0 auto
 }
 
 .ui-disabled {
