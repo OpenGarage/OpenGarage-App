@@ -35,7 +35,17 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		};
 	} )
 
-	.controller( "HistoryCtrl", function() {
+	.controller( "HistoryCtrl", function( $scope, Utils ) {
+		$scope.$on( "$ionicView.beforeEnter", function() {
+			Utils.getLogs( function( reply ) {
+				if ( reply ) {
+					$scope.isLocal = true;
+					$scope.logs = reply;
+				} else {
+					$scope.isLocal = false;
+				}
+			} );
+		} );
 	} )
 
 	.controller( "SettingsCtrl", function( $scope, $state, $ionicPopup, Utils ) {

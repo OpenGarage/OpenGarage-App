@@ -330,6 +330,21 @@ angular.module( "opengarage.utils", [] )
 						} );
 					} );
 				} );
+			},
+			getLogs: function( callback ) {
+				$http = $http || $injector.get( "$http" );
+
+	            return $http( {
+	                method: "GET",
+	                url: "http://" + $rootScope.activeController.ip + "/jl"
+	            } ).then(
+					function( result ) {
+						callback( result.data.logs.reverse() );
+					},
+					function() {
+						callback( false );
+					}
+				);
 			}
 	    };
 } ] );
