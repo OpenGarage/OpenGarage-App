@@ -14,7 +14,7 @@
         </ion-header-bar>
         <ion-content overflow-scroll="false">
             <ion-list>
-                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.home">
+                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.home" ng-class="$root.activeController ? '' : 'ui-disabled'">
                     <i class="icon ion-home"></i>
                     Home
                 </ion-item>
@@ -22,11 +22,11 @@
                     <i class="icon ion-arrow-swap"></i>
                     Change Controller
                 </ion-item>
-                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.history">
+                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.history" ng-class="$root.activeController ? '' : 'ui-disabled'">
                     <i class="icon ion-ios-paper"></i>
                     History
                 </ion-item>
-                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.settings">
+                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.settings" ng-class="$root.activeController ? '' : 'ui-disabled'">
                     <i class="icon ion-android-settings"></i>
                     Settings
                 </ion-item>
