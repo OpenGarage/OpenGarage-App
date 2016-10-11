@@ -30,15 +30,6 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 				angular.element( $window ).on( "statusTap", function() {
 					$ionicScrollDelegate.scrollTop();
 		        } );
-
-				if ( window.Intercom ) {
-			        window.Intercom( "onShow", function() {
-						window.StatusBar.hide();
-			        } );
-			        window.Intercom( "onHide", function() {
-				        window.StatusBar.show();
-			        } );
-			    }
 			}
 
 		    // Hide the splash screen after 500ms of the app being ready
@@ -265,8 +256,8 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 			return {
 				request: function( config ) {
 
-					// When an AJAX request to the API is started, fire an event to show a loading message
-					if ( $rootScope.activeController && config.url.indexOf( $rootScope.activeController.ip ) !== -1 && !config.suppressLoader ) {
+					// When an AJAX request to the controller is started, fire an event to show a loading message
+					if ( !config.suppressLoader ) {
 
 						// Change timeout to a promise we can cancel
 						var canceller = $q.defer();
@@ -286,30 +277,22 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 				},
 				response: function( response ) {
 
-					// If the request is to the API, broadcast a hide loading message
-					if ( $rootScope.activeController && response.config.url.indexOf( $rootScope.activeController.ip ) !== -1 ) {
-
-						if ( !response.config.suppressLoader ) {
-							$rootScope.$broadcast( "loading:hide" );
-						}
+					// If the request is to the controller, broadcast a hide loading message
+					if ( !response.config.suppressLoader ) {
+						$rootScope.$broadcast( "loading:hide" );
 					}
 
 					return response;
 				},
 				responseError: function( error ) {
 
-					var isAPI = $rootScope.activeController && error.config.url.indexOf( $rootScope.activeController.ip ) !== -1 ? true : false;
-
 					// If the timeout value is an object and is resolved, mark request as user canceled
 					if ( error.config.timeout && error.config.timeout.$$state && error.config.timeout.$$state.status === 1 ) {
 						error.canceled = true;
 					}
 
-					// If the request is to the API, broadcast a hide loading message
-					if ( isAPI ) {
-						if ( !error.config.suppressLoader ) {
-							$rootScope.$broadcast( "loading:hide" );
-						}
+					if ( !error.config.suppressLoader ) {
+						$rootScope.$broadcast( "loading:hide" );
 					}
 
 					// If the request timed out and is not user canceled, retry the request up to three times

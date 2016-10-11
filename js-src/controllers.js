@@ -82,7 +82,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 				} else {
 					$scope.isLocal = false;
 				}
-			} );
+			}, null, true );
 		} );
 	} )
 

@@ -81,7 +81,7 @@ angular.module( "opengarage.utils", [] )
 					promise = $http( {
 						method: "GET",
 						url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jc",
-						suppressLoader: true
+						suppressLoader: ip ? false : true
 					} );
 				}
 
@@ -106,7 +106,7 @@ angular.module( "opengarage.utils", [] )
 					}
 				);
 	        },
-	        getControllerOptions = function( callback, ip ) {
+	        getControllerOptions = function( callback, ip, showLoader ) {
 				if ( !ip && !$rootScope.activeController ) {
 					callback( false );
 					return;
@@ -117,7 +117,7 @@ angular.module( "opengarage.utils", [] )
 	            return $http( {
 	                method: "GET",
 	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jo",
-	                suppressLoader: true
+	                suppressLoader: showLoader ? false : true
 	            } ).then(
 					function( result ) {
 						callback( result.data );
@@ -334,7 +334,7 @@ angular.module( "opengarage.utils", [] )
 			getLogs: function( callback ) {
 				$http = $http || $injector.get( "$http" );
 
-	            return $http( {
+	            $http( {
 	                method: "GET",
 	                url: "http://" + $rootScope.activeController.ip + "/jl"
 	            } ).then(
