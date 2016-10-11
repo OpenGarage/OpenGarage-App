@@ -4,7 +4,7 @@
 			<h1>Local Connection Required</h1>
 			<p>OpenGarage can only be configured when on the app is on the same network. Please ensure the same WiFi network is being used and try again.</p>
 		</div>
-		<form ng-show="isLocal" name="form" novalidate="novalidate" class="padding limit-width">
+		<form ng-show="isLocal" name="form" novalidate="novalidate" class="settings padding limit-width">
 			<div class="list">
 				<div class="item item-divider">
 					Basic
@@ -29,15 +29,15 @@
 					<input type="number" placeholder="Threshold (cm)" ng-maxlength="4" ng-model="settings.dth">
 				</label>
 				<label class="item item-input">
-					<span class="input-label">Update Frequency (s)</span>
+					<span class="input-label">Refresh (s)</span>
 					<input type="number" placeholder="Update Frequency (s)" ng-maxlength="3" ng-model="settings.riv">
 				</label>
 				<label class="item item-input">
-					<span class="input-label">Button Hold Time (ms)</span>
+					<span class="input-label">Click Time (ms)</span>
 					<input type="number" placeholder="Button Hold Time (ms)" ng-maxlength="5" ng-model="settings.cdt">
 				</label>
 				<label class="item item-input item-select">
-					<span class="input-label">Connection Method</span>
+					<span class="input-label">Connection</span>
 					<select ng-model="settings.acc" ng-options="o.val as o.name for o in [{val:0,name:'Local Only'},{val:1,name:'Local + Cloud'},{val:2,name:'Cloud Only'}]"></select>
 				</label>
 				<label class="item item-input" ng-show="settings.acc > 0">

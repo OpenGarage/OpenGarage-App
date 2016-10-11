@@ -2038,3 +2038,4 @@ to{transform:scale(1);opacity:1}
 .history table tr:last-child td{border-bottom:0}
 .history table tr:last-child td:first-child{border-bottom-left-radius:3px}
 .history table tr:last-child td:last-child{border-bottom-right-radius:3px}
+.settings input{text-align:end}
