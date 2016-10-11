@@ -42,7 +42,39 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	.controller( "HistoryCtrl", function() {
 	} )
 
-	.controller( "SettingsCtrl", function() {
+	.controller( "SettingsCtrl", function( $scope, $state, $ionicPopup, Utils ) {
+		$scope.settings = {};
+
+		$scope.submit = function() {
+			Utils.saveOptions( $scope.settings, function( reply ) {
+				var text;
+
+				if ( reply ) {
+					text = "Settings saved successfully!";
+					$state.go( "app.home" );
+				} else {
+					text = "Unable to save settings. Please check the connection to the device and try again.";
+				}
+				$ionicPopup.alert( {
+					template: "<p class='center'>" + text + "</p>"
+				} );
+			} );
+		};
+
+		$scope.$on( "$ionicView.beforeEnter", function() {
+			Utils.getControllerOptions( function( reply ) {
+				if ( reply ) {
+					$scope.isLocal = true;
+
+					// Remove unused options to prevent accidental change
+					delete reply.mod;
+					delete reply.fwv;
+					$scope.settings = reply;
+				} else {
+					$scope.isLocal = false;
+				}
+			} );
+		} );
 	} )
 
 	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate, Utils ) {

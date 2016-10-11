@@ -269,6 +269,23 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
+			},
+			saveOptions: function( settings, callback ) {
+				$http = $http || $injector.get( "$http" );
+
+	            return $http( {
+	                method: "GET",
+	                url: "http://" + $rootScope.activeController.ip + "/co?dkey=" + $rootScope.activeController.password,
+					params: settings,
+					paramSerializer: "$httpParamSerializerJQLike"
+	            } ).then(
+					function( result ) {
+						callback( result.data );
+					},
+					function() {
+						callback( false );
+					}
+				);
 			}
 	    };
 } ] );

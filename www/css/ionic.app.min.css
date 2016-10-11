@@ -2020,6 +2020,7 @@ to{transform:scale(1);opacity:1}
 [nav-bar=stage] .back-text,[nav-bar=stage] .buttons,[nav-bar=stage] .title{position:absolute;opacity:0;transition-duration:0s}
 .link{color:#387ef5;text-decoration:underline;cursor:pointer}
 .center{text-align:center;-ms-flex-pack:center;justify-content:center}
+.right{text-align:right}
 .vertical-center .scroll{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center}
 .full-height,.scroll-content:not(.cancel-height)>.scroll{height:100%}
 .ui-disabled{opacity:.3;zoom:1;cursor:default!important;pointer-events:none}
