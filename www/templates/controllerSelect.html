@@ -1,5 +1,5 @@
 <ion-view>
-	<ion-nav-title>{{data.pageTitle}}</ion-nav-title>
+	<ion-nav-title>{{$root.activeController ? "Switch" : "Select"}} Controller</ion-nav-title>
     <ion-nav-buttons side="right">
         <button class="button" type="button" ng-click="data.showDelete = !data.showDelete">{{ data.showDelete ? "Done" : "Edit" }}</button>
     </ion-nav-buttons>

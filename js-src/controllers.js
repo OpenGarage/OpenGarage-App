@@ -33,15 +33,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			$rootScope.controllers.splice( toIndex, 0, item );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 		};
-
-		// Update each time the page is viewed
-		$scope.$on( "$ionicView.beforeEnter", function() {
-			if ( $rootScope.activeController ) {
-				$scope.data.pageTitle = "Switch Controller";
-			} else {
-				$scope.data.pageTitle = "Select Controller";
-			}
-		} );
 	} )
 
 	.controller( "HistoryCtrl", function() {
