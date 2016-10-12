@@ -250,12 +250,14 @@ angular.module( "opengarage.utils", [] )
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 						data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=1" )
 					} ).then( function() {
-						$http( {
-							method: "POST",
-							url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
-			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-							data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=0" )
-						} );
+						setTimeout( function() {
+							$http( {
+								method: "POST",
+								url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+								data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=0" )
+							} );
+						}, 1000 );
 					} );
 				} else {
 					promise = $http.get( "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
