@@ -25,7 +25,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $font-family-base: "Roboto", sans-serif !default;
 
 // Include all of Ionic
-@import "../www/lib/ionic/scss/ionic";
+@import "www/lib/ionic/scss/ionic";
 
 .link {
     color: #387ef5;

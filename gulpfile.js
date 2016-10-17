@@ -33,8 +33,8 @@ var gulp         = require( "gulp" ),               // Gulp
 // - - - - - - - - - - - - - - -
 
 var paths = {
-		sass: "./scss/**/*.s+(a|c)ss",
-		js: "./js-src/**/*.js"
+		sass: "./src/scss/**/*.s+(a|c)ss",
+		js: "./src/js/**/*.js"
 	};
 
 // Suppress stdout on shell commands (comment to show errors)
@@ -210,7 +210,7 @@ gulp.task( "lint-style", function() {
 } );
 
 gulp.task( "lint-sass", function() {
-	gulp.src( "/scss/*.scss" )
+	gulp.src( "/src/scss/*.scss" )
 		.pipe( sassLint() )
 		.pipe( sassLint.format() )
 		.pipe( sassLint.failOnError() );
