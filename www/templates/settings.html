@@ -32,7 +32,7 @@
 					<span class="input-label">Refresh (s)</span>
 					<input type="number" placeholder="Update Frequency (s)" ng-maxlength="3" ng-model="settings.riv">
 				</label>
-				<label class="item item-input">
+				<label class="item item-input" ng-if="settings.cdt">
 					<span class="input-label">Click Time (ms)</span>
 					<input type="number" placeholder="Button Hold Time (ms)" ng-maxlength="5" ng-model="settings.cdt">
 				</label>
