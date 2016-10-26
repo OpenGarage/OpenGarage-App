@@ -1,5 +1,5 @@
 <ion-view view-title="{{$root.activeController.name}}">
 	<ion-content has-bouncing="false" class="vertical-center">
-		<button class="door-button" ng-click="toggleDoor()" ng-class="{'ui-disabled': changing}">{{ $root.activeController.door ? "Close" : "Open" }}</button>
+		<button class="door-button" ng-click="toggleDoor()"">{{ $root.activeController.door ? "Close" : "Open" }}</button>
 	</ion-content>
 </ion-view>
