@@ -108,7 +108,7 @@ angular.module( "opengarage.utils", [] )
 				);
 	        },
 	        getControllerOptions = function( callback, ip, showLoader ) {
-				if ( ( !ip && !$rootScope.activeController ) || !$rootScope.activeController.ip ) {
+				if ( ( !ip && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip ) ) {
 					callback( false );
 					return;
 				}
