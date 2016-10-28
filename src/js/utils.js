@@ -280,9 +280,9 @@ angular.module( "opengarage.utils", [] )
 					inputType: "text",
 					inputPlaceholder: "Your Blynk Auth token"
 				} ).then( function( token ) {
-					addController( {
-						token: token
-					}, callback );
+					if ( token ) {
+						addController( { token: token }, callback );
+					}
 				} );
 			},
 			toggleDoor: function( callback ) {
