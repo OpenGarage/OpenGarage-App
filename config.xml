@@ -70,7 +70,6 @@
 
 	<!-- Declare required plugins -->
 	<plugin name="cordova-plugin-statusbar" source="npm" />
-	<plugin name="cordova-plugin-geofence" source="npm" />
 	<plugin name="cordova-plugin-splashscreen" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
 	<plugin name="cordova-plugin-device" source="npm" />
