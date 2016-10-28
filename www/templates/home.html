@@ -1,4 +1,5 @@
-<ion-view view-title="{{$root.activeController.name}}">
+<ion-view>
+	<ion-nav-title>{{$root.activeController.name}}</ion-nav-title>
 	<ion-content has-bouncing="false" class="vertical-center has-footer">
 		<button class="door-button" ng-click="toggleDoor()">{{ $root.activeController.door ? "Close" : "Open" }}</button>
 	</ion-content>

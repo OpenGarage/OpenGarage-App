@@ -16,6 +16,7 @@ templates/help.html
 templates/history.html
 templates/home.html
 templates/menu.html
+templates/newControllerSetup.html
 templates/settings.html
 lib/win-jscompat.js
 lib/ionic/js/ionic.bundle.min.js
@@ -29,4 +30,4 @@ index.html
 NETWORK:
 *
 
-# hash: ed61d70637e6ea4eff332b8f2a3b12b8483fdeda38c0d987919faca100703893
+# hash: b85ac922c0b9705948ed021abad9b0be5899b08ee036845a35f1727cc1f3ebf7
