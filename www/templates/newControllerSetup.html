@@ -1,0 +1,21 @@
+<ion-modal-view>
+	<ion-header-bar>
+		<button class="button icon ion-ios-arrow-back" ng-click="data.ssid = null" ng-if="data.ssid">Back</button>
+		<h1 class="title">New Controller Setup</h1>
+	</ion-header-bar>
+	<ion-content>
+		<div ng-if="!data.ssid" class="padding">
+			<p class="center smaller">A new device has been detected and is ready to connect to your home network. Please select from the following networks below:</p>
+			<div class="list list-inset">
+				<div class="item" ng-click="data.ssid = ssid" ng-repeat="ssid in ssids track by $index">{{ssid}}</div>
+			</div>
+		</div>
+		<div ng-if="data.ssid" class="padding">
+			<p class="center smaller">You have selected {{data.ssid}}. Please enter the password for this network below:</p>
+			<label class="item item-input">
+				<input type="password" name="password" placeholder="Password" ng-model="data.password" />
+			</label>
+			<button class="button button-block button-dark" ng-click="save()">Submit</button>
+		</div>
+	</ion-content>
+</ion-modal-view>

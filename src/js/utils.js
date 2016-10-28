@@ -221,7 +221,60 @@ angular.module( "opengarage.utils", [] )
 				data.token ? data.token : null
 				);
 			},
-			$http, $q, $filter, $ionicPopup;
+			checkNewController = function() {
+				$http = $http || $injector.get( "$http" );
+				$ionicModal = $ionicModal || $injector.get( "$ionicModal" );
+
+	            $http( {
+	                method: "GET",
+	                url: "http://192.168.4.1/js",
+	                suppressLoader: true
+	            } ).then(
+					function( result ) {
+						var scope = $rootScope.$new();
+						scope.data = {};
+						scope.save = function() {
+							scope.modal.hide();
+							connectNewController( scope.data );
+						};
+						scope.ssids = result.data.ssids;
+						$ionicModal.fromTemplateUrl( "templates/newControllerSetup.html", {
+							scope: scope,
+							animation: "slide-in-up"
+						} ).then( function( modal ) {
+							scope.modal = modal;
+							modal.show();
+						} );
+					}
+				);
+			},
+			connectNewController = function( data ) {
+				$http = $http || $injector.get( "$http" );
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+	            $http( {
+	                method: "GET",
+	                url: "http://192.168.4.1/cc?ssid=" + encodeURIComponent( data.ssid ) + "&pass=" + encodeURIComponent( data.password )
+	            } ).then(
+					function( result ) {
+						if ( result.data.result === 1 ) {
+							$ionicPopup.alert( {
+								template: "<p class='center'>Controller succesfully connected! Please wait while the device reboots.</p>"
+							} );
+						} else {
+							$ionicPopup.alert( {
+								template: "<p class='center'>Invalid SSID/password combination. Please try again.</p>"
+							} ).then( checkNewController );
+						}
+					},
+					function() {
+						$ionicPopup.alert( {
+							template: "<p class='center'>Unable to reach controller. Please try again.</p>"
+						} ).then( checkNewController );
+					}
+				);
+			},
+			$http, $q, $filter, $ionicPopup, $ionicModal;
 
 	    if ( isFireFox ) {
 			HTMLElement.prototype.click = function() {
@@ -238,6 +291,7 @@ angular.module( "opengarage.utils", [] )
 	        getControllerSettings: getControllerSettings,
 	        getControllerOptions: getControllerOptions,
 	        updateController: updateController,
+	        checkNewController: checkNewController,
 			showAddController: function( callback ) {
 				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );

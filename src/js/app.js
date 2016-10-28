@@ -77,6 +77,8 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 			$document[ 0 ].title = "OpenGarage";
 		} );
 
+		angular.element( $document ).on( "resume", Utils.checkNewController );
+
 		// Handle loading of the first page
 		var firstLoadHandler = $rootScope.$on( "$stateChangeStart", function( event ) {
 
@@ -108,13 +110,15 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 					$state.go( "app.controllerSelect" );
 		        }
 		    } );
+
+		    Utils.checkNewController();
 		} );
 
 		// Resize the main content view to fit when the window changes size
 		angular.element( window ).on( "resize", function() {
 			$rootScope.$broadcast( "window:resize" );
 			if ( window.innerWidth > 768 ) {
-				angular.element( "#mainContent" ).width( window.innerWidth - 275 );
+				document.getElementById( "mainContent" ).width = window.innerWidth - 275;
 			}
 		} );
 	} )
