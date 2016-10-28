@@ -59,8 +59,8 @@ angular.module( "opengarage.utils", [] )
                     callback( true );
 	            }
 	        },
-	        getControllerSettings = function( callback, ip ) {
-				if ( !ip && !$rootScope.activeController ) {
+	        getControllerSettings = function( callback, ip, token ) {
+				if ( !ip && !token && !$rootScope.activeController ) {
 					callback( false );
 					return;
 				}
@@ -69,12 +69,12 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
+				if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
 					promise = $http( {
 						method: "POST",
 						url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/query" ),
+						data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/query",
 						suppressLoader: true
 					} );
 				} else {
@@ -87,15 +87,16 @@ angular.module( "opengarage.utils", [] )
 
 	            return promise.then(
 					function( result ) {
-						if ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
+						if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
 							$filter = $filter || $injector.get( "$filter" );
 							var filter = $filter( "filter" );
 
-							result = result.data[ 0 ].pins;
+							result = result.data[ 0 ];
 							callback( {
-								door: parseInt( filter( result, { "pin": 0 } )[ 0 ].value ),
-								dist: parseInt( filter( result, { "pin": 3 } )[ 0 ].value ),
-								rcnt: parseInt( filter( result, { "pin": 4 } )[ 0 ].value )
+								name: result.name,
+								door: parseInt( filter( result.pins, { "pin": 0 } )[ 0 ].value ),
+								dist: parseInt( filter( result.pins, { "pin": 3 } )[ 0 ].value ),
+								rcnt: parseInt( filter( result.pins, { "pin": 4 } )[ 0 ].value )
 							} );
 						} else {
 							callback( result.data );
@@ -107,7 +108,7 @@ angular.module( "opengarage.utils", [] )
 				);
 	        },
 	        getControllerOptions = function( callback, ip, showLoader ) {
-				if ( !ip && !$rootScope.activeController ) {
+				if ( ( !ip && !$rootScope.activeController ) || !$rootScope.activeController.ip ) {
 					callback( false );
 					return;
 				}
@@ -151,7 +152,7 @@ angular.module( "opengarage.utils", [] )
 			addController = function( data, callback ) {
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
-				if ( !data.ip || !data.password ) {
+				if ( !data.token && ( !data.ip || !data.password ) ) {
 					$ionicPopup.alert( {
 						template: "<p class='center'>Both an IP and password are required.</p>"
 					} );
@@ -159,14 +160,29 @@ angular.module( "opengarage.utils", [] )
 					return;
 				}
 
+				if ( data.token && data.token.length !== 32 ) {
+					$ionicPopup.alert( {
+						template: "<p class='center'>A valid Blynk token is required. Please verify your token and try again.</p>"
+					} );
+					callback( false );
+					return;
+				}
+
 				getControllerSettings( function( result ) {
-					if ( result && result.cid ) {
+					if ( !result ) {
+						$ionicPopup.alert( {
+							template: "<p class='center'>Unable to find device. Please verify the IP/password and try again.</p>"
+						} );
+						callback( false );
+					}
+
+					if ( result.mac ) {
 						result.ip = data.ip;
 						result.password = data.password;
 
 						$filter = $filter || $injector.get( "$filter" );
 
-						if ( $filter( "filter" )( $rootScope.controllers, { "cid": result.cid } ).length > 0 ) {
+						if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
 							$ionicPopup.alert( {
 								template: "<p class='center'>Device already added to site list.</p>"
 							} );
@@ -180,13 +196,28 @@ angular.module( "opengarage.utils", [] )
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 							callback( true );
 						}, data.ip );
-					} else {
-						$ionicPopup.alert( {
-							template: "<p class='center'>Unable to find device. Please verify the IP/password and try again.</p>"
-						} );
-						callback( false );
 					}
-				}, data.ip );
+
+					if ( data.token ) {
+						$http( {
+							method: "POST",
+							url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+							data: "action=blynkCloud&path=" + data.token + "/get/V2",
+							suppressLoader: true
+						} ).then( function( reply ) {
+							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
+							result.mac = "5C:CF:7F" + reply.match( /.{1,2}/g ).join( ":" );
+							result.auth = data.token;
+							$rootScope.controllers.push( result );
+							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+							callback( true );
+						} );
+					}
+				},
+				data.token ? null : data.ip,
+				data.token ? data.token : null
+				);
 			},
 			$http, $q, $filter, $ionicPopup;
 
@@ -238,6 +269,21 @@ angular.module( "opengarage.utils", [] )
 						}
 					}
 				);
+			},
+			showAddBlynk: function( callback ) {
+				callback = callback || function() {};
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				$ionicPopup.prompt( {
+					title: "Add Controller by Blynk",
+					template: "Enter your Blynk Auth token below:",
+					inputType: "text",
+					inputPlaceholder: "Your Blynk Auth token"
+				} ).then( function( token ) {
+					addController( {
+						token: token
+					}, callback );
+				} );
 			},
 			toggleDoor: function( callback ) {
 				callback = callback || function() {};

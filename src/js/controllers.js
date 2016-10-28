@@ -86,9 +86,26 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		} );
 	} )
 
-	.controller( "MenuCtrl", function( $scope, $ionicSideMenuDelegate, Utils ) {
+	.controller( "MenuCtrl", function( $scope, $ionicActionSheet, $ionicSideMenuDelegate, Utils ) {
 
-		$scope.showAddController = Utils.showAddController;
+		$scope.showAddController = function() {
+			$ionicActionSheet.show( {
+				buttons: [
+					{ text: "Add by IP" },
+					{ text: "Add by Blynk Token" }
+				],
+				titleText: "Add Controller",
+				cancelText: "Cancel",
+				buttonClicked: function( index ) {
+					if ( index === 1 ) {
+						Utils.showAddBlynk();
+					} else {
+						Utils.showAddController();
+					}
+					return true;
+				}
+			} );
+		};
 
 		// Function to close the menu which is fired after a side menu link is clicked.
 		// This is done instead of using the menu-close directive to preserve the root history stack
