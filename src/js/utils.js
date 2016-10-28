@@ -144,6 +144,8 @@ angular.module( "opengarage.utils", [] )
 						$rootScope.controllers.splice( index, 0, controller );
 						$rootScope.activeController = controller;
 
+						$rootScope.connected = true;
+
 						$rootScope.$broadcast( "controllerUpdated" );
 
 						storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );

@@ -40,6 +40,9 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		    }, 500 );
 		} );
 
+		// Define connected state of current controller
+		$rootScope.connected = false;
+
 		// Define version, build number and debug state
 		$rootScope.version = window.appVersion;
 
@@ -53,7 +56,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 		$rootScope.$on( "loading:show", function( e, data ) {
 
 			$rootScope.loadingCount++;
-			$rootScope.canceller = data.canceller.resolve;
+			$rootScope.canceller = data ? data.canceller.resolve : angular.noop;
 			$ionicLoading.show( {
 				template: "<ion-spinner></ion-spinner><br>One moment please<br><button class='button white icon-left ion-ios-close-outline button-clear' ng-click='$root.canceller()'>Cancel</button>"
 			} );
@@ -99,6 +102,8 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 					// If a user object is cached, proceed to load the app while updating user object in the background
 					$state.go( "app.home" );
+
+					Utils.updateController();
 		        } else {
 					$state.go( "app.controllerSelect" );
 		        }
@@ -164,6 +169,7 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 
 						if ( !$rootScope.activeController && total === 1 ) {
 							$rootScope.activeController = $rootScope.controllers[ 0 ];
+							Utils.updateController();
 							Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
 							return;
 						}
