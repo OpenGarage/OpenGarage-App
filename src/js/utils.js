@@ -132,7 +132,10 @@ angular.module( "opengarage.utils", [] )
 				$q = $q || $injector.get( "$q" );
 
 				var controller = angular.copy( $rootScope.activeController ),
-					save = function( data ) { angular.extend( controller, data ); };
+					save = function( data ) {
+						$rootScope.connected = true;
+						angular.extend( controller, data );
+					};
 
 				$q.when()
 					.then( function() { return getControllerSettings( save ); } )
@@ -143,8 +146,6 @@ angular.module( "opengarage.utils", [] )
 						$rootScope.controllers.splice( index, 1 );
 						$rootScope.controllers.splice( index, 0, controller );
 						$rootScope.activeController = controller;
-
-						$rootScope.connected = true;
 
 						$rootScope.$broadcast( "controllerUpdated" );
 
