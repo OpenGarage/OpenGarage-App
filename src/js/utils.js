@@ -262,9 +262,6 @@ angular.module( "opengarage.utils", [] )
 	            } ).then(
 					function( result ) {
 						if ( result.data.result === 1 ) {
-							$ionicPopup.alert( {
-								template: "<p class='center'>Controller succesfully connected! Please wait while the device reboots.</p>"
-							} );
 							saveNewController();
 						} else {
 							$ionicPopup.alert( {
@@ -281,6 +278,8 @@ angular.module( "opengarage.utils", [] )
 			},
 			saveNewController = function() {
 				$http = $http || $injector.get( "$http" );
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
 	            $http( {
 	                method: "GET",
 	                url: "http://192.168.4.1/jt"
@@ -289,6 +288,10 @@ angular.module( "opengarage.utils", [] )
 						saveNewController();
 						return;
 					}
+
+					$ionicPopup.alert( {
+						template: "<p class='center'>Controller succesfully connected! Please wait while the device reboots.</p>"
+					} );
 
 					$rootScope.controllers.push( {
 						ip: intToIP( result.data.ip ),
