@@ -262,6 +262,7 @@ angular.module( "opengarage.utils", [] )
 							$ionicPopup.alert( {
 								template: "<p class='center'>Controller succesfully connected! Please wait while the device reboots.</p>"
 							} );
+							saveNewController();
 						} else {
 							$ionicPopup.alert( {
 								template: "<p class='center'>Invalid SSID/password combination. Please try again.</p>"
@@ -274,6 +275,20 @@ angular.module( "opengarage.utils", [] )
 						} ).then( checkNewController );
 					}
 				);
+			},
+			saveNewController = function() {
+				$http = $http || $injector.get( "$http" );
+	            $http( {
+	                method: "GET",
+	                url: "http://192.168.4.1/jt"
+	            } ).then( function( result ) {
+					$rootScope.controllers.push( {
+						ip: result.data.ip,
+						password: "opendoor",
+						name: "OpenGarage"
+					} );
+					storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+				} );
 			},
 			$http, $q, $filter, $ionicPopup, $ionicModal;
 
@@ -381,6 +396,21 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
+			},
+			restartController: function() {
+				$http = $http || $injector.get( "$http" );
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				if ( $rootScope.activeController ) {
+					$ionicPopup.confirm( {
+						title: "Restart Controller?",
+						template: "<p class='center'>Are you sure you want to restart the controller?</p>"
+					} ).then( function( result ) {
+						if ( result ) {
+							$http.get( "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&reboot=1" );
+						}
+					} );
+				}
 			},
 			saveOptions: function( settings, callback ) {
 				$http = $http || $injector.get( "$http" );
