@@ -59,6 +59,9 @@ angular.module( "opengarage.utils", [] )
                     callback( true );
 	            }
 	        },
+			intToIP = function( int ) {
+				return ( int % 256 ) + "." + ( ( int / 256 >> 0 ) % 256 ) + "." + ( ( ( int / 256 >> 0 ) / 256 >> 0 ) % 256 ) + "." + ( ( ( int / 256 >> 0 ) / 256 >> 0 ) / 256 >> 0 );
+			},
 	        getControllerSettings = function( callback, ip, token ) {
 				if ( !ip && !token && !$rootScope.activeController ) {
 					callback( false );
@@ -282,10 +285,15 @@ angular.module( "opengarage.utils", [] )
 	                method: "GET",
 	                url: "http://192.168.4.1/jt"
 	            } ).then( function( result ) {
+					if ( result.data.ip === 0 ) {
+						saveNewController();
+						return;
+					}
+
 					$rootScope.controllers.push( {
-						ip: result.data.ip,
+						ip: intToIP( result.data.ip ),
 						password: "opendoor",
-						name: "OpenGarage"
+						name: "My OpenGarage"
 					} );
 					storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 				} );
