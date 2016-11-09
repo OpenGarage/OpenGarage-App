@@ -226,8 +226,6 @@ angular.module( "opengarage.utils", [] )
 				);
 			},
 			checkNewController = function( callback ) {
-				var suppressLoader = typeof callback === "function" ? false : true;
-
 				$http = $http || $injector.get( "$http" );
 				callback = callback || function() {};
 				$ionicModal = $ionicModal || $injector.get( "$ionicModal" );
@@ -235,8 +233,11 @@ angular.module( "opengarage.utils", [] )
 	            $http( {
 	                method: "GET",
 	                url: "http://192.168.4.1/js",
-	                suppressLoader: suppressLoader,
-					timeout: 5000
+	                suppressLoader: true,
+					timeout: 5000,
+					config: {
+						retryCount: 0
+					}
 	            } ).then(
 					function( result ) {
 						if ( !result.data.ssids ) {
