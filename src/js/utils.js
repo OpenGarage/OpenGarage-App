@@ -594,7 +594,7 @@ angular.module( "opengarage.utils", [] )
 	                url: "http://" + $rootScope.activeController.ip + "/jl"
 	            } ).then(
 					function( result ) {
-						callback( result.data.logs.reverse() );
+						callback( result.data.logs.sort( function( a, b ) { return b[ 0 ] - a[ 0 ]; } ) );
 					},
 					function() {
 						callback( false );
