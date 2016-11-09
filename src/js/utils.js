@@ -236,9 +236,7 @@ angular.module( "opengarage.utils", [] )
 	                method: "GET",
 	                url: "http://192.168.4.1/js",
 	                suppressLoader: suppressLoader,
-	                config: {
-						timeout: 5000
-	                }
+					timeout: 5000
 	            } ).then(
 					function( result ) {
 						if ( !result.data.ssids ) {
