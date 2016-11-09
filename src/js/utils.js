@@ -146,13 +146,12 @@ angular.module( "opengarage.utils", [] )
 					.then( function() {
 						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
 
-						$rootScope.controllers.splice( index, 1 );
-						$rootScope.controllers.splice( index, 0, controller );
-						$rootScope.activeController = controller;
-
-						$rootScope.$broadcast( "controllerUpdated" );
-
-						storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+						if ( index ) {
+							$rootScope.controllers[ index ] = controller;
+							$rootScope.activeController = controller;
+							$rootScope.$broadcast( "controllerUpdated" );
+							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+						}
 					} );
 	        },
 			addController = function( data, callback ) {
@@ -473,10 +472,10 @@ angular.module( "opengarage.utils", [] )
 						$rootScope.activeController.password = scope.pwd.nkey;
 
 						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
-						$rootScope.controllers.splice( index, 1 );
-						$rootScope.controllers.splice( index, 0, $rootScope.activeController );
-
-						storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+						if ( index ) {
+							$rootScope.controllers[ index ] = $rootScope.activeController;
+							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+						}
 
 						$ionicPopup.alert( {
 							template: "<p class='center'>Password updated succesfully!</p>"
