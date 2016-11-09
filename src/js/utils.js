@@ -276,7 +276,7 @@ angular.module( "opengarage.utils", [] )
 	            } ).then(
 					function( result ) {
 						if ( result.data.result === 1 ) {
-							saveNewController();
+							setTimeout( saveNewController, 1000 );
 						} else {
 							$ionicPopup.alert( {
 								template: "<p class='center'>Invalid SSID/password combination. Please try again.</p>"
@@ -299,7 +299,9 @@ angular.module( "opengarage.utils", [] )
 	                url: "http://192.168.4.1/jt"
 	            } ).then( function( result ) {
 					if ( result.data.ip === 0 ) {
-						saveNewController();
+						$ionicPopup.alert( {
+							template: "<p class='center'>Controller was unable to connect. Please check your SSID and password and try again.</p>"
+						} );
 						return;
 					}
 
