@@ -88,21 +88,30 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		} );
 	} )
 
-	.controller( "MenuCtrl", function( $scope, $ionicActionSheet, $ionicSideMenuDelegate, Utils ) {
+	.controller( "MenuCtrl", function( $scope, $ionicActionSheet, $ionicPopup, $ionicSideMenuDelegate, Utils ) {
 
 		$scope.showAddController = function() {
 			$ionicActionSheet.show( {
 				buttons: [
 					{ text: "Add by IP" },
-					{ text: "Add by Blynk Token" }
+					{ text: "Add by Blynk Token" },
+					{ text: "Setup New Device" }
 				],
 				titleText: "Add Controller",
 				cancelText: "Cancel",
 				buttonClicked: function( index ) {
 					if ( index === 1 ) {
 						Utils.showAddBlynk();
-					} else {
+					} else if ( index === 0 ) {
 						Utils.showAddController();
+					} else {
+						Utils.checkNewController( function( result ) {
+							if ( !result ) {
+								$ionicPopup.alert( {
+									template: "<p class='center'>Please first connect the power to your OpenGarage. Once complete, connect this device to the wifi network broadcast by the OpenGarage (named OG_XXXXXX) and reopen this app.</p>"
+								} );
+							}
+						} );
 					}
 					return true;
 				}

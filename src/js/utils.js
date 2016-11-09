@@ -155,6 +155,7 @@ angular.module( "opengarage.utils", [] )
 					} );
 	        },
 			addController = function( data, callback ) {
+				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
 				if ( !data.token && ( !data.ip || !data.password ) ) {
@@ -224,16 +225,27 @@ angular.module( "opengarage.utils", [] )
 				data.token ? data.token : null
 				);
 			},
-			checkNewController = function() {
+			checkNewController = function( callback ) {
+				var suppressLoader = typeof callback === "function" ? false : true;
+
 				$http = $http || $injector.get( "$http" );
+				callback = callback || function() {};
 				$ionicModal = $ionicModal || $injector.get( "$ionicModal" );
 
 	            $http( {
 	                method: "GET",
 	                url: "http://192.168.4.1/js",
-	                suppressLoader: true
+	                suppressLoader: suppressLoader,
+	                config: {
+						timeout: 5000
+	                }
 	            } ).then(
 					function( result ) {
+						if ( !result.data.ssids ) {
+							callback( false );
+							return;
+						}
+
 						var scope = $rootScope.$new();
 						scope.data = {};
 						scope.save = function() {
@@ -248,6 +260,10 @@ angular.module( "opengarage.utils", [] )
 							scope.modal = modal;
 							modal.show();
 						} );
+						callback( true );
+					},
+					function() {
+						callback( false );
 					}
 				);
 			},
@@ -300,6 +316,69 @@ angular.module( "opengarage.utils", [] )
 					storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 				} );
 			},
+			scanLocalNetwork = function( callback ) {
+				if ( !window.networkinterface ) {
+					callback( false );
+					return;
+				}
+
+				window.networkinterface.getIPAddress( function( router ) {
+					if ( !router ) {
+						callback( false );
+						return;
+					}
+
+					$q = $q || $injector.get( "$q" );
+					$http = $http || $injector.get( "$http" );
+					router = router.split( "." );
+					router.pop();
+
+					var baseip = router.join( "." ),
+						check = function( ip ) {
+							return $http( {
+									method: "GET",
+									url: "http://" + baseip + "." + ip + "/jc",
+									suppressLoader: true,
+									timeout: 6000,
+									config: {
+										retryCount: 0
+									}
+								} )
+								.then( function( result ) {
+									if ( result.data && result.data.mac ) {
+										matches.push( baseip + "." + ip );
+									}
+								} )
+								.catch( function() {
+									return false;
+								} );
+						},
+						queue = [], matches = [], i;
+
+					$rootScope.$broadcast( "loading:show" );
+
+				    for ( i = 1; i <= 244; i++ ) {
+				        queue.push( check( i ) );
+				    }
+
+				    $q.all( queue ).then( function() {
+						$rootScope.$broadcast( "loading:hide" );
+						callback( matches );
+				    } );
+				} );
+			},
+			requestPassword = function( callback ) {
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				$ionicPopup.prompt( {
+					title: "Enter Controller Password",
+					template: "Enter your controller's password below:",
+					inputType: "password",
+					inputPlaceholder: "Controller Password"
+				} ).then( function( password ) {
+					callback( password );
+				} );
+			},
 			$http, $q, $filter, $ionicPopup, $ionicModal;
 
 	    if ( isFireFox ) {
@@ -323,9 +402,32 @@ angular.module( "opengarage.utils", [] )
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
 				var scope = $rootScope.$new();
-				scope.data = {};
+				scope.data = {
+					canScan: window.networkinterface ? true : false
+				};
+				scope.scan = function() {
+					scanLocalNetwork( function( result ) {
+						if ( !result || !result.length ) {
+							$ionicPopup.alert( {
+								template: "<p class='center'>No devices detected on your network</p>"
+							} );
+							return;
+						}
 
-				$ionicPopup.show( {
+						scope.data.foundControllers = result;
+					} );
+				};
+				scope.save = function( ip ) {
+					popup.close();
+					requestPassword( function( password ) {
+						addController( {
+							ip: ip,
+							password: password
+						} );
+					} );
+				};
+
+				var popup = $ionicPopup.show( {
 					templateUrl: "templates/addController.html",
 					title: "Add Controller",
 					scope: scope,
@@ -344,7 +446,9 @@ angular.module( "opengarage.utils", [] )
 							}
 						}
 					]
-				} ).then(
+				} );
+
+				popup.then(
 					function( isValid ) {
 						if ( isValid ) {
 							addController( scope.data, callback );

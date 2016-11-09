@@ -75,6 +75,7 @@
 	<plugin name="cordova-plugin-device" source="npm" />
 	<plugin name="cordova-plugin-inappbrowser" source="npm" />
 	<plugin name="cordova-plugin-network-information" source="npm" />
+    <plugin name="cordova-plugin-networkinterface" source="npm" />
 	<plugin name="ionic-plugin-keyboard" source="npm" />
 
 	<platform name="ios">

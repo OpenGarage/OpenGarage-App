@@ -1,10 +1,17 @@
-<ion-list>
+<ion-list ng-if="!data.foundControllers">
+	<ion-item class="item-divider item-text-wrap" ng-if="data.canScan">
+		<p class='smaller center'>If you know the IP address you may type it below otherwise you can scan for it.</p>
+		<button class="button button-block button-assertive" ng-click="scan()">Scan Local Network</button>
+	</ion-item>
 	<ion-item class="item-input item-floating-label">
 		<span class="input-label">OpenGarage IP</span>
-		<input placeholder="OpenGarage IP" type="text" ng-model="data.ip" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
+		<input placeholder="OpenGarage IP" type="text" name="ogip" ng-model="data.ip" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
 	</ion-item>
 	<ion-item class="item-input item-floating-label">
 		<span class="input-label">OpenGarage Password</span>
-		<input placeholder="OpenGarage Password" type="password" ng-model="data.password">
+		<input placeholder="OpenGarage Password" name="ogpassword" type="password" ng-model="data.password">
 	</ion-item>
+</ion-list>
+<ion-list ng-if="data.foundControllers">
+	<ion-item ng-repeat="controller in data.foundControllers" class="center" ng-click="save(controller)">{{controller}}</ion-item>
 </ion-list>
