@@ -77,7 +77,9 @@ angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.u
 			$document[ 0 ].title = "OpenGarage";
 		} );
 
-		angular.element( $document ).on( "resume", Utils.checkNewController );
+		angular.element( $document ).on( "resume", function() {
+			$timeout( Utils.checkNewController, 100 );
+		} );
 
 		// Handle loading of the first page
 		var firstLoadHandler = $rootScope.$on( "$stateChangeStart", function( event ) {
