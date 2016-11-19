@@ -215,6 +215,15 @@ angular.module( "opengarage.utils", [] )
 							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
 							result.mac = "5C:CF:7F" + reply.match( /.{1,2}/g ).join( ":" );
 							result.auth = data.token;
+
+							if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
+								$ionicPopup.alert( {
+									template: "<p class='center'>Device already added to site list.</p>"
+								} );
+								callback( false );
+								return;
+							}
+
 							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 							callback( true );
