@@ -285,7 +285,7 @@ angular.module( "opengarage.utils", [] )
 	            } ).then(
 					function( result ) {
 						if ( result.data.result === 1 ) {
-							setTimeout( saveNewController, 1000 );
+							setTimeout( saveNewController, 2000 );
 						} else {
 							$ionicPopup.alert( {
 								template: "<p class='center'>Invalid SSID/password combination. Please try again.</p>"
