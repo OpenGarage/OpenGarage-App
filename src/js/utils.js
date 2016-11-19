@@ -598,6 +598,11 @@ angular.module( "opengarage.utils", [] )
 				} );
 			},
 			getLogs: function( callback ) {
+				if ( !$rootScope.activeController || !$rootScope.activeController.ip ) {
+					callback( false );
+					return;
+				}
+
 				$http = $http || $injector.get( "$http" );
 
 	            $http( {
