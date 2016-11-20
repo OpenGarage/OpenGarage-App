@@ -17,6 +17,7 @@ Designed to allow intuitive control of the OpenGarage garage door opener.
 <a href="https://www.opengarage.io/wp-content/uploads/2016/11/app3.png"><img src="https://www.opengarage.io/wp-content/uploads/2016/11/app3.png" width="100"/></a>
 <a href="https://www.opengarage.io/wp-content/uploads/2016/11/app4.png"><img src="https://www.opengarage.io/wp-content/uploads/2016/11/app4.png" width="100"/></a>
 <a href="https://www.opengarage.io/wp-content/uploads/2016/11/app5.png"><img src="https://www.opengarage.io/wp-content/uploads/2016/11/app5.png" width="100"/></a>
+
 <i>Screenshots: iPhone SE</i>
 
 ---
