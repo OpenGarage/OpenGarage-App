@@ -75,7 +75,7 @@ angular.module( "opengarage.utils", [] )
 				if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
 					promise = $http( {
 						method: "POST",
-						url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 						data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/query",
 						suppressLoader: true
@@ -210,7 +210,7 @@ angular.module( "opengarage.utils", [] )
 					if ( data.token ) {
 						$http( {
 							method: "POST",
-							url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+							url: "https://openthings.io/wp-admin/admin-ajax.php",
 			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 							data: "action=blynkCloud&path=" + data.token + "/get/V2",
 							suppressLoader: true
@@ -494,7 +494,7 @@ angular.module( "opengarage.utils", [] )
 					$rootScope.$broadcast( "loading:show" );
 					promise = $http( {
 						method: "POST",
-						url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+						url: "https://openthings.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 						data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=1" ),
 						suppressLoader: true
@@ -502,7 +502,7 @@ angular.module( "opengarage.utils", [] )
 						setTimeout( function() {
 							$http( {
 								method: "POST",
-								url: "https://opensprinkler.com/wp-admin/admin-ajax.php",
+								url: "https://openthings.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 								data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=0" ),
 								suppressLoader: true
