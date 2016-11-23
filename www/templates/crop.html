@@ -1,0 +1,14 @@
+<ion-modal-view>
+	<div class="bar bar-header item-input-inset">
+		<button type="button" class="button" ng-click="crop.hide()">
+			Cancel
+		</button>
+		<h1 class="title">Position and Size</h1>
+		<button type="button" class="button button-dark" ng-click="uploadPhoto(data.index)">
+			Done
+		</button>
+	</div>
+	<ion-pane class="has-header cropArea">
+		<ui-cropper image="data.image" result-image-quality="0.5" result-image-size="200" result-image="data.cropped" chargement="'Loading...'"></ui-cropper>
+	</ion-pane>
+</ion-modal-view>

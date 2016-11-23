@@ -2,7 +2,7 @@
 
 // OpenGarage
 // Controllers are found in controllers.js and utilities are located in utils.js
-angular.module( "opengarage", [ "ionic", "opengarage.controllers", "opengarage.utils" ] )
+angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", "opengarage.utils" ] )
 	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $ionicHistory, $location, $document, $window, $rootScope, $ionicLoading, $ionicPopup, $timeout, Utils ) {
 
 		// Ready function fires when the DOM is ready and after deviceready event is fired if Cordova is being used

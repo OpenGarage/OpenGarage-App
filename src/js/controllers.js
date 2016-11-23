@@ -2,10 +2,21 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicHistory, Utils ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils ) {
 		$scope.data = {
-			showDelete: false
+			showDelete: false,
+			image: false,
+			cropped: false,
+			index: false
 		};
+
+		var fileInput = angular.element( document.getElementById( "photoUpload" ) );
+
+		$ionicModal.fromTemplateUrl( "templates/crop.html", {
+			scope: $scope
+		} ).then( function( modal ) {
+			$scope.crop = modal;
+		} );
 
 		$scope.hasCamera = navigator.camera && navigator.camera.getPicture ? true : false;
 
@@ -42,21 +53,43 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			return new Date( timestamp ).toLocaleString();
 		};
 
-		$scope.uploadImage = function( $event, index ) {
+		$scope.selectPhoto = function( $event, index ) {
 			$event.stopPropagation();
 
-			Utils.takePicture( function( image ) {
-				if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
-					$rootScope.activeController.image = image;
-					Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+			fileInput.parent()[ 0 ].reset();
+
+			fileInput.one( "change", function() {
+				var file = fileInput[ 0 ].files[ 0 ];
+
+				if ( !file.type || !file.type.match( "image.*" ) ) {
+					return;
 				}
 
-				$rootScope.controllers[ index ].image = image;
-		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-		        $timeout( function() {
-					$scope.$apply();
-		        } );
+				var reader = new FileReader();
+				reader.onload = function( evt ) {
+					$scope.data.image = evt.target.result;
+					$scope.data.index = index;
+					$scope.crop.show();
+				};
+				reader.readAsDataURL( file );
 			} );
+
+			fileInput[ 0 ].click();
+		};
+
+		$scope.uploadPhoto = function( index ) {
+			$scope.crop.hide();
+
+			if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+				$rootScope.activeController.image = $scope.data.cropped;
+				Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+			}
+
+			$rootScope.controllers[ index ].image = $scope.data.cropped;
+	        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+	        $timeout( function() {
+				$scope.$apply();
+	        } );
 		};
 	} )
 

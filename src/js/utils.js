@@ -1,4 +1,4 @@
-/* global angular, window, navigator, Camera */
+/* global angular, window */
 
 // OpenGarage
 angular.module( "opengarage.utils", [] )
@@ -619,19 +619,6 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
-			},
-			takePicture: function( callback ) {
-				if ( typeof navigator.camera !== "object" || typeof navigator.camera.getPicture !== "function" ) {
-					return;
-				}
-
-				navigator.camera.getPicture( callback, function() {}, {
-					quality: 50,
-					destinationType: Camera.DestinationType.DATA_URL,
-					allowEdit: true,
-					targetWidth: 200,
-					targetHeight: 200
-				} );
 			}
 	    };
 } ] );

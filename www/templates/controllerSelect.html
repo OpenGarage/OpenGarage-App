@@ -8,8 +8,8 @@
 			<ion-item class="center item-thumbnail-left" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
 				<div class="thumb-container">
 					<img src="img/placeholder.png" ng-if="!controller.image">
-					<img ng-src="data:image/jpeg;base64,{{controller.image}}" ng-if="controller.image">
-					<div class="corner-ribbon" ng-click="uploadImage($event,$index)" ng-if="hasCamera">
+					<img ng-src="{{controller.image}}" ng-if="controller.image">
+					<div class="corner-ribbon" ng-click="selectPhoto($event,$index)">
 						<i class="icon ion-ios-upload"></i>
 					</div>
 				</div>
@@ -24,6 +24,9 @@
 			<p>Get started by adding a controller by tapping 'Add Controller' below.</p>
 		</div>
 	</ion-content>
+	<form>
+		<input type="file" class="hide" id="photoUpload" />
+	</form>
 	<ion-footer-bar class="bar-stable center">
 		<button class="button button-dark" ng-click="showAddController()">
 			Add Controller
