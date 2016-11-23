@@ -2,7 +2,7 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $filter, $ionicHistory, Utils ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicHistory, Utils ) {
 		$scope.data = {
 			showDelete: false
 		};
@@ -53,6 +53,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 				$rootScope.controllers[ index ].image = image;
 		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+		        $timeout( function() {
+					$scope.$apply();
+		        } );
 			} );
 		};
 	} )
