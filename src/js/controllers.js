@@ -7,6 +7,8 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			showDelete: false
 		};
 
+		$scope.hasCamera = navigator.camera && navigator.camera.getPicture ? true : false;
+
 		$scope.setController = function( index ) {
 			$rootScope.activeController = $rootScope.controllers[ index ];
 			$rootScope.connected = false;
@@ -21,7 +23,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		};
 
 		$scope.deleteController = function( index ) {
-			if ( $rootScope.controllers.indexOf( $rootScope.activeController ) === index ) {
+			if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
 				delete $rootScope.activeController;
 				Utils.storage.remove( "activeController" );
 			}
@@ -34,6 +36,24 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 			$rootScope.controllers.splice( fromIndex, 1 );
 			$rootScope.controllers.splice( toIndex, 0, item );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+		};
+
+		$scope.getTime = function( timestamp ) {
+			return new Date( timestamp ).toLocaleString();
+		};
+
+		$scope.uploadImage = function( $event, index ) {
+			$event.stopPropagation();
+
+			Utils.takePicture( function( image ) {
+				if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+					$rootScope.activeController.image = image;
+					Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+				}
+
+				$rootScope.controllers[ index ].image = image;
+		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			} );
 		};
 	} )
 

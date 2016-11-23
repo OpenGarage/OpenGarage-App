@@ -49,6 +49,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-network-information",
+    "cordova-plugin-camera",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [

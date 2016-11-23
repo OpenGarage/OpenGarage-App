@@ -5,9 +5,17 @@
     </ion-nav-buttons>
 	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': $root.controllers.length === 0 }">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showDelete" ng-show="$root.controllers.length">
-			<ion-item class="center" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
+			<ion-item class="center item-thumbnail-left" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
+				<div class="thumb-container">
+					<img src="img/placeholder.png" ng-if="!controller.image">
+					<img ng-src="data:image/jpeg;base64,{{controller.image}}" ng-if="controller.image">
+					<div class="corner-ribbon" ng-click="uploadImage($event,$index)" ng-if="hasCamera">
+						<i class="icon ion-ios-upload"></i>
+					</div>
+				</div>
 				<ion-delete-button class="ion-minus-circled" ng-click="deleteController($index)"></ion-delete-button>
-				{{controller.name}}
+				<h2>{{controller.name}}</h2>
+				<p ng-if="controller.lastUpdate">Last Updated: {{getTime(controller.lastUpdate)}}</p>
 				<ion-reorder-button class="ion-navicon" on-reorder="moveItem(controller, $fromIndex, $toIndex)"></ion-reorder-button>
 		    </ion-item>
 		</ion-list>

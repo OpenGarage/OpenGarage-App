@@ -8,6 +8,7 @@ img/Roboto-Regular.ttf
 img/Roboto-Regular.woff2
 img/Roboto-Thin.ttf
 img/Roboto-Thin.woff2
+img/placeholder.png
 js/app.min.js
 templates/addController.html
 templates/changePassword.html
@@ -30,4 +31,4 @@ index.html
 NETWORK:
 *
 
-# hash: 2d81584f816942df925f3415276acf12f091cd774a130a8d6e9505669032bd2d
+# hash: 70f36a536d5c78b77278f9af0bccf3e1ad893dcbcf365969d910bac4c1d9848c

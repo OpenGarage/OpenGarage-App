@@ -1,4 +1,4 @@
-/* global angular, window */
+/* global angular, window, navigator, Camera */
 
 // OpenGarage
 angular.module( "opengarage.utils", [] )
@@ -99,9 +99,11 @@ angular.module( "opengarage.utils", [] )
 								name: result.name,
 								door: parseInt( filter( result.pins, { "pin": 0 } )[ 0 ].value ),
 								dist: parseInt( filter( result.pins, { "pin": 3 } )[ 0 ].value ),
-								rcnt: parseInt( filter( result.pins, { "pin": 4 } )[ 0 ].value )
+								rcnt: parseInt( filter( result.pins, { "pin": 4 } )[ 0 ].value ),
+								lastUpdate: new Date().getTime()
 							} );
 						} else {
+							result.data.lastUpdate = new Date().getTime();
 							callback( result.data );
 						}
 					},
@@ -133,6 +135,7 @@ angular.module( "opengarage.utils", [] )
 	        },
 	        updateController = function() {
 				$q = $q || $injector.get( "$q" );
+				$filter = $filter || $injector.get( "$filter" );
 
 				var controller = angular.copy( $rootScope.activeController ),
 					save = function( data ) {
@@ -144,9 +147,9 @@ angular.module( "opengarage.utils", [] )
 					.then( function() { return getControllerSettings( save ); } )
 					.then( function() { return getControllerOptions( save ); } )
 					.then( function() {
-						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
+						var index = $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": controller.mac } ) || [] )[ 0 ] );
 
-						if ( index ) {
+						if ( index >= 0 ) {
 							$rootScope.controllers[ index ] = controller;
 							$rootScope.activeController = controller;
 							$rootScope.$broadcast( "controllerUpdated" );
@@ -585,7 +588,7 @@ angular.module( "opengarage.utils", [] )
 		            } ).then( function() {
 						$rootScope.activeController.password = scope.pwd.nkey;
 
-						var index = $rootScope.controllers.indexOf( $rootScope.activeController );
+						var index = $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] );
 						if ( index ) {
 							$rootScope.controllers[ index ] = $rootScope.activeController;
 							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
@@ -616,6 +619,19 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
+			},
+			takePicture: function( callback ) {
+				if ( typeof navigator.camera !== "object" || typeof navigator.camera.getPicture !== "function" ) {
+					return;
+				}
+
+				navigator.camera.getPicture( callback, function() {}, {
+					quality: 50,
+					destinationType: Camera.DestinationType.DATA_URL,
+					allowEdit: true,
+					targetWidth: 200,
+					targetHeight: 200
+				} );
 			}
 	    };
 } ] );

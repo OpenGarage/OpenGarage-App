@@ -69,6 +69,41 @@ textarea {
   color: #fff !important
 }
 
+.thumb-container,
+.thumb-container img {
+  height: 100%;
+  left: 10px;
+  max-height: 80px;
+  max-width: 80px;
+  position: absolute;
+  top: 10px;
+  width: 100%;
+}
+.thumb-container img {
+  left: 0;
+  top: 0;
+}
+.thumb-container .corner-ribbon {
+  bottom: -10px;
+}
+.corner-ribbon {
+  border-top: 45px solid transparent;
+  border-left: 45px solid transparent;
+  border-bottom: 45px solid rgba(0,0,0,0.60);
+  bottom: 0;
+  height: 45px;
+  position: absolute;
+  right: 0;
+  width: 45px;
+}
+.corner-ribbon .icon {
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 23px;
+  position: absolute;
+  right: 5px;
+  top: 20px;
+}
+
 .door-button {
   background-color: #444;
   color: #fff;
