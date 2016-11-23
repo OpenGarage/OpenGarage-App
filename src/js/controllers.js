@@ -56,6 +56,20 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 		$scope.selectPhoto = function( $event, index ) {
 			$event.stopPropagation();
 
+			if ( $scope.data.showDelete ) {
+				if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+					delete $rootScope.activeController.image;
+					Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+				}
+
+				delete $rootScope.controllers[ index ].image;
+		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+		        $timeout( function() {
+					$scope.$apply();
+		        } );
+				return;
+			}
+
 			fileInput.parent()[ 0 ].reset();
 
 			fileInput.one( "change", function() {

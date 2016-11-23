@@ -9,8 +9,8 @@
 				<div class="thumb-container">
 					<img src="img/placeholder.png" ng-if="!controller.image">
 					<img ng-src="{{controller.image}}" ng-if="controller.image">
-					<div class="corner-ribbon" ng-click="selectPhoto($event,$index)">
-						<i class="icon ion-ios-upload"></i>
+					<div class="corner-ribbon enable-pointer-events" ng-click="selectPhoto($event,$index)">
+						<i class="icon ion-ios-upload" ng-class="{'ion-ios-upload': !data.showDelete, 'ion-ios-trash': data.showDelete}"></i>
 					</div>
 				</div>
 				<ion-delete-button class="ion-minus-circled" ng-click="deleteController($index)"></ion-delete-button>
