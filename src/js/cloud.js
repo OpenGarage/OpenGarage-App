@@ -126,6 +126,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
 
                     getSites( function( data ) {
                         if ( data !== false ) {
+                            $rootScope.controllers = data;
                             Utils.storage.set( { "controllers": JSON.stringify( data ) }, callback );
                         }
                     } );
