@@ -107,7 +107,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		};
 
 		$scope.changeSync = function() {
-			if ( !$scope.isSynced ) {
+			if ( $rootScope.isSynced ) {
+				Cloud.logout();
+			} else {
 				Cloud.requestAuth();
 			}
 		};

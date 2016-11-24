@@ -51,17 +51,21 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                         username: user,
                         password: pass
                     } )
-                } ).then( function( data ) {
-                    if ( typeof data.token === "string" ) {
+                } ).then( function( result ) {
+                    if ( typeof result.data.token === "string" ) {
                         Utils.storage.set( {
-                            "cloudToken": data.token,
+                            "cloudToken": result.data.token,
                             "cloudDataToken": sjcl.codec.hex.fromBits( sjcl.hash.sha256.hash( pass ) )
                         } );
                     }
-                    callback( data.loggedin );
+                    callback( result.data.loggedin );
                 }, function() {
                     callback( false );
                 } );
+            },
+            logout = function() {
+                Utils.storage.remove( "cloudToken" );
+                $rootScope.isSynced = false;
             },
             syncStart = function() {
                 $ionicActionSheet = $ionicActionSheet || $injector.get( "$ionicActionSheet" );
@@ -74,6 +78,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                     if ( Object.keys( sites ).length > 0 ) {
 
                         var finish = function() {
+							$rootScope.controllers = sites;
                             Utils.storage.set( { "controllers": JSON.stringify( sites ) }, saveSites );
                         };
 
@@ -97,9 +102,10 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                                     sites = $rootScope.controllers;
                                     finish();
                                 } else {
+									$filter = $filter || $injector.get( "$filter" );
 
                                     // Merge data
-                                    sites = $rootScope.controllers.concat( sites );
+                                    sites = $filter( "unique" )( $rootScope.controllers.concat( sites ), "mac" );
                                     finish();
                                 }
                                 return true;
@@ -153,18 +159,18 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                             token: local.cloudToken,
                             controllerType: "opengarage"
                         } )
-                    } ).then( function( data ) {
-                        if ( data.success === false || data.sites === "" ) {
-                            if ( data.message === "BAD_TOKEN" ) {
+                    } ).then( function( result ) {
+                        if ( result.data.success === false || result.data.sites === "" ) {
+                            if ( result.data.message === "BAD_TOKEN" ) {
                                 handleExpiredLogin();
                             }
-                            callback( false, data.message );
+                            callback( false, result.data.message );
                         } else {
-                            Utils.storage.set( { "cloudToken":data.token } );
+                            Utils.storage.set( { "cloudToken":result.data.token } );
                             var sites;
 
                             try {
-                                sites = sjcl.decrypt( local.cloudDataToken, data.sites );
+                                sites = sjcl.decrypt( local.cloudDataToken, result.data.sites );
                             } catch ( err ) {
                                 if ( err.message === "ccm: tag doesn't match" ) {
                                     handleInvalidDataToken();
@@ -184,7 +190,9 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                 } );
             },
             saveSites = function( callback ) {
-                callback = callback || function() {};
+				if ( typeof callback !== "function" ) {
+	                callback = function() {};
+				}
                 $http = $http || $injector.get( "$http" );
                 $httpParamSerializerJQLike = $httpParamSerializerJQLike || $injector.get( "$httpParamSerializerJQLike" );
 
@@ -204,17 +212,17 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                             action: "saveSites",
                             token: data.cloudToken,
                             controllerType: "opengarage",
-                            sites: encodeURIComponent( JSON.stringify( sjcl.encrypt( data.cloudDataToken, $rootScope.controllers ) ) )
+                            sites: encodeURIComponent( JSON.stringify( sjcl.encrypt( data.cloudDataToken, JSON.stringify( $rootScope.controllers ) ) ) )
                         } )
-                    } ).then( function( data ) {
-                        if ( data.success === false ) {
-                            if ( data.message === "BAD_TOKEN" ) {
+                    } ).then( function( result ) {
+                        if ( result.data.success === false ) {
+                            if ( result.data.message === "BAD_TOKEN" ) {
                                 handleExpiredLogin();
                             }
-                            callback( false, data.message );
+                            callback( false, result.data.message );
                         } else {
-                            Utils.storage.set( { "cloudToken":data.token } );
-                            callback( data.success );
+                            Utils.storage.set( { "cloudToken":result.data.token } );
+                            callback( result.data.success );
                         }
                     }, function() {
                         callback( false );
@@ -260,11 +268,30 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
             getTokenUser = function( token ) {
                 return atob( token ).split( "|" )[ 0 ];
             },
-            $http, $httpParamSerializerJQLike, $ionicPopup, $ionicActionSheet;
+            $http, $httpParamSerializerJQLike, $filter, $ionicPopup, $ionicActionSheet;
+
+        Utils.storage.get( [ "cloudToken", "cloudDataToken" ], function( data ) {
+			if ( data.cloudToken === null || data.cloudToken === undefined || data.cloudDataToken === undefined || data.cloudDataToken === undefined ) {
+				$rootScope.isSynced = false;
+			} else {
+				$rootScope.isSynced = true;
+			}
+        } );
+
+		Array.prototype.unique = function() {
+			var unique = [];
+			for ( var i = 0; i < this.length; i++ ) {
+				if ( unique.indexOf( this[ i ] ) === -1 ) {
+					unique.push( this[ i ] );
+				}
+			}
+			return unique;
+		};
 
         return {
             requestAuth: requestAuth,
             login: login,
+            logout: logout,
             syncStart: syncStart,
             sync: sync,
             getSites: getSites,
