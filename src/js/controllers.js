@@ -1,8 +1,8 @@
 /* global angular */
 
-angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
+angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.cloud" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils, Cloud ) {
 		$scope.data = {
 			showDelete: false,
 			image: false,
@@ -41,12 +41,14 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 			$rootScope.controllers.splice( index, 1 );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 		};
 
 		$scope.moveItem = function( item, fromIndex, toIndex ) {
 			$rootScope.controllers.splice( fromIndex, 1 );
 			$rootScope.controllers.splice( toIndex, 0, item );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 		};
 
 		$scope.getTime = function( timestamp ) {
@@ -64,6 +66,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 				delete $rootScope.controllers[ index ].image;
 		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+				Cloud.saveSites();
 		        $timeout( function() {
 					$scope.$apply();
 		        } );
@@ -101,9 +104,18 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 
 			$rootScope.controllers[ index ].image = $scope.data.cropped;
 	        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 	        $timeout( function() {
 				$scope.$apply();
 	        } );
+		};
+
+		$scope.changeSync = function() {
+			if ( $rootScope.isSynced ) {
+				Cloud.logout();
+			} else {
+				Cloud.requestAuth();
+			}
 		};
 	} )
 

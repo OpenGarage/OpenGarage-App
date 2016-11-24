@@ -203,6 +203,7 @@ angular.module( "opengarage.utils", [] )
 							angular.extend( result, reply );
 							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+							$rootScope.$broadcast( "triggerCloudSave" );
 							callback( true );
 						}, data.ip );
 					}
@@ -229,6 +230,7 @@ angular.module( "opengarage.utils", [] )
 
 							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+							$rootScope.$broadcast( "triggerCloudSave" );
 							callback( true );
 						} );
 					}
@@ -327,6 +329,7 @@ angular.module( "opengarage.utils", [] )
 						name: "My OpenGarage"
 					} );
 					storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+					$rootScope.$broadcast( "triggerCloudSave" );
 				} );
 			},
 			scanLocalNetwork = function( callback ) {
@@ -592,6 +595,7 @@ angular.module( "opengarage.utils", [] )
 						if ( index ) {
 							$rootScope.controllers[ index ] = $rootScope.activeController;
 							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+							$rootScope.$broadcast( "triggerCloudSave" );
 						}
 
 						$ionicPopup.alert( {
