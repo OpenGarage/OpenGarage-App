@@ -12,6 +12,7 @@ img/placeholder.png
 js/app.min.js
 templates/addController.html
 templates/changePassword.html
+templates/cloudLogin.html
 templates/controllerSelect.html
 templates/crop.html
 templates/help.html
@@ -32,4 +33,4 @@ index.html
 NETWORK:
 *
 
-# hash: 8ac7e672a641d2949816f3cf272132f6b9bf747fae0f082fe6d5b90e6a4e2962
+# hash: ffed484c571403c37558ea2c5e73d3066bd38c510e5453123c4b46e737994a08

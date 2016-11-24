@@ -5,6 +5,12 @@
     </ion-nav-buttons>
 	<ion-content has-bouncing="false" class="has-footer" ng-class="{'vertical-center': $root.controllers.length === 0 }">
 		<ion-list show-delete="data.showDelete" show-reorder="data.showDelete" ng-show="$root.controllers.length">
+			<ion-item class="item-button-right sync-bar">
+				Sync<span ng-if="isSynced">ed</span> with OpenGarage.io
+				<button class="button button-dark" ng-click="changeSync()">
+					<i class="icon" ng-class="{'ion-android-sync': !isSynced, 'ion-android-cancel': isSynced}"></i>
+				</button>
+			</ion-item>
 			<ion-item class="center item-thumbnail-left" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
 				<div class="thumb-container">
 					<img src="img/placeholder.png" ng-if="!controller.image">

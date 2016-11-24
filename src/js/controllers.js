@@ -1,8 +1,8 @@
 /* global angular */
 
-angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
+angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.cloud" ] )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils, Cloud ) {
 		$scope.data = {
 			showDelete: false,
 			image: false,
@@ -104,6 +104,12 @@ angular.module( "opengarage.controllers", [ "opengarage.utils" ] )
 	        $timeout( function() {
 				$scope.$apply();
 	        } );
+		};
+
+		$scope.changeSync = function() {
+			if ( !$scope.isSynced ) {
+				Cloud.requestAuth();
+			}
 		};
 	} )
 
