@@ -78,7 +78,10 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		} );
 
 		angular.element( $document ).on( "resume", function() {
-			$timeout( Utils.checkNewController, 100 );
+			$timeout( function() {
+				Utils.checkNewController();
+				Cloud.sync();
+			}, 100 );
 		} );
 
 		// Handle loading of the first page
