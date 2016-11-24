@@ -278,6 +278,8 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
 			}
         } );
 
+        $rootScope.$on( "triggerCloudSave", saveSites );
+
         return {
             requestAuth: requestAuth,
             login: login,

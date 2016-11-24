@@ -41,12 +41,14 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 			$rootScope.controllers.splice( index, 1 );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 		};
 
 		$scope.moveItem = function( item, fromIndex, toIndex ) {
 			$rootScope.controllers.splice( fromIndex, 1 );
 			$rootScope.controllers.splice( toIndex, 0, item );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 		};
 
 		$scope.getTime = function( timestamp ) {
@@ -64,6 +66,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 				delete $rootScope.controllers[ index ].image;
 		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+				Cloud.saveSites();
 		        $timeout( function() {
 					$scope.$apply();
 		        } );
@@ -101,6 +104,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 			$rootScope.controllers[ index ].image = $scope.data.cropped;
 	        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			Cloud.saveSites();
 	        $timeout( function() {
 				$scope.$apply();
 	        } );
