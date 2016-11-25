@@ -33,6 +33,9 @@
 	<!-- Disable iCloud backup of data on iOS -->
 	<preference name="BackupWebStorage" value="local" />
 
+	<!-- Prevent use of Swift 3+ -->
+	<preference name="UseLegacySwiftLanguageVersion" value="true" />
+
 	<!-- Stop the app in the background -->
 	<preference name="KeepRunning" value="false"/>
 
@@ -73,6 +76,7 @@
 	<plugin name="cordova-plugin-splashscreen" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
 	<plugin name="cordova-plugin-device" source="npm" />
+	<plugin name="cordova-plugin-geofence" source="npm" />
 	<plugin name="cordova-plugin-inappbrowser" source="npm" />
 	<plugin name="cordova-plugin-network-information" source="npm" />
     <plugin name="cordova-plugin-networkinterface" source="npm" />
