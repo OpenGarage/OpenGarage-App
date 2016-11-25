@@ -487,19 +487,24 @@ angular.module( "opengarage.utils", [] )
 					}
 				} );
 			},
-			toggleDoor: function( callback ) {
+			toggleDoor: function( auth, callback ) {
+				if ( typeof auth === "function" ) {
+					callback = auth;
+					auth = null;
+				}
+
 				callback = callback || function() {};
 				$http = $http || $injector.get( "$http" );
 
 				var promise;
 
-				if ( $rootScope.activeController && $rootScope.activeController.auth ) {
+				if ( auth || ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
 					$rootScope.$broadcast( "loading:show" );
 					promise = $http( {
 						method: "POST",
 						url: "https://openthings.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=1" ),
+						data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" ),
 						suppressLoader: true
 					} ).then( function() {
 						setTimeout( function() {
@@ -507,7 +512,7 @@ angular.module( "opengarage.utils", [] )
 								method: "POST",
 								url: "https://openthings.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-								data: "action=blynkCloud&path=" + encodeURIComponent( $rootScope.activeController.auth + "/update/V1?value=0" ),
+								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" ),
 								suppressLoader: true
 							} ).then( function() {
 								$rootScope.$broadcast( "loading:hide" );

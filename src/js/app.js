@@ -3,7 +3,7 @@
 // OpenGarage
 // Controllers are found in controllers.js and utilities are located in utils.js
 angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", "opengarage.utils", "opengarage.cloud" ] )
-	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $ionicHistory, $location, $document, $window, $rootScope, $ionicLoading, $ionicPopup, $timeout, Utils, Cloud ) {
+	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $ionicHistory, $location, $document, $window, $rootScope, $filter, $ionicLoading, $ionicPopup, $timeout, Utils, Cloud ) {
 
 		// Ready function fires when the DOM is ready and after deviceready event is fired if Cordova is being used
 		$ionicPlatform.ready( function() {
@@ -46,6 +46,31 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				window.geofence.getWatched( function( fences ) {
 					$rootScope.geoFences = JSON.parse( fences );
 				} );
+
+				var handleGeofence = function( geofences ) {
+					if ( geofences ) {
+
+						// Allow handler to process notification click event as well
+						if ( geofences.notification ) {
+							geofences = [ geofences ];
+						}
+
+						$rootScope.$apply( function() {
+							geofences.forEach( function( geo ) {
+								var controller = $filter( "filter" )( $rootScope.controllers, { "mac": geo.notification.data.controller } );
+
+								if ( controller &&
+									( geo.notification.id === "open" && controller.door === 0 ) &&
+									( geo.notification.id === "close" && controller.door === 1 ) ) {
+										Utils.toggleDoor( controller.auth );
+								}
+							} );
+						} );
+					}
+				};
+
+				window.geofence.onTransitionReceived = handleGeofence;
+				window.geofence.onNotificationClicked = handleGeofence;
 			}
 
 		    // Hide the splash screen after 500ms of the app being ready
@@ -431,11 +456,10 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 							radius: scope.rule.radius,
 							transitionType: scope.rule.direction === "open" ? 1 : 2,
 							notification: {
-								title: "Location change detected (" + scope.rule.direction + " garage)",
-								text: "Triggering garage door...",
-								smallIcon: "res://my_location_icon",
-								icon: "res://my_location_icon",
-								openAppOnClick: true
+								title: "OpenGarage",
+								text: "Trying to " + scope.rule.direction + " the garage door...",
+								openAppOnClick: true,
+								data: { controller: $rootScope.activeController.mac }
 							}
 						}, function() {
 							window.geofence.getWatched( function( fences ) {
