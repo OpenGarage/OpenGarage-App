@@ -260,7 +260,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			var current = $rootScope.controllers.indexOf( $rootScope.activeController ),
 				to = current + direction;
 
-			if ( to < 0 || to >= $rootScope.controllers.length ) {
+			if ( current === -1 || to < 0 || to >= $rootScope.controllers.length ) {
 				return;
 			}
 
