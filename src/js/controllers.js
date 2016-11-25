@@ -251,10 +251,27 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	    };
 	} )
 
-	.controller( "HomeCtrl", function( $rootScope, $scope, $timeout, Utils ) {
+	.controller( "HomeCtrl", function( $rootScope, $scope, $filter, $timeout, Utils ) {
 		var interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;
+
+		$scope.changeController = function( direction ) {
+			var current = $rootScope.controllers.indexOf( $rootScope.activeController ),
+				to = current + direction;
+
+			if ( to < 0 || to >= $rootScope.controllers.length ) {
+				return;
+			}
+
+			$rootScope.activeController = $rootScope.controllers[ to ];
+			$rootScope.connected = false;
+			Utils.updateController();
+			Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+			$timeout( function() {
+				$scope.$apply();
+			} );
+		};
 
 		$scope.$on( "$ionicView.beforeLeave", function() {
 			clearInterval( interval );

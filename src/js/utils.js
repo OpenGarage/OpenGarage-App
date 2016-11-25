@@ -217,7 +217,7 @@ angular.module( "opengarage.utils", [] )
 							suppressLoader: true
 						} ).then( function( reply ) {
 							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
-							result.mac = "5C:CF:7F" + reply.match( /.{1,2}/g ).join( ":" );
+							result.mac = "5C:CF:7F:" + reply.match( /.{1,2}/g ).join( ":" );
 							result.auth = data.token;
 
 							if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
