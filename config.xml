@@ -36,6 +36,9 @@
 	<!-- Prevent use of Swift 3+ -->
 	<preference name="UseLegacySwiftLanguageVersion" value="true" />
 
+	<!-- Set minimum supported iOS version  -->
+	<preference name="deployment-target" value="7.0" />
+
 	<!-- Stop the app in the background -->
 	<preference name="KeepRunning" value="false"/>
 
