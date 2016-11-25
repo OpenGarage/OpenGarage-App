@@ -503,7 +503,11 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 
 				scope.updateMap = function() {
 					if ( !scope.rule.enable ) {
-						window.geofence.remove( scope.rule.direction );
+						window.geofence.remove( scope.rule.direction, function() {
+							window.geofence.getWatched( function( fences ) {
+								$rootScope.geoFences = JSON.parse( fences );
+							} );
+						} );
 						return;
 					}
 
@@ -527,16 +531,25 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				};
 
 				scope.$watch( "rule", function() {
-					scope.rule.radius = scope.rule.radius || 500;
-					scope.rule.start = scope.rule.start || { lat: 30.296519, lng: -97.730185 };
-					scope.rule.enable = scope.rule.enable || ( $filter( "filter" )( $rootScope.geoFences, { "id": scope.rule.direction } ).length ? true : false );
+					var currentRule = $filter( "filter" )( $rootScope.geoFences, { "id": scope.rule.direction } )[ 0 ];
 
-					navigator.geolocation.getCurrentPosition( function( position ) {
-						scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };
+					if ( currentRule ) {
+						scope.rule.radius = currentRule.radius;
+						scope.rule.start = { lat: currentRule.latitude, lng: currentRule.longitude };
+						scope.rule.enable = true;
 						scope.updateMap();
-					}, function() {
-						scope.updateMap();
-					}, { timeout: 10000 } );
+					} else {
+						scope.rule.radius = scope.rule.radius || 500;
+						scope.rule.start = scope.rule.start || { lat: 30.296519, lng: -97.730185 };
+						scope.rule.enable = scope.rule.enable || false;
+
+						navigator.geolocation.getCurrentPosition( function( position ) {
+							scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };
+							scope.updateMap();
+						}, function() {
+							scope.updateMap();
+						}, { timeout: 10000 } );
+					}
 				} );
 			}
 		};
