@@ -32,6 +32,22 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		        } );
 			}
 
+			if ( window.geofence ) {
+				$rootScope.hasGeofence = true;
+
+				$rootScope.startGeofence = function( callback ) {
+					window.geofence.initialize().then( function() {
+						callback( true );
+					}, function() {
+						callback( false );
+					} );
+				};
+
+				window.geofence.getWatched( function( fences ) {
+					$rootScope.geoFences = JSON.parse( fences );
+				} );
+			}
+
 		    // Hide the splash screen after 500ms of the app being ready
 		    $timeout( function() {
 		        try {
@@ -395,7 +411,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		};
 	} )
 
-	.directive( "geoRuleSetup", function() {
+	.directive( "geoRuleSetup", function( $rootScope, $filter ) {
 		return {
 			restrict: "E",
 			replace: true,
@@ -406,6 +422,29 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 			link: function( scope, element ) {
 				var map, marker, circle;
 
+				scope.updateRule = function() {
+					$rootScope.startGeofence( function() {
+						window.geofence.addOrUpdate( {
+							id: scope.rule.direction,
+							latitude: scope.rule.start.lat,
+							longitude: scope.rule.start.lng,
+							radius: scope.rule.radius,
+							transitionType: scope.rule.direction === "open" ? 1 : 2,
+							notification: {
+								title: "Location change detected (" + scope.rule.direction + " garage)",
+								text: "Triggering garage door...",
+								smallIcon: "res://my_location_icon",
+								icon: "res://my_location_icon",
+								openAppOnClick: true
+							}
+						}, function() {
+							window.geofence.getWatched( function( fences ) {
+								$rootScope.geoFences = JSON.parse( fences );
+							} );
+						} );
+					} );
+				};
+
 				scope.updateMarker = function() {
 					if ( marker ) {
 						marker.setMap( null );
@@ -415,6 +454,8 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 						position: scope.rule.start,
 						map: map
 					} );
+
+					scope.updateRule();
 				};
 
 				scope.updateRadius = function() {
@@ -432,16 +473,21 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 						center: scope.rule.start,
 						radius: parseInt( scope.rule.radius )
 					} );
+
+					scope.updateRule();
 				};
 
 				scope.updateMap = function() {
 					if ( !scope.rule.enable ) {
+						window.geofence.remove( scope.rule.direction );
 						return;
 					}
 
 					setTimeout( function() {
 						map = new google.maps.Map( element[ 0 ].querySelectorAll( ".map" )[ 0 ], {
 							zoom: 16,
+							streetViewControl: false,
+							mapTypeControl: false,
 							center: scope.rule.start
 						} );
 
@@ -459,6 +505,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				scope.$watch( "rule", function() {
 					scope.rule.radius = scope.rule.radius || 500;
 					scope.rule.start = scope.rule.start || { lat: 30.296519, lng: -97.730185 };
+					scope.rule.enable = scope.rule.enable || ( $filter( "filter" )( $rootScope.geoFences, { "id": scope.rule.direction } ).length ? true : false );
 
 					navigator.geolocation.getCurrentPosition( function( position ) {
 						scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };

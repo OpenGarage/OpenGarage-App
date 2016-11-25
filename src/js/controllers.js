@@ -237,8 +237,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	    $scope.closeMenu = function() {
             $ionicSideMenuDelegate.toggleLeft( false );
 	    };
-
-	    $scope.hasGeofence = window.geofence ? true : false;
 	} )
 
 	.controller( "HomeCtrl", function( $rootScope, $scope, $timeout, Utils ) {
