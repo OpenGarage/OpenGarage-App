@@ -1,4 +1,4 @@
-/* global angular */
+/* global angular, ionic */
 
 angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.cloud" ] )
 
@@ -237,6 +237,8 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	    $scope.closeMenu = function() {
             $ionicSideMenuDelegate.toggleLeft( false );
 	    };
+
+	    $scope.hasGeofence = window.geofence ? true : false;
 	} )
 
 	.controller( "HomeCtrl", function( $rootScope, $scope, $timeout, Utils ) {
@@ -257,4 +259,23 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				$scope.$apply();
 			} );
 		} );
+	} )
+
+	.controller( "RulesCtrl", function( $scope ) {
+		$scope.geo = {
+			home: { direction: "open" },
+			away: { direction: "close" }
+		};
+
+		$scope.set = function( type ) {
+			if ( type === "home" ) {
+				$scope.current = $scope.geo.home;
+			} else {
+				$scope.current = $scope.geo.away;
+			}
+		};
+
+		$scope.isAndroid = ionic.Platform.isAndroid();
+
+		$scope.set( "home" );
 	} );

@@ -1,0 +1,28 @@
+<div class="geo-rule-setup">
+	<div class="card">
+		<ion-item class="item-toggle">
+			Automatically  {{rule.direction}}
+			<label class="toggle">
+				<input type="checkbox" ng-model="rule.enable" ng-change="updateMap()">
+				<div class="track">
+					<div class="handle"></div>
+				</div>
+			</label>
+		</ion-item>
+	</div>
+	<div class="card" ng-show="rule.enable">
+		<ion-list>
+			<ion-item class="item-divider">
+				Radius: {{rule.radius}}m
+			</ion-item>
+			<ion-item class="range">
+				<i class="icon ion-home"></i>
+				<input type="range" name="radius" ng-model="rule.radius" min="100" max="3000" ng-change="updateRadius()">
+				<i class="icon ion-ios-navigate"></i>
+			</ion-item>
+		</ion-list>
+	</div>
+	<div class="card map-container" ng-show="rule.enable">
+		<div class="map"></div>
+	</div>
+</div>

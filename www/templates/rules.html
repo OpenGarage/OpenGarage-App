@@ -1,0 +1,9 @@
+<ion-view view-title="Home and Away">
+	<ion-content has-bouncing="false" scroll="false" ng-class="{'has-tabs': !isAndroid, 'has-tabs-top': isAndroid}">
+		<geo-rule-setup rule="current"></geo-rule-setup>
+	</ion-content>
+	<ion-tabs class="tabs-dark tabs-icon-top">
+		<ion-tab title="Home" icon-on="ion-ios-home" icon-off="ion-ios-home-outline" on-select="set('home')"></ion-tab>
+		<ion-tab title="Away" icon-on="ion-ios-navigate" icon-off="ion-ios-navigate-outline" on-select="set('away')"></ion-tab>
+	</ion-tabs>
+</ion-view>

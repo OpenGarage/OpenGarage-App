@@ -1,4 +1,4 @@
-/* global angular */
+/* global angular, google */
 
 // OpenGarage
 // Controllers are found in controllers.js and utilities are located in utils.js
@@ -211,6 +211,16 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				}
 			} )
 
+			.state( "app.rules", {
+				url: "/rules",
+				views: {
+					menuContent: {
+						templateUrl: "templates/rules.html",
+						controller: "RulesCtrl"
+					}
+				}
+			} )
+
 			.state( "app.controllerSelect", {
 				url: "/controllerSelect",
 				views: {
@@ -349,6 +359,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		// Inform Ionic we want to cache forward views
 		$ionicConfigProvider.views.forwardCache( true );
 	} )
+
 	.filter( "unique", function() {
 		return function( items, filterOn ) {
 			if ( filterOn === false ) {
@@ -381,5 +392,81 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				items = newItems;
 			}
 		return items;
+		};
+	} )
+
+	.directive( "geoRuleSetup", function() {
+		return {
+			restrict: "E",
+			replace: true,
+			scope: {
+				rule: "="
+			},
+			templateUrl: "templates/geoRuleSetup.html",
+			link: function( scope, element ) {
+				var map, marker, circle;
+
+				scope.updateMarker = function() {
+					if ( marker ) {
+						marker.setMap( null );
+					}
+
+					marker = new google.maps.Marker( {
+						position: scope.rule.start,
+						map: map
+					} );
+				};
+
+				scope.updateRadius = function() {
+					if ( circle ) {
+						circle.setMap( null );
+					}
+
+					circle = new google.maps.Circle( {
+						strokeColor: "#FF0000",
+						strokeOpacity: 0.8,
+						strokeWeight: 2,
+						fillColor: "#FF0000",
+						fillOpacity: 0.35,
+						map: map,
+						center: scope.rule.start,
+						radius: parseInt( scope.rule.radius )
+					} );
+				};
+
+				scope.updateMap = function() {
+					if ( !scope.rule.enable ) {
+						return;
+					}
+
+					setTimeout( function() {
+						map = new google.maps.Map( element[ 0 ].querySelectorAll( ".map" )[ 0 ], {
+							zoom: 16,
+							center: scope.rule.start
+						} );
+
+						google.maps.event.addListener( map, "click", function( e ) {
+							scope.rule.start = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+							scope.updateMarker();
+							scope.updateRadius();
+						} );
+
+						scope.updateMarker();
+						scope.updateRadius();
+					}, 100 );
+				};
+
+				scope.$watch( "rule", function() {
+					scope.rule.radius = scope.rule.radius || 500;
+					scope.rule.start = scope.rule.start || { lat: 30.296519, lng: -97.730185 };
+
+					navigator.geolocation.getCurrentPosition( function( position ) {
+						scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };
+						scope.updateMap();
+					}, function() {
+						scope.updateMap();
+					}, { timeout: 10000 } );
+				} );
+			}
 		};
 	} );

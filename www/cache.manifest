@@ -17,12 +17,14 @@ templates/changePassword.html
 templates/cloudLogin.html
 templates/controllerSelect.html
 templates/crop.html
+templates/geoRuleSetup.html
 templates/help.html
 templates/history.html
 templates/home.html
 templates/login.html
 templates/menu.html
 templates/newControllerSetup.html
+templates/rules.html
 templates/settings.html
 lib/win-jscompat.js
 lib/ionic/js/ionic.bundle.min.js
@@ -36,4 +38,4 @@ index.html
 NETWORK:
 *
 
-# hash: 3b0eeca8405bfe467c6c961f022b909108548833eed4f79527cde90cb50f2d8a
+# hash: 90d3b0e20fe4ef74f0a8b0ed8e37dbceaec17cb2cbd5727f21a885df23887a91

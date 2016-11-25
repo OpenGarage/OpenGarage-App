@@ -18,6 +18,10 @@
                     <i class="icon ion-home"></i>
                     Home
                 </ion-item>
+                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.rules" ng-class="$root.activeController ? '' : 'ui-disabled'" ng-show="hasGeofence">
+                    <i class="icon ion-ios-location"></i>
+                    Home and Away
+                </ion-item>
                 <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.controllerSelect">
                     <i class="icon ion-arrow-swap"></i>
                     Change Controller

@@ -80,6 +80,7 @@
 	<plugin name="cordova-plugin-whitelist" source="npm" />
 	<plugin name="cordova-plugin-device" source="npm" />
 	<plugin name="cordova-plugin-geofence" source="npm" />
+    <plugin name="cordova-plugin-geolocation" source="npm" />
 	<plugin name="cordova-plugin-inappbrowser" source="npm" />
 	<plugin name="cordova-plugin-network-information" source="npm" />
     <plugin name="cordova-plugin-networkinterface" source="npm" />
@@ -141,6 +142,16 @@
 		<splash src="resources/windows/splash/landscape.png" width="620" height="300" />
 		<splash src="resources/windows/splash/portrait.png" width="1152" height="1920" />
 	</platform>
+
+    <!-- Add description for GPS usage -->
+    <config-file platform="ios" parent="NSLocationAlwaysUsageDescription" overwrite="false">
+        <string>Your current location will be used to allow OpenGarage to trigger rules based on your location.</string>
+    </config-file>
+
+    <!-- Add description for GPS usage -->
+    <config-file platform="ios" parent="NSLocationWhenInUseUsageDescription" overwrite="false">
+        <string>Your current location will be used to configure OpenGarage.</string>
+    </config-file>
 
 	<!-- Android specific Configuration -->
 	<config-file platform="android" parent="/manifest" mode="merge">

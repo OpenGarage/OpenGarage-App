@@ -42,7 +42,7 @@ textarea {
   justify-content: center
 }
 
-.vertical-center .scroll {
+.vertical-center .scroll, .vertical-center.scroll-content-false {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -271,5 +271,17 @@ ui-cropper .loading{
 .settings {
   input {
     text-align: end
+  }
+}
+
+.geo-rule-setup {
+  height: 100%;
+
+  .map-container {
+    height: calc(100% - 228px)
+  }
+  .map {
+    height: 100%;
+    width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 <ion-view>
 	<ion-nav-title>{{$root.activeController.name}}</ion-nav-title>
-	<ion-content has-bouncing="false" class="vertical-center has-footer">
-		<div class="background" style="background-image:url({{$root.activeController.image}})" ng-show="$root.activeController.image"></div>
+	<ion-content has-bouncing="false" class="vertical-center has-footer" scroll="false">
+		<div class="background" ng-style="{'background-image':'url({{$root.activeController.image}})'}" ng-show="$root.activeController.image"></div>
 		<button class="door-button" ng-click="toggleDoor()">{{ $root.activeController.door ? "Close" : "Open" }}</button>
 	</ion-content>
 	<ion-footer-bar class="bar bar-footer center">
