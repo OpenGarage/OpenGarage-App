@@ -93,7 +93,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		    // Prevent any page change from occurring
 	        event.preventDefault();
 
-		    Utils.storage.get( [ "activeController", "controllers" ], function( data ) {
+		    Utils.storage.get( [ "activeController", "controllers", "cloudToken" ], function( data ) {
 
 				try {
 					$rootScope.controllers = JSON.parse( data.controllers );
@@ -114,7 +114,11 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 
 					Utils.updateController();
 		        } else {
-					$state.go( "app.controllerSelect" );
+					if ( $rootScope.controllers.length || data.cloudToken ) {
+						$state.go( "app.controllerSelect" );
+					} else {
+						$state.go( "login" );
+					}
 		        }
 		    } );
 
@@ -124,8 +128,9 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		// Resize the main content view to fit when the window changes size
 		angular.element( window ).on( "resize", function() {
 			$rootScope.$broadcast( "window:resize" );
-			if ( window.innerWidth > 768 ) {
-				document.getElementById( "mainContent" ).width = window.innerWidth - 275;
+			var content = document.getElementById( "mainContent" );
+			if ( content && window.innerWidth > 768 ) {
+				content.width = window.innerWidth - 275;
 			}
 		} );
 	} )
@@ -154,6 +159,11 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 
 		// Define all available routes and their associated controllers
 		$stateProvider
+			.state( "login", {
+				url: "/login",
+				templateUrl: "templates/login.html",
+				controller: "LoginCtrl"
+			} )
 
 			// Used as the parent route after authentication is complete allowing the same header
 			// and side menu's to be used throughout all child views

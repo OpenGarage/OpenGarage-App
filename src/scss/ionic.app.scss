@@ -69,6 +69,46 @@ textarea {
   color: #fff !important
 }
 
+.bar-footer button {
+  font-size: larger !important
+}
+
+#login {
+  background: #1c2627 url("../img/login_bg.jpg") no-repeat center center;
+  background-size: cover;
+
+  .login-content {
+    max-width: 400px;
+    margin: 0 auto
+  }
+
+  .scroll-content {
+    display: table !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    form {
+      display: table-cell;
+      vertical-align: middle;
+
+      .header {
+        padding-bottom: 20px;
+
+        img {
+          display: block;
+          width: 80%;
+          margin: 0 auto;
+        }
+      }
+
+      .button.button-light.active, .button.button-light.activated {
+        color: #fff;
+        opacity: inherit;
+      }
+    }
+  }
+}
+
 .thumb-container,
 .thumb-container img {
   height: 100%;

@@ -8,6 +8,8 @@ img/Roboto-Regular.ttf
 img/Roboto-Regular.woff2
 img/Roboto-Thin.ttf
 img/Roboto-Thin.woff2
+img/login_bg.jpg
+img/logo.png
 img/placeholder.png
 js/app.min.js
 templates/addController.html
@@ -18,6 +20,7 @@ templates/crop.html
 templates/help.html
 templates/history.html
 templates/home.html
+templates/login.html
 templates/menu.html
 templates/newControllerSetup.html
 templates/settings.html
@@ -33,4 +36,4 @@ index.html
 NETWORK:
 *
 
-# hash: d60d693411e30ad0b2871c0b9140208790d92098de2676f836928f536dd680b3
+# hash: d5275a210e2138ee8ec275fc6beef1b15b4388dc4af3822a9cbc6a9f4b023875

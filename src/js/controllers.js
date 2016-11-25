@@ -2,6 +2,36 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.cloud" ] )
 
+	.controller( "LoginCtrl", function( $scope, $rootScope, $state, $ionicPopup, Cloud ) {
+		$scope.data = {};
+
+		$scope.submit = function() {
+			if ( !$scope.data.username ) {
+
+				// If no email is provided, throw an error
+				$ionicPopup.alert( {
+					template: "<p class='center'>Please enter a username to continue.</p>"
+				} );
+			} else if ( !$scope.data.password ) {
+
+				// If no password is provided, throw an error
+				$ionicPopup.alert( {
+					template: "<p class='center'>Please enter a password to continue.</p>"
+				} );
+			} else {
+				Cloud.login( $scope.data.username, $scope.data.password, function() {
+					Cloud.sync( function() {
+						$state.go( "app.controllerSelect" );
+					} );
+				} );
+			}
+		};
+
+		$scope.skipCloud = function() {
+			$state.go( "app.controllerSelect" );
+		};
+	} )
+
 	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils, Cloud ) {
 		$scope.data = {
 			showDelete: false,

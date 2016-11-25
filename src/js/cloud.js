@@ -57,6 +57,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                             "cloudToken": result.data.token,
                             "cloudDataToken": sjcl.codec.hex.fromBits( sjcl.hash.sha256.hash( pass ) )
                         } );
+                        $rootScope.isSynced = true;
                     }
                     callback( result.data.loggedin );
                 }, function() {

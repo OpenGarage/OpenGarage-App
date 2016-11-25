@@ -1,0 +1,43 @@
+<ion-view id="login" hide-nav-bar="true">
+    <ion-content padding="true" scroll="false">
+        <form>
+            <div class="row responsive-md">
+                <div class="col login-content">
+                    <div class="header padding text-center">
+                        <img src="img/logo.png" alt="OpenGarage" />
+                    </div>
+                    <div class="list">
+                        <label class="item item-input">
+                            <input type="text" name="username" ng-model="data.username" placeholder="Username">
+                        </label>
+                        <label class="item item-input">
+                            <input type="password" name="password" ng-model="data.password" placeholder="Password">
+                        </label>
+                    </div>
+                    <button class="button button-block button-positive" ng-click="submit()">
+                        Log In
+                    </button>
+                    <div class="row row-no-padding">
+                        <div class="col">
+                            <button class="button button-clear button-light" ng-click="$root.open('https://opengarage.io/wp-login.php?action=lostpassword')">
+                                Forgot password?
+                            </button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="button button-clear button-light" ng-click="$root.open('https://opengarage.io/wp-login.php?action=register')">
+                                Sign up
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row row-no-padding">
+                        <div class="col center">
+                            <button class="button button-clear button-light" ng-click="skipCloud()">
+                                Proceed without logging in...
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
