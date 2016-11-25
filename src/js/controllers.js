@@ -149,11 +149,23 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		};
 	} )
 
-	.controller( "HistoryCtrl", function( $scope, Utils ) {
+	.controller( "HistoryCtrl", function( $scope, $filter, Utils ) {
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			Utils.getLogs( function( reply ) {
 				if ( reply ) {
+					var i, current, day;
+
 					$scope.isLocal = true;
+
+					for ( i = 0; i < reply.length; i++ ) {
+						current = new Date( reply[ i ][ 0 ] * 1000 ).toDateString();
+
+						if ( current !== day ) {
+							day = current;
+							reply.splice( i, 0, { isDivider: "true", day: current } );
+						}
+					}
+
 					$scope.logs = reply;
 				} else {
 					$scope.isLocal = false;

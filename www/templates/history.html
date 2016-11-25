@@ -4,19 +4,18 @@
 			<h1>Local Connection Required</h1>
 			<p>OpenGarage log data can only be accessed on the same network. Please ensure the same WiFi network is being used and try again.</p>
 		</div>
-		<div ng-show="isLocal" class="history padding">
-			<table>
-				<tr>
-					<th>Time</th>
-					<th>Status</th>
-					<th>Distance (cm)</th>
-				</tr>
-				<tr ng-repeat="entry in logs">
-					<td>{{ entry[ 0 ] * 1000 | date: "M-d-yy h:mm:ss a" }}</td>
-					<td>{{ entry[ 1 ] ? "Opened" : "Closed" }}</td>
-					<td>{{ entry[ 2 ] }}</td>
-				</tr>
-			</table>
+		<div ng-show="isLocal" class="padding">
+			<ion-list class="list-inset">
+				<ion-item ng-repeat="entry in logs" ng-class="{'item-divider': entry.isDivider}">
+					<span ng-if="entry.isDivider">{{entry.day}}</span>
+					<span ng-if="!entry.isDivider">
+						{{ entry[ 0 ] * 1000 | date: "h:mm:ss a" }}
+					</span>
+					<span class="item-note" ng-if="!entry.isDivider">
+						{{ entry[ 1 ] ? "Opened" : "Closed" }}
+					</span>
+				</ion-item>
+			</ion-list>
 		</div>
 	</ion-content>
 </ion-view>
