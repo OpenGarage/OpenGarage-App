@@ -92,6 +92,8 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 			if ( window.ThreeDeeTouch ) {
 				Utils.updateQuickLinks();
 
+				window.ThreeDeeTouch.enableLinkPreview();
+
 				window.ThreeDeeTouch.onHomeIconPressed = function( payload ) {
 
 					var data = payload.type.split( "-" );
