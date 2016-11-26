@@ -86,9 +86,9 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                         // Handle how to merge when cloud is populated
                         $ionicActionSheet.show( {
                             buttons: [
-                                { text: "Merge" },
-                                { text: "Replace local with cloud" },
-                                { text: "Replace cloud with local" }
+                                { text: "<i class='icon ion-merge'></i> Merge" },
+                                { text: "<i class='icon ion-ios-cloud-download'></i> Replace local with cloud" },
+                                { text: "<i class='icon ion-ios-cloud-upload'></i> Replace cloud with local" }
                             ],
                             titleText: "Select Merge Method",
                             cancelText: "Cancel",

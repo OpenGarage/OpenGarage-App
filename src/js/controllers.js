@@ -214,9 +214,9 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.showAddController = function() {
 			$ionicActionSheet.show( {
 				buttons: [
-					{ text: "Add by IP" },
-					{ text: "Add by Blynk Token" },
-					{ text: "Setup New Device" }
+					{ text: "<i class='icon ion-plus-circled'></i> Add by IP" },
+					{ text: "<i class='icon ion-network'></i> Add by Blynk Token" },
+					{ text: "<i class='icon ion-ios-color-wand'></i> Setup New Device" }
 				],
 				titleText: "Add Controller",
 				cancelText: "Cancel",
@@ -269,6 +269,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				return;
 			}
 
+			$scope.currentIndex = to;
 			Utils.setController( to, startInterval );
 		};
 
