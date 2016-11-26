@@ -82,8 +82,8 @@ gulp.task( "bump", function() {
 gulp.task( "parse-args", function() {
 	gulp.src( "config.xml" )
 		.pipe( replace( /(version=\")[\d|\.]+(\"\n)/, "$1" + pkg.version + "$2" ) )
+		.pipe( replace( /(CFBundleVersion=\")[\d|\.]+(\"\n)/g, "$1" + pkg.version + "$2" ) )
 		.pipe( replace( /(versionCode=\")\d+/g, "$1" + parseInt( pkg.build, 10 ) ) )
-		.pipe( replace( /(CFBundleVersion=\")\d+/g, "$1" + parseInt( pkg.build, 10 ) ) )
 		.pipe( replace( /(<string>)\d+(<\/string>)/, "$1" + parseInt( pkg.build, 10 ) + "$2" ) )
 		.pipe( gulp.dest( "." ) );
 
