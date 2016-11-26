@@ -147,15 +147,34 @@ angular.module( "opengarage.utils", [] )
 					.then( function() { return getControllerSettings( save ); } )
 					.then( function() { return getControllerOptions( save ); } )
 					.then( function() {
-						var index = $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": controller.mac } ) || [] )[ 0 ] );
+						var index = getControllerIndex();
 
-						if ( index >= 0 ) {
+						if ( index >= 0 && controller.mac === $rootScope.activeController.mac ) {
 							$rootScope.controllers[ index ] = controller;
 							$rootScope.activeController = controller;
 							$rootScope.$broadcast( "controllerUpdated" );
 							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
 						}
 					} );
+	        },
+	        getControllerIndex = function( mac ) {
+				mac = mac || $rootScope.activeController.mac;
+
+				for ( var i = 0; i < $rootScope.controllers.length; i++ ) {
+					if ( $rootScope.controllers[ i ].mac === mac ) {
+						return i;
+					}
+				}
+				return null;
+	        },
+	        setController = function( controller, callback ) {
+				callback = callback || function() {};
+
+				cancelPendingHttp();
+				$rootScope.activeController = typeof controller === "object" ? controller : $rootScope.controllers[ controller ];
+				$rootScope.connected = false;
+				updateController();
+				storage.set( { activeController: JSON.stringify( $rootScope.activeController ) }, callback );
 	        },
 			addController = function( data, callback ) {
 				callback = callback || function() {};
@@ -250,7 +269,7 @@ angular.module( "opengarage.utils", [] )
 	                suppressLoader: typeof suppressLoader !== "undefined" ? suppressLoader : true,
 					timeout: 5000,
 					config: {
-						retryCount: 0
+						retryCount: 4
 					}
 	            } ).then(
 					function( result ) {
@@ -357,7 +376,7 @@ angular.module( "opengarage.utils", [] )
 									suppressLoader: true,
 									timeout: 6000,
 									config: {
-										retryCount: 0
+										retryCount: 4
 									}
 								} )
 								.then( function( result ) {
@@ -395,6 +414,15 @@ angular.module( "opengarage.utils", [] )
 					callback( password );
 				} );
 			},
+			cancelPendingHttp = function() {
+				$http = $http || $injector.get( "$http" );
+
+				$http.pendingRequests.forEach( function( pendingReq ) {
+					if ( pendingReq.cancel ) {
+						pendingReq.cancel.resolve();
+					}
+				} );
+			},
 			$http, $q, $filter, $ionicPopup, $ionicModal;
 
 	    if ( isFireFox ) {
@@ -412,6 +440,8 @@ angular.module( "opengarage.utils", [] )
 	        getControllerSettings: getControllerSettings,
 	        getControllerOptions: getControllerOptions,
 	        updateController: updateController,
+	        setController: setController,
+	        getControllerIndex: getControllerIndex,
 	        checkNewController: checkNewController,
 			showAddController: function( callback ) {
 				callback = callback || function() {};
@@ -499,7 +529,6 @@ angular.module( "opengarage.utils", [] )
 				var promise;
 
 				if ( auth || ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
-					$rootScope.$broadcast( "loading:show" );
 					promise = $http( {
 						method: "POST",
 						url: "https://openthings.io/wp-admin/admin-ajax.php",
@@ -512,8 +541,6 @@ angular.module( "opengarage.utils", [] )
 								url: "https://openthings.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
-							} ).then( function() {
-								$rootScope.$broadcast( "loading:hide" );
 							} );
 						}, 1000 );
 					} );

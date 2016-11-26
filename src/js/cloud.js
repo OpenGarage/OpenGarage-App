@@ -168,7 +168,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                             }
                             callback( false, result.data.message );
                         } else {
-                            Utils.storage.set( { "cloudToken":result.data.token } );
+                            Utils.storage.set( { "cloudToken": result.data.token } );
                             var sites;
 
                             try {
@@ -223,7 +223,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                             }
                             callback( false, result.data.message );
                         } else {
-                            Utils.storage.set( { "cloudToken":result.data.token } );
+                            Utils.storage.set( { "cloudToken": result.data.token } );
                             callback( result.data.success );
                         }
                     }, function() {

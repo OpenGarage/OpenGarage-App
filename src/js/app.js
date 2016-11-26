@@ -240,9 +240,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 							invalidOrg = ( $rootScope.activeController && filterFilter( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ).length === 0 ) ? true : false;
 
 						if ( !$rootScope.activeController && total === 1 ) {
-							$rootScope.activeController = $rootScope.controllers[ 0 ];
-							Utils.updateController();
-							Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+							Utils.setController( 0 );
 							return;
 						}
 
@@ -345,20 +343,22 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				request: function( config ) {
 
 					// When an AJAX request to the controller is started, fire an event to show a loading message
-					if ( !config.suppressLoader && config.url.match( /^https?/ ) ) {
+					if ( config.url.match( /^https?/ ) ) {
 
 						// Change timeout to a promise we can cancel
-						var canceller = $q.defer();
+						config.cancel = $q.defer();
 
 						// Set the timeout to the canceller promise
-						config.timeout = canceller.promise;
+						config.timeout = config.cancel.promise;
 
 						// Set the current retry count to 0
 						if ( typeof config.retryCount !== "number" ) {
 							config.retryCount = 0;
 						}
 
-						$rootScope.$broadcast( "loading:show", { canceller: canceller } );
+						if ( !config.suppressLoader ) {
+							$rootScope.$broadcast( "loading:show", { canceller: config.cancel } );
+						}
 					}
 
 					return config;

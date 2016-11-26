@@ -51,10 +51,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.hasCamera = navigator.camera && navigator.camera.getPicture ? true : false;
 
 		$scope.setController = function( index ) {
-			$rootScope.activeController = $rootScope.controllers[ index ];
-			$rootScope.connected = false;
-			Utils.updateController();
-			Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+			Utils.setController( index );
 
 			$ionicHistory.nextViewOptions( {
 				historyRoot: true
@@ -64,7 +61,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		};
 
 		$scope.deleteController = function( index ) {
-			if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+			if ( Utils.getControllerIndex() === index ) {
 				delete $rootScope.activeController;
 				Utils.storage.remove( "activeController" );
 			}
@@ -89,7 +86,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			$event.stopPropagation();
 
 			if ( $scope.data.showDelete ) {
-				if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+				if ( Utils.getControllerIndex() === index ) {
 					delete $rootScope.activeController.image;
 					Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
 				}
@@ -127,7 +124,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.uploadPhoto = function( index ) {
 			$scope.crop.hide();
 
-			if ( $rootScope.controllers.indexOf( ( $filter( "filter" )( $rootScope.controllers, { "mac": $rootScope.activeController.mac } ) || [] )[ 0 ] ) === index ) {
+			if ( Utils.getControllerIndex() === index ) {
 				$rootScope.activeController.image = $scope.data.cropped;
 				Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
 			}
@@ -249,35 +246,36 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	    };
 	} )
 
-	.controller( "HomeCtrl", function( $rootScope, $scope, $filter, $timeout, Utils ) {
-		var interval;
+	.controller( "HomeCtrl", function( $rootScope, $scope, $filter, $http, $timeout, Utils ) {
+		var startInterval = function() {
+				interval = setInterval( function() {
+					if ( $http.pendingRequests.length < 3 ) {
+						Utils.updateController();
+					}
+				}, 5000 );
+			},
+			interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;
 
 		$scope.changeController = function( direction ) {
-			var current = $rootScope.controllers.indexOf( $rootScope.activeController ),
+			clearInterval( interval );
+
+			var current = Utils.getControllerIndex(),
 				to = current + direction;
 
 			if ( current === -1 || to < 0 || to >= $rootScope.controllers.length ) {
 				return;
 			}
 
-			$rootScope.activeController = $rootScope.controllers[ to ];
-			$rootScope.connected = false;
-			Utils.updateController();
-			Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
-			$timeout( function() {
-				$scope.$apply();
-			} );
+			Utils.setController( to, startInterval );
 		};
 
 		$scope.$on( "$ionicView.beforeLeave", function() {
 			clearInterval( interval );
 		} );
 
-		$scope.$on( "$ionicView.beforeEnter", function() {
-			interval = setInterval( Utils.updateController, 3000 );
-		} );
+		$scope.$on( "$ionicView.beforeEnter", startInterval );
 
 		$rootScope.$on( "controllerUpdated", function() {
 			$timeout( function() {
