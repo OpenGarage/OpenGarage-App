@@ -268,9 +268,7 @@ angular.module( "opengarage.utils", [] )
 	                url: "http://192.168.4.1/js",
 	                suppressLoader: typeof suppressLoader !== "undefined" ? suppressLoader : true,
 					timeout: 5000,
-					config: {
-						retryCount: 4
-					}
+					retryCount: 3
 	            } ).then(
 					function( result ) {
 						if ( !result.data.ssids ) {
@@ -375,9 +373,7 @@ angular.module( "opengarage.utils", [] )
 									url: "http://" + baseip + "." + ip + "/jc",
 									suppressLoader: true,
 									timeout: 6000,
-									config: {
-										retryCount: 4
-									}
+									retryCount: 3
 								} )
 								.then( function( result ) {
 									if ( result.data && result.data.mac ) {
