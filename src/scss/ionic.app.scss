@@ -188,6 +188,34 @@ ui-cropper .loading{
   opacity: 0.7
 }
 
+.home {
+  .prev {
+    left: 15px;
+  }
+
+  .next {
+    right: 15px;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    margin-top: -32px;
+    font-size: 64px;
+    color: #E2E2E2;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .arrow:hover {
+    color: #777;
+  }
+
+  .arrow:active {
+    color: #000;
+  }
+}
 .door-button {
   background-color: #444;
   color: #fff;

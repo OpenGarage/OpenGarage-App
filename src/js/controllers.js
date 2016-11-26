@@ -257,6 +257,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;
+		$scope.currentIndex = Utils.getControllerIndex();
 
 		$scope.changeController = function( direction ) {
 			clearInterval( interval );
@@ -278,6 +279,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.$on( "$ionicView.beforeEnter", startInterval );
 
 		$rootScope.$on( "controllerUpdated", function() {
+			$scope.currentIndex = Utils.getControllerIndex();
 			$timeout( function() {
 				$scope.$apply();
 			} );
