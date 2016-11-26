@@ -649,6 +649,71 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 				);
+			},
+			selectPhoto: function( $event, index, deletePhoto ) {
+				$ionicModal = $ionicModal || $injector.get( "$ionicModal" );
+
+				var scope = $rootScope.$new(),
+					fileInput = angular.element( document.getElementById( "photoUpload" ) );
+
+				scope.data = {
+					image: false,
+					cropped: false,
+					index: false
+				};
+
+				scope.uploadPhoto = function( index ) {
+					scope.crop.hide();
+
+					if ( getControllerIndex() === index ) {
+						$rootScope.activeController.image = scope.data.cropped;
+						storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+					}
+
+					$rootScope.controllers[ index ].image = scope.data.cropped;
+			        storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			        $rootScope.$broadcast( "triggerCloudSave" );
+				};
+
+				$ionicModal.fromTemplateUrl( "templates/crop.html", {
+					scope: scope
+				} ).then( function( modal ) {
+					scope.crop = modal;
+				} );
+
+				$event.stopPropagation();
+
+				if ( deletePhoto ) {
+					if ( getControllerIndex() === index ) {
+						delete $rootScope.activeController.image;
+						storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
+					}
+
+					delete $rootScope.controllers[ index ].image;
+			        storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+			        $rootScope.$broadcast( "triggerCloudSave" );
+					return;
+				}
+
+				fileInput.parent()[ 0 ].reset();
+
+				fileInput.one( "change", function() {
+					var file = fileInput[ 0 ].files[ 0 ];
+
+					if ( !file.type || !file.type.match( "image.*" ) ) {
+						return;
+					}
+
+					var reader = new FileReader();
+					reader.onload = function( evt ) {
+						scope.data.image = evt.target.result;
+						scope.data.index = index;
+						scope.crop.show();
+					};
+					reader.readAsDataURL( file );
+				} );
+
+				fileInput[ 0 ].click();
 			}
 	    };
 } ] );

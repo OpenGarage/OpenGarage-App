@@ -2019,6 +2019,7 @@ to{transform:scale(1);opacity:1}}
 .link{color:#387ef5;text-decoration:underline;cursor:pointer;word-break:break-word}
 textarea{background:0 0}
 .center{text-align:center;-ms-flex-pack:center;justify-content:center}
+.pointer{cursor:pointer}
 .vertical-center .scroll,.vertical-center.scroll-content-false{display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center}
 .full-height,.scroll-content:not(.cancel-height)>.scroll{height:100%}
 .limit-width{max-width:800px;margin:0 auto}
@@ -2047,6 +2048,7 @@ ui-cropper .loading{width:100%;height:100%;font-size:16px;font-weight:700;displa
 .home .arrow{position:absolute;top:50%;margin-top:-32px;font-size:64px;color:#E2E2E2;font-weight:700;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .home .arrow:hover{color:#777}
 .home .arrow:active{color:#000}
+.home .add-photo{position:absolute;bottom:15px;right:15px;font-size:14px;opacity:.5}
 .door-button{background-color:#444;color:#fff;border-radius:100px;font-size:3em;font-weight:100;height:200px;line-height:200px;margin:auto;position:relative;text-align:center;width:200px;display:block}
 .round-button{border-radius:100px;height:31px;width:31px}
 .settings input{text-align:end}

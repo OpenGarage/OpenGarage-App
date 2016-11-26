@@ -34,21 +34,10 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils, Cloud ) {
 		$scope.data = {
-			showDelete: false,
-			image: false,
-			cropped: false,
-			index: false
+			showDelete: false
 		};
 
-		var fileInput = angular.element( document.getElementById( "photoUpload" ) );
-
-		$ionicModal.fromTemplateUrl( "templates/crop.html", {
-			scope: $scope
-		} ).then( function( modal ) {
-			$scope.crop = modal;
-		} );
-
-		$scope.hasCamera = navigator.camera && navigator.camera.getPicture ? true : false;
+		$scope.selectPhoto = Utils.selectPhoto;
 
 		$scope.setController = function( index ) {
 			Utils.setController( index );
@@ -80,61 +69,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 		$scope.getTime = function( timestamp ) {
 			return new Date( timestamp ).toLocaleString();
-		};
-
-		$scope.selectPhoto = function( $event, index ) {
-			$event.stopPropagation();
-
-			if ( $scope.data.showDelete ) {
-				if ( Utils.getControllerIndex() === index ) {
-					delete $rootScope.activeController.image;
-					Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
-				}
-
-				delete $rootScope.controllers[ index ].image;
-		        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-				Cloud.saveSites();
-		        $timeout( function() {
-					$scope.$apply();
-		        } );
-				return;
-			}
-
-			fileInput.parent()[ 0 ].reset();
-
-			fileInput.one( "change", function() {
-				var file = fileInput[ 0 ].files[ 0 ];
-
-				if ( !file.type || !file.type.match( "image.*" ) ) {
-					return;
-				}
-
-				var reader = new FileReader();
-				reader.onload = function( evt ) {
-					$scope.data.image = evt.target.result;
-					$scope.data.index = index;
-					$scope.crop.show();
-				};
-				reader.readAsDataURL( file );
-			} );
-
-			fileInput[ 0 ].click();
-		};
-
-		$scope.uploadPhoto = function( index ) {
-			$scope.crop.hide();
-
-			if ( Utils.getControllerIndex() === index ) {
-				$rootScope.activeController.image = $scope.data.cropped;
-				Utils.storage.set( { activeController: JSON.stringify( $rootScope.activeController ) } );
-			}
-
-			$rootScope.controllers[ index ].image = $scope.data.cropped;
-	        Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-			Cloud.saveSites();
-	        $timeout( function() {
-				$scope.$apply();
-	        } );
 		};
 
 		$scope.changeSync = function() {
@@ -257,6 +191,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;
+		$scope.selectPhoto = Utils.selectPhoto;
 		$scope.currentIndex = Utils.getControllerIndex();
 
 		$scope.changeController = function( direction ) {

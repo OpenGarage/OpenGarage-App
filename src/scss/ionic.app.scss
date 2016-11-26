@@ -43,6 +43,10 @@ textarea {
   justify-content: center
 }
 
+.pointer {
+  cursor: pointer
+}
+
 .vertical-center .scroll, .vertical-center.scroll-content-false {
   display: flex;
   flex-direction: column;
@@ -214,6 +218,14 @@ ui-cropper .loading{
 
   .arrow:active {
     color: #000;
+  }
+
+  .add-photo {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 14px;
+    opacity: 0.5;
   }
 }
 .door-button {
