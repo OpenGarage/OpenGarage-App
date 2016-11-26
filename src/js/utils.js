@@ -175,6 +175,7 @@ angular.module( "opengarage.utils", [] )
 				$rootScope.connected = false;
 				updateController();
 				storage.set( { activeController: JSON.stringify( $rootScope.activeController ) }, callback );
+				updateQuickLinks();
 	        },
 			addController = function( data, callback ) {
 				callback = callback || function() {};
@@ -223,6 +224,7 @@ angular.module( "opengarage.utils", [] )
 							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 							$rootScope.$broadcast( "triggerCloudSave" );
+							updateQuickLinks();
 							callback( true );
 						}, data.ip );
 					}
@@ -250,6 +252,7 @@ angular.module( "opengarage.utils", [] )
 							$rootScope.controllers.push( result );
 							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 							$rootScope.$broadcast( "triggerCloudSave" );
+							updateQuickLinks();
 							callback( true );
 						} );
 					}
@@ -347,6 +350,7 @@ angular.module( "opengarage.utils", [] )
 					} );
 					storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
 					$rootScope.$broadcast( "triggerCloudSave" );
+					updateQuickLinks();
 				} );
 			},
 			scanLocalNetwork = function( callback ) {
@@ -410,6 +414,26 @@ angular.module( "opengarage.utils", [] )
 					callback( password );
 				} );
 			},
+			updateQuickLinks = function() {
+				window.ThreeDeeTouch.isAvailable( function( isAvailable ) {
+					if ( !isAvailable || !$rootScope.controllers.length ) {
+						return;
+					}
+
+					var links = [],
+						limit = $rootScope.controllers.length < 4 ? $rootScope.controllers.length : 4;
+
+					for ( var i = 0; i < limit; i++ ) {
+						links.push( {
+							type: "toggle-" + $rootScope.controllers[ i ].mac,
+							title: "Toggle " + $rootScope.controllers[ i ].name,
+							iconType: "Update"
+						} );
+					}
+
+					window.ThreeDeeTouch.configureQuickActions( links );
+				} );
+			},
 			cancelPendingHttp = function() {
 				$http = $http || $injector.get( "$http" );
 
@@ -439,6 +463,7 @@ angular.module( "opengarage.utils", [] )
 	        setController: setController,
 	        getControllerIndex: getControllerIndex,
 	        checkNewController: checkNewController,
+	        updateQuickLinks: updateQuickLinks,
 			showAddController: function( callback ) {
 				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
@@ -714,26 +739,6 @@ angular.module( "opengarage.utils", [] )
 				} );
 
 				fileInput[ 0 ].click();
-			},
-			updateQuickLinks: function() {
-				window.ThreeDeeTouch.isAvailable( function( isAvailable ) {
-					if ( !isAvailable || !$rootScope.controllers.length ) {
-						return;
-					}
-
-					var links = [],
-						limit = $rootScope.controllers.length < 4 ? $rootScope.controllers.length : 4;
-
-					for ( var i = 0; i < limit; i++ ) {
-						links.push( {
-							type: "toggle-" + $rootScope.controllers[ i ].mac,
-							title: "Toggle " + $rootScope.controllers[ i ].name,
-							iconType: "Task"
-						} );
-					}
-
-					window.ThreeDeeTouch.configureQuickActions( links );
-				} );
 			}
 	    };
 } ] );

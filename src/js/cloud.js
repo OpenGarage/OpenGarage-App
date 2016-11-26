@@ -81,6 +81,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                         var finish = function() {
 							$rootScope.controllers = sites;
                             Utils.storage.set( { "controllers": JSON.stringify( sites ) }, saveSites );
+                            Utils.updateQuickLinks();
                         };
 
                         // Handle how to merge when cloud is populated
@@ -129,6 +130,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                         if ( data !== false ) {
                             $rootScope.controllers = data;
                             Utils.storage.set( { "controllers": JSON.stringify( data ) }, callback );
+                            Utils.updateQuickLinks();
                         }
                     } );
                 } );
