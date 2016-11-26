@@ -81,6 +81,7 @@
 	<plugin name="cordova-plugin-device" source="npm" />
 	<plugin name="cordova-plugin-geofence" source="npm" />
     <plugin name="cordova-plugin-geolocation" source="npm" />
+    <plugin name="cordova-plugin-safariviewcontroller" source="npm" />
 	<plugin name="cordova-plugin-inappbrowser" source="npm" />
 	<plugin name="cordova-plugin-network-information" source="npm" />
     <plugin name="cordova-plugin-networkinterface" source="npm" />

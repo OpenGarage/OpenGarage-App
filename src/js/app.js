@@ -3,14 +3,29 @@
 // OpenGarage
 // Controllers are found in controllers.js and utilities are located in utils.js
 angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", "opengarage.utils", "opengarage.cloud" ] )
-	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $ionicHistory, $location, $document, $window, $rootScope, $filter, $ionicLoading, $ionicPopup, $timeout, Utils, Cloud ) {
+	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $document, $window, $rootScope, $filter, $ionicLoading, $timeout, Utils, Cloud ) {
 
 		// Ready function fires when the DOM is ready and after deviceready event is fired if Cordova is being used
 		$ionicPlatform.ready( function() {
 
 			// Map inAppBrowser to rootScope
 			$rootScope.open = function( url ) {
-				window.open( url, "_blank", "toolbarposition=top" );
+				if ( window.SafariViewController ) {
+					window.SafariViewController.isAvailable( function( available ) {
+						if ( available ) {
+							window.SafariViewController.show( {
+								url: url,
+								tintColor: "#444444",
+								barColor: "#444444",
+								controlTintColor: "#ffffff"
+							} );
+						} else {
+							window.open( url, "_blank", "toolbarposition=top" );
+						}
+					} );
+				} else {
+					window.open( url, "_blank", "toolbarposition=top" );
+				}
 			};
 
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
