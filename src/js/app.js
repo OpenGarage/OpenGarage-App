@@ -553,12 +553,14 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 						scope.rule.start = scope.rule.start || { lat: 30.296519, lng: -97.730185 };
 						scope.rule.enable = scope.rule.enable || false;
 
-						navigator.geolocation.getCurrentPosition( function( position ) {
-							scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };
-							scope.updateMap();
-						}, function() {
-							scope.updateMap();
-						}, { timeout: 10000 } );
+						$rootScope.startGeofence( function() {
+							navigator.geolocation.getCurrentPosition( function( position ) {
+								scope.rule.start = { lat: position.coords.latitude, lng: position.coords.longitude };
+								scope.updateMap();
+							}, function() {
+								scope.updateMap();
+							}, { timeout: 10000 } );
+						} );
 					}
 				} );
 			}
