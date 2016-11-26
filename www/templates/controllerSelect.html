@@ -12,7 +12,7 @@
 		</ion-item>
 
 		<ion-list show-delete="data.showDelete" show-reorder="data.showDelete" ng-show="$root.controllers.length">
-			<ion-item class="center item-thumbnail-left" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
+			<ion-item class="center item-thumbnail-left item-text-wrap" ng-click="setController( $index )" ng-repeat="controller in $root.controllers track by $index">
 				<div class="thumb-container">
 					<img src="img/placeholder.png" ng-if="!controller.image">
 					<img ng-src="{{controller.image}}" ng-if="controller.image">
