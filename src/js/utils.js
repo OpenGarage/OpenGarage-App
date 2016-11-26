@@ -714,6 +714,26 @@ angular.module( "opengarage.utils", [] )
 				} );
 
 				fileInput[ 0 ].click();
+			},
+			updateQuickLinks: function() {
+				window.ThreeDeeTouch.isAvailable( function( isAvailable ) {
+					if ( !isAvailable || !$rootScope.controllers.length ) {
+						return;
+					}
+
+					var links = [],
+						limit = $rootScope.controllers.length < 4 ? $rootScope.controllers.length : 4;
+
+					for ( var i = 0; i < limit; i++ ) {
+						links.push( {
+							type: "toggle-" + $rootScope.controllers[ i ].mac,
+							title: "Toggle " + $rootScope.controllers[ i ].name,
+							iconType: "Task"
+						} );
+					}
+
+					window.ThreeDeeTouch.configureQuickActions( links );
+				} );
 			}
 	    };
 } ] );

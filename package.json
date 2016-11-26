@@ -47,6 +47,7 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
+    "cordova-plugin-3dtouch",
     "cordova-plugin-geofence",
     "cordova-plugin-geolocation",
     "cordova-plugin-inappbrowser",

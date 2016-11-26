@@ -89,6 +89,22 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				window.geofence.onNotificationClicked = handleGeofence;
 			}
 
+			if ( window.ThreeDeeTouch ) {
+				Utils.updateQuickLinks();
+
+				window.ThreeDeeTouch.onHomeIconPressed = function( payload ) {
+
+					var data = payload.type.split( "-" );
+
+					if ( data[ 0 ] === "toggle" ) {
+						var controller = $filter( "filter" )( $rootScope.controllers, { "mac": data[ 1 ] } );
+						if ( controller ) {
+							Utils.toggleDoor( controller.auth );
+						}
+					}
+				};
+			}
+
 		    // Hide the splash screen after 500ms of the app being ready
 		    $timeout( function() {
 		        try {
