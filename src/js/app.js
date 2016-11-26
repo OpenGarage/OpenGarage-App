@@ -57,11 +57,12 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 
 						$rootScope.$apply( function() {
 							geofences.forEach( function( geo ) {
-								var controller = $filter( "filter" )( $rootScope.controllers, { "mac": geo.notification.data.controller } );
+								var data = geo.notification.id.split( "-" ),
+									controller = $filter( "filter" )( $rootScope.controllers, { "mac": data[ 1 ] } );
 
 								if ( controller &&
-									( geo.notification.id === "open" && controller.door === 0 ) &&
-									( geo.notification.id === "close" && controller.door === 1 ) ) {
+									( data[ 0 ] === "open" && controller.door === 0 ) &&
+									( data[ 0 ] === "close" && controller.door === 1 ) ) {
 										Utils.toggleDoor( controller.auth );
 								}
 							} );
@@ -460,16 +461,15 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				scope.updateRule = function() {
 					$rootScope.startGeofence( function() {
 						window.geofence.addOrUpdate( {
-							id: scope.rule.direction,
+							id: scope.rule.direction + "-" + $rootScope.activeController.mac,
 							latitude: scope.rule.start.lat,
 							longitude: scope.rule.start.lng,
 							radius: scope.rule.radius,
 							transitionType: scope.rule.direction === "open" ? 1 : 2,
 							notification: {
-								title: "OpenGarage",
-								text: "Trying to " + scope.rule.direction + " the garage door...",
-								openAppOnClick: true,
-								data: { controller: $rootScope.activeController.mac }
+								title: "OpenGarage Reminder",
+								text: "Tap here to " + scope.rule.direction + " the garage door...",
+								openAppOnClick: true
 							}
 						}, function() {
 							window.geofence.getWatched( function( fences ) {
@@ -513,7 +513,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 
 				scope.updateMap = function() {
 					if ( !scope.rule.enable ) {
-						window.geofence.remove( scope.rule.direction, function() {
+						window.geofence.remove( scope.rule.direction + "-" + $rootScope.activeController.mac, function() {
 							window.geofence.getWatched( function( fences ) {
 								$rootScope.geoFences = JSON.parse( fences );
 							} );
@@ -541,7 +541,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				};
 
 				scope.$watch( "rule", function() {
-					var currentRule = $filter( "filter" )( $rootScope.geoFences, { "id": scope.rule.direction } )[ 0 ];
+					var currentRule = $filter( "filter" )( $rootScope.geoFences, { "id": scope.rule.direction + "-" + $rootScope.activeController.mac } )[ 0 ];
 
 					if ( currentRule ) {
 						scope.rule.radius = currentRule.radius;

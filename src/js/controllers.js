@@ -284,11 +284,16 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		} );
 	} )
 
-	.controller( "RulesCtrl", function( $scope ) {
-		$scope.geo = {
-			home: { direction: "open" },
-			away: { direction: "close" }
+	.controller( "RulesCtrl", function( $scope, $rootScope ) {
+		var reset = function() {
+			$scope.geo = {
+				home: { direction: "open" },
+				away: { direction: "close" }
+			};
+			$scope.set( "home" );
 		};
+
+		$scope.isAndroid = ionic.Platform.isAndroid();
 
 		$scope.set = function( type ) {
 			if ( type === "home" ) {
@@ -298,7 +303,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			}
 		};
 
-		$scope.isAndroid = ionic.Platform.isAndroid();
-
-		$scope.set( "home" );
+		$rootScope.$on( "controllerUpdated", reset );
+		reset();
 	} );
