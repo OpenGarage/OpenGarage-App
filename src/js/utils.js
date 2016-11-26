@@ -239,7 +239,7 @@ angular.module( "opengarage.utils", [] )
 				data.token ? data.token : null
 				);
 			},
-			checkNewController = function( callback ) {
+			checkNewController = function( callback, suppressLoader ) {
 				$http = $http || $injector.get( "$http" );
 				callback = callback || function() {};
 				$ionicModal = $ionicModal || $injector.get( "$ionicModal" );
@@ -247,7 +247,7 @@ angular.module( "opengarage.utils", [] )
 	            $http( {
 	                method: "GET",
 	                url: "http://192.168.4.1/js",
-	                suppressLoader: true,
+	                suppressLoader: typeof suppressLoader !== "undefined" ? suppressLoader : true,
 					timeout: 5000,
 					config: {
 						retryCount: 0
@@ -504,16 +504,14 @@ angular.module( "opengarage.utils", [] )
 						method: "POST",
 						url: "https://openthings.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" ),
-						suppressLoader: true
+						data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
 					} ).then( function() {
 						setTimeout( function() {
 							$http( {
 								method: "POST",
 								url: "https://openthings.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" ),
-								suppressLoader: true
+								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} ).then( function() {
 								$rootScope.$broadcast( "loading:hide" );
 							} );

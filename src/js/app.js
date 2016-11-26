@@ -88,28 +88,38 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		$rootScope.version = window.appVersion;
 
 	    // Define total loading requests
-	    $rootScope.loadingCount = 0;
+	    $rootScope.loadingQueue = [];
 
 	    // Initialize controllers array
 	    $rootScope.controllers = [];
 
 		// Automatically show a loading message on any AJAX request
 		$rootScope.$on( "loading:show", function( e, data ) {
+			var scope = $rootScope.$new();
 
-			$rootScope.loadingCount++;
-			$rootScope.canceller = data ? data.canceller.resolve : angular.noop;
+			scope.canceller = data ? data.canceller.resolve : function() {
+				$rootScope.$broadcast( "loading:hide" );
+			};
+
+			$rootScope.loadingQueue.push( scope.canceller );
 			$ionicLoading.show( {
-				template: "<ion-spinner></ion-spinner><br>One moment please<br><button class='button white icon-left ion-ios-close-outline button-clear' ng-click='$root.canceller()'>Cancel</button>"
+				template: "<ion-spinner></ion-spinner><br>One moment please<br><button class='button white icon-left ion-ios-close-outline button-clear' ng-click='canceller()'>Cancel</button>",
+				scope: scope
 			} );
 		} );
 
 		// Automatically hide the loading message after an AJAX request
 		$rootScope.$on( "loading:hide", function() {
 
-			$rootScope.loadingCount--;
-			if ( $rootScope.loadingCount <= 0 ) {
-				$rootScope.loadingCount = 0;
-				$ionicLoading.hide();
+			$rootScope.loadingQueue.pop();
+			$ionicLoading.hide();
+			if ( $rootScope.loadingQueue.length > 0 ) {
+				var scope = $rootScope.$new();
+				scope.canceller = $rootScope.loadingQueue[ $rootScope.loadingQueue.length - 1 ];
+				$ionicLoading.show( {
+					template: "<ion-spinner></ion-spinner><br>One moment please<br><button class='button white icon-left ion-ios-close-outline button-clear' ng-click='canceller()'>Cancel</button>",
+					scope: scope
+				} );
 			}
 		} );
 
@@ -335,7 +345,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				request: function( config ) {
 
 					// When an AJAX request to the controller is started, fire an event to show a loading message
-					if ( !config.suppressLoader ) {
+					if ( !config.suppressLoader && config.url.match( /^https?/ ) ) {
 
 						// Change timeout to a promise we can cancel
 						var canceller = $q.defer();
@@ -356,7 +366,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				response: function( response ) {
 
 					// If the request is to the controller, broadcast a hide loading message
-					if ( !response.config.suppressLoader ) {
+					if ( !response.config.suppressLoader && response.config.url.match( /^https?/ ) ) {
 						$rootScope.$broadcast( "loading:hide" );
 					}
 
@@ -369,7 +379,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 						error.canceled = true;
 					}
 
-					if ( !error.config.suppressLoader ) {
+					if ( !error.config.suppressLoader && error.config.url.match( /^https?/ ) ) {
 						$rootScope.$broadcast( "loading:hide" );
 					}
 

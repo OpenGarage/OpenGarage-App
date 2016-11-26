@@ -229,15 +229,13 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 					} else if ( index === 0 ) {
 						Utils.showAddController();
 					} else {
-						$rootScope.$broadcast( "loading:show" );
 						Utils.checkNewController( function( result ) {
-							$rootScope.$broadcast( "loading:hide" );
 							if ( !result ) {
 								$ionicPopup.alert( {
 									template: "<p class='center'>Please first connect the power to your OpenGarage. Once complete, connect this device to the wifi network broadcast by the OpenGarage (named OG_XXXXXX) and reopen this app.</p>"
 								} );
 							}
-						} );
+						}, false );
 					}
 					return true;
 				}
