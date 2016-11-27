@@ -145,7 +145,13 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		} );
 	} )
 
-	.controller( "MenuCtrl", function( $scope, $rootScope, $ionicActionSheet, $ionicPopup, $ionicSideMenuDelegate, Utils ) {
+	.controller( "MenuCtrl", function( $scope, $rootScope, $ionicActionSheet, $ionicPopup, $ionicSideMenuDelegate, $timeout, Utils ) {
+
+		$scope.sideMenuDraggable = Utils.getControllerIndex() === 0 ? true : false;
+
+		$rootScope.$on( "controllerUpdated", function() {
+			$scope.sideMenuDraggable = Utils.getControllerIndex() === 0 ? true : false;
+		} );
 
 		$scope.showAddController = function() {
 			$ionicActionSheet.show( {
