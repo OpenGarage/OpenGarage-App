@@ -561,6 +561,7 @@ angular.module( "opengarage.utils", [] )
 								method: "POST",
 								url: "https://openthings.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+				                suppressLoader: true,
 								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} );
 						}, 1000 );

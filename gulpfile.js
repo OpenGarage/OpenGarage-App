@@ -16,7 +16,6 @@ var gulp         = require( "gulp" ),               // Gulp
 	rename       = require( "gulp-rename" ),        // Rename Files & Directories
 	sass         = require( "gulp-sass" ),          // SASS Compilation
 	sh           = require( "shelljs" ),            // Command Line Tools
-	zip          = require( "gulp-zip" ),           // ZIP Packaging
 	jshint       = require( "gulp-jshint" ),        // JSHint syntax check
 	jscs         = require( "gulp-jscs" ),          // Javascript style checker
 	sassLint     = require( "gulp-sass-lint" ),     // SASS syntax/style check
@@ -42,7 +41,7 @@ sh.config.silent = true;
 
 // If undefined in our process, load our local file
 // (i.e. we aren't on an external server where we set these differently)
-if ( !process.env.PHONEGAP_BUILD_ACCESS_TOKEN ) {
+if ( !process.env.DEPLOY_HOST ) {
 	require( "dotenv" ).load();
 }
 
@@ -54,7 +53,7 @@ gulp.task( "default", function( callback ) {
 } );
 
 gulp.task( "build", function( callback ) {
-	runSequence( "default", "images", "make-pgbuild", "clean", callback );
+	runSequence( "default", "images", "clean", callback );
 } );
 
 gulp.task( "bump", function() {
@@ -110,20 +109,16 @@ gulp.task( "images", function( done ) {
 	} );
 } );
 
-// Build PhoneGap Build package and upload if possible
-gulp.task( "make-pgbuild", function( done ) {
-	gulp.src( [
-		"www/**", "!www/web.config", "config.xml", "resources/**", "hooks/**", "!**/.DS_Store"
-		], {
-			dot: true,
-			base: "./"
-		} )
-	.pipe( zip( "pgbuild-" + ( argv.release ? "release" : "debug" ) + ".zip" ) )
-	.pipe( gulp.dest( "build" ) );
+// Deploy application to the web
+gulp.task( "deploy", function( done ) {
+	if ( !process.env.DEPLOY_HOST ) {
+		done();
+		return;
+	}
 
-	sh.exec( "curl -s -X PUT -F file=@./build/pgbuild-" + ( argv.release ? "release" : "debug" ) + ".zip https://build.phonegap.com/api/v1/apps/?auth_token=" + process.env.PHONEGAP_BUILD_ACCESS_TOKEN,
+	sh.exec( "cd www; rsync -azp --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r * " + process.env.DEPLOY_HOST,
 		function() {
-			gulp.src( "" ).pipe( notify( "PhoneGap Build complete..." ) );
+			gulp.src( "" ).pipe( notify( "Webapp deploy complete..." ) );
 			done();
 		}
 	);
