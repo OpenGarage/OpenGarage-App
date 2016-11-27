@@ -415,6 +415,10 @@ angular.module( "opengarage.utils", [] )
 				} );
 			},
 			updateQuickLinks = function() {
+				if ( !window.ThreeDeeTouch ) {
+					return;
+				}
+
 				window.ThreeDeeTouch.isAvailable( function( isAvailable ) {
 					if ( !isAvailable || !$rootScope.controllers.length ) {
 						return;
