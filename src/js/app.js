@@ -2,8 +2,8 @@
 
 // OpenGarage
 // Controllers are found in controllers.js and utilities are located in utils.js
-angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", "opengarage.utils", "opengarage.cloud" ] )
-	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $document, $window, $rootScope, $filter, $ionicLoading, $timeout, Utils, Cloud ) {
+angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", "opengarage.utils", "opengarage.cloud", "opengarage.watch" ] )
+	.run( function( $state, $ionicPlatform, $ionicScrollDelegate, $document, $window, $rootScope, $filter, $ionicLoading, $timeout, Utils, Cloud, Watch ) {
 
 		// Ready function fires when the DOM is ready and after deviceready event is fired if Cordova is being used
 		$ionicPlatform.ready( function() {
@@ -105,6 +105,16 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 						}
 					}
 				};
+			}
+
+			if ( window.applewatch && window.navigator.simulator !== true ) {
+				window.applewatch.init( angular.noop );
+
+				window.toggleDoorByIndex = function( index ) {
+					Utils.toggleDoor( $rootScope.controllers[ index ].auth );
+				};
+
+				window.applewatch.callback.onLoadAppMainRequest = Watch.loadApp;
 			}
 
 		    // Hide the splash screen after 500ms of the app being ready

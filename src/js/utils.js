@@ -91,6 +91,11 @@ angular.module( "opengarage.utils", [] )
 	            return promise.then(
 					function( result ) {
 						if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
+							if ( result.data === "Invalid token." ) {
+								callback( false );
+								return;
+							}
+
 							$filter = $filter || $injector.get( "$filter" );
 							var filter = $filter( "filter" );
 
@@ -158,7 +163,11 @@ angular.module( "opengarage.utils", [] )
 					} );
 	        },
 	        getControllerIndex = function( mac ) {
-				mac = mac || $rootScope.activeController.mac;
+				if ( !$rootScope.activeController || !mac ) {
+					return null;
+				}
+
+				mac = mac || ( $rootScope.activeController === null ? "" : $rootScope.activeController.mac );
 
 				for ( var i = 0; i < $rootScope.controllers.length; i++ ) {
 					if ( $rootScope.controllers[ i ].mac === mac ) {
@@ -237,6 +246,14 @@ angular.module( "opengarage.utils", [] )
 							data: "action=blynkCloud&path=" + data.token + "/get/V2",
 							suppressLoader: true
 						} ).then( function( reply ) {
+							if ( reply.data === "Invalid token." ) {
+								$ionicPopup.alert( {
+									template: "<p class='center'>Invalid Blynk token.</p>"
+								} );
+								callback( false );
+								return;
+							}
+
 							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
 							result.mac = "5C:CF:7F:" + reply.match( /.{1,2}/g ).join( ":" );
 							result.auth = data.token;
