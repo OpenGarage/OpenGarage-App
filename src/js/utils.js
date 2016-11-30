@@ -163,7 +163,7 @@ angular.module( "opengarage.utils", [] )
 					} );
 	        },
 	        getControllerIndex = function( mac ) {
-				if ( !$rootScope.activeController || !mac ) {
+				if ( !$rootScope.activeController && !mac ) {
 					return null;
 				}
 
