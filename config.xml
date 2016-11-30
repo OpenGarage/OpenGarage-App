@@ -4,12 +4,12 @@
         id="com.albahra.opengarage"
         version="2.1.1"
         ios-CFBundleVersion="2.1.1"
-        android-versionCode="11"
-        versionCode="11" >
+        android-versionCode="12"
+        versionCode="12" >
 
 	<!-- Add required short version string to iOS configuration -->
 	<config-file platform="ios" parent="CFBundleShortVersionString">
-		<string>11</string>
+		<string>12</string>
 	</config-file>
 
 	<name>OpenGarage</name>

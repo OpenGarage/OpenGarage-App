@@ -4,7 +4,7 @@
   "author": "Samer Albahra",
   "homepage": "http://opengarage.io",
   "version": "2.1.1",
-  "build": "11",
+  "build": "12",
   "license": "UNLICENSED",
   "private": false,
   "description": "Designed to allow intuitive control of the OpenGarage garage door opener.",
