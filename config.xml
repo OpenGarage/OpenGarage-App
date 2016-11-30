@@ -2,14 +2,14 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="com.albahra.opengarage"
-        version="2.1.0"
-        ios-CFBundleVersion="2.1.0"
-        android-versionCode="10"
-        versionCode="10" >
+        version="2.1.1"
+        ios-CFBundleVersion="2.1.1"
+        android-versionCode="11"
+        versionCode="11" >
 
 	<!-- Add required short version string to iOS configuration -->
 	<config-file platform="ios" parent="CFBundleShortVersionString">
-		<string>10</string>
+		<string>11</string>
 	</config-file>
 
 	<name>OpenGarage</name>
