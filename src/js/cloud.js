@@ -282,7 +282,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
 			}
         } );
 
-        $rootScope.$on( "triggerCloudSave", saveSites );
+        $rootScope.$on( "controllersUpdated", saveSites );
 
         return {
             requestAuth: requestAuth,

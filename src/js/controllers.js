@@ -57,16 +57,14 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 			$rootScope.controllers.splice( index, 1 );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-			Cloud.saveSites();
-			Utils.updateQuickLinks();
+			$rootScope.$broadcast( "controllersUpdated" );
 		};
 
 		$scope.moveItem = function( item, fromIndex, toIndex ) {
 			$rootScope.controllers.splice( fromIndex, 1 );
 			$rootScope.controllers.splice( toIndex, 0, item );
 			Utils.storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-			Cloud.saveSites();
-			Utils.updateQuickLinks();
+			$rootScope.$broadcast( "controllersUpdated" );
 		};
 
 		$scope.getTime = function( timestamp ) {

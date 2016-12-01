@@ -4,7 +4,24 @@
 angular.module( "opengarage.watch", [] )
     .factory( "Watch", [ "$injector", "$rootScope", function( $injector, $rootScope ) {
 
-        var makeAppList = function() {
+		var loadApp = function() {
+            window.applewatch.loadAppMain( {
+                title: "OpenGarage",
+                label: {
+                    value: "Toggle Garage Door",
+                    color: "#FFA500",
+                    font: {
+                        size: 12
+                    }
+                },
+                table: {
+                    callback: "toggleDoorByIndex",
+                    alpha: 1,
+                    rows: makeAppList()
+                }
+            } );
+        },
+        makeAppList = function() {
             var rows = [];
 
             $rootScope.controllers.forEach( function( controller ) {
@@ -44,23 +61,9 @@ angular.module( "opengarage.watch", [] )
             return rows;
         };
 
+        $rootScope.$on( "controllersUpdated", loadApp );
+
         return {
-            loadApp: function() {
-                window.applewatch.loadAppMain( {
-                    title: "OpenGarage",
-                    label: {
-                        value: "Toggle Garage Door",
-                        color: "#FFA500",
-                        font: {
-                            size: 12
-                        }
-                    },
-                    table: {
-                        callback: "toggleDoorByIndex",
-                        alpha: 1,
-                        rows: makeAppList()
-                    }
-                } );
-            }
+            loadApp: loadApp
         };
     } ] );
