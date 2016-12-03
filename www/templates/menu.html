@@ -22,10 +22,6 @@
                     <i class="icon ion-ios-location"></i>
                     Location Control
                 </ion-item>
-                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.controllerSelect">
-                    <i class="icon ion-arrow-swap"></i>
-                    Manage Controllers
-                </ion-item>
                 <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.history" ng-class="$root.activeController ? '' : 'ui-disabled'">
                     <i class="icon ion-ios-paper"></i>
                     History
@@ -33,6 +29,10 @@
                 <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.settings" ng-class="$root.activeController ? '' : 'ui-disabled'">
                     <i class="icon ion-android-settings"></i>
                     Settings
+                </ion-item>
+                <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.controllerSelect">
+                    <i class="icon ion-arrow-swap"></i>
+                    Manage Controllers
                 </ion-item>
                 <ion-item class="item-icon-left" ng-click="closeMenu()" ui-sref-active="active" ui-sref="app.help">
                     <i class="icon ion-information-circled"></i>

@@ -7,7 +7,7 @@
 		<div ng-show="isLocal" class="padding">
 			<ion-list class="list-inset">
 				<ion-item ng-repeat="entry in logs" ng-class="{'item-divider': entry.isDivider}" class="item-icon-left">
-					<i class="icon" ng-class="{'ion-ios-calendar-outline': entry.isDivider, 'ion-ios-circle-filled': !entry.isDivider , 'assertive': entry[ 1 ], 'balanced': !entry.isDivider && !entry[ 1 ]}"></i>
+					<i class="icon" ng-class="{'ion-ios-calendar-outline': entry.isDivider, 'ion-ios-circle-filled': !entry.isDivider , 'assertive': !entry[ 1 ], 'balanced': !entry.isDivider && entry[ 1 ]}"></i>
 					<span ng-if="entry.isDivider">{{entry.day}}</span>
 					<span ng-if="!entry.isDivider">
 						{{ entry[ 1 ] ? "Opened" : "Closed" }}
