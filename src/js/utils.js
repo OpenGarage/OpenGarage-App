@@ -77,7 +77,7 @@ angular.module( "opengarage.utils", [] )
 						method: "POST",
 						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/query",
+						data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
 						suppressLoader: true
 					} );
 				} else {
@@ -99,12 +99,11 @@ angular.module( "opengarage.utils", [] )
 							$filter = $filter || $injector.get( "$filter" );
 							var filter = $filter( "filter" );
 
-							result = result.data[ 0 ];
 							callback( {
-								name: result.name,
-								door: parseInt( filter( result.pins, { "pin": 0 } )[ 0 ].value ),
-								dist: parseInt( filter( result.pins, { "pin": 3 } )[ 0 ].value ),
-								rcnt: parseInt( filter( result.pins, { "pin": 4 } )[ 0 ].value ),
+								name: result.data.name,
+								door: parseInt( filter( result.data.widgets, { "pin": 0 } )[ 0 ].value ),
+								dist: parseInt( filter( result.data.widgets, { "pin": 3 } )[ 0 ].value ),
+								rcnt: parseInt( filter( result.data.widgets, { "pin": 4 } )[ 0 ].value ),
 								lastUpdate: new Date().getTime()
 							} );
 						} else {
@@ -142,7 +141,7 @@ angular.module( "opengarage.utils", [] )
 				$q = $q || $injector.get( "$q" );
 				$filter = $filter || $injector.get( "$filter" );
 
-				var controller = angular.copy( $rootScope.activeController ),
+				var controller = angular.copy( $rootScope.activeController ) || {},
 					save = function( data ) {
 						$rootScope.connected = true;
 						angular.extend( controller, data );

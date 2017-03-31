@@ -199,10 +199,14 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 					$rootScope.controllers = [];
 				}
 
+				if ( !$rootScope.activeController || typeof $rootScope.activeController !== "object" ) {
+					$rootScope.activeController = {};
+				}
+
 				Cloud.sync();
 
 				// Restore the active controller, if available
-		        if ( $rootScope.activeController && typeof $rootScope.activeController === "object" ) {
+		        if ( Object.keys( $rootScope.activeController ).length ) {
 
 					// If a user object is cached, proceed to load the app while updating user object in the background
 					$state.go( "app.home" );
