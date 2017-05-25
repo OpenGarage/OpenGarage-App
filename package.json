@@ -19,7 +19,7 @@
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-geolocation": "^2.4.3",
-        "cordova-plugin-inappbrowser": "git+https://github.com/apache/cordova-plugin-inappbrowser.git",
+        "cordova-plugin-inappbrowser": "https://github.com/apache/cordova-plugin-inappbrowser.git",
         "cordova-plugin-network-information": "^1.3.3",
         "cordova-plugin-networkinterface": "^1.0.8",
         "cordova-plugin-safariviewcontroller": "^1.4.7",
