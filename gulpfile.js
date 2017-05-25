@@ -7,6 +7,7 @@
 
 var gulp         = require( "gulp" ),               // Gulp
     gutil        = require( "gulp-util" ),          // Gulp Utilities
+    merge		 = require( "merge-stream" ),		// Merge streams
     autoprefixer = require( "gulp-autoprefixer" ),  // CSS Vendor Prefixing
     bower        = require( "bower" ),              // Bower
 	fs           = require( "fs-extra" ),           // Node File Read/Write
@@ -72,26 +73,27 @@ gulp.task( "bump", function() {
 	ver[ type ]++;
 	ver = ver.join( "." );
 
-	gulp.src( "package.json" )
+	return gulp.src( "package.json" )
 		.pipe( replace( /(\"version\": \")[\d|\.]+(\")/, "$1" + ver + "$2" ) )
 		.pipe( replace( /(\"build\": \")\d+/g, "$1" + build ) )
 		.pipe( gulp.dest( "." ) );
 } );
 
 gulp.task( "parse-args", function() {
-	gulp.src( "config.xml" )
-		.pipe( replace( /(version=\")[\d|\.]+(\"\n)/, "$1" + pkg.version + "$2" ) )
-		.pipe( replace( /(CFBundleVersion=\")[\d|\.]+(\"\n)/g, "$1" + pkg.version + "$2" ) )
-		.pipe( replace( /(versionCode=\")\d+/g, "$1" + parseInt( pkg.build, 10 ) ) )
-		.pipe( replace( /(<string>)\d+(<\/string>)/, "$1" + parseInt( pkg.build, 10 ) + "$2" ) )
-		.pipe( gulp.dest( "." ) );
-
-	gulp.src( "www/index.html" )
-		.pipe( replace( /(window\.appVersion=){.*}/, "$1" + JSON.stringify( {
-			name: pkg.version,
-			number: parseInt( pkg.build, 10 )
-		} ) ) )
-		.pipe( gulp.dest( "www" ) );
+	return merge(
+		gulp.src( "config.xml" )
+			.pipe( replace( /(version=\")[\d|\.]+(\"\n)/, "$1" + pkg.version + "$2" ) )
+			.pipe( replace( /(CFBundleVersion=\")[\d|\.]+(\"\n)/g, "$1" + pkg.version + "$2" ) )
+			.pipe( replace( /(versionCode=\")\d+/g, "$1" + parseInt( pkg.build, 10 ) ) )
+			.pipe( replace( /(<string>)\d+(<\/string>)/, "$1" + parseInt( pkg.build, 10 ) + "$2" ) )
+			.pipe( gulp.dest( "." ) ),
+		gulp.src( "www/index.html" )
+			.pipe( replace( /(window\.appVersion=){.*}/, "$1" + JSON.stringify( {
+				name: pkg.version,
+				number: parseInt( pkg.build, 10 )
+			} ) ) )
+			.pipe( gulp.dest( "www" ) )
+	);
 } );
 
 // Optimizes Images
@@ -103,6 +105,7 @@ gulp.task( "images", function( done ) {
 			interlaced: true
 		} ) )
 		.pipe( gulp.dest( "resources" ) );
+
 	runner.on( "end", function() {
 		gulp.src( "" ).pipe( notify( "Image processing complete..." ) );
 		done();
@@ -206,7 +209,7 @@ gulp.task( "lint-style", function() {
 } );
 
 gulp.task( "lint-sass", function() {
-	gulp.src( "/src/scss/*.scss" )
+	return gulp.src( "/src/scss/*.scss" )
 		.pipe( sassLint() )
 		.pipe( sassLint.format() )
 		.pipe( sassLint.failOnError() );
@@ -251,7 +254,7 @@ gulp.task( "git-check", function( done ) {
 } );
 
 gulp.task( "manifest", function() {
-	gulp.src( [
+	return gulp.src( [
 		"www/css/{ionic.app.min,style.min}.css",
 		"www/img/**/*",
 		"www/js/app.min.js",
