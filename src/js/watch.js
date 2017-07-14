@@ -61,7 +61,11 @@ angular.module( "opengarage.watch", [] )
             return rows;
         };
 
-        $rootScope.$on( "controllersUpdated", loadApp );
+        $rootScope.$on( "controllersUpdated", function() {
+            if ( window.applewatch ) {
+                loadApp();
+            }
+        } );
 
         return {
             loadApp: loadApp
