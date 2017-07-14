@@ -104,7 +104,7 @@ angular.module( "opengarage.utils", [] )
 								door: parseInt( filter( result.data.widgets, { "pin": 0 } )[ 0 ].value ),
 								dist: parseInt( filter( result.data.widgets, { "pin": 3 } )[ 0 ].value ),
 								rcnt: parseInt( filter( result.data.widgets, { "pin": 4 } )[ 0 ].value ),
-								lastUpdate: new Date().getTime()
+								lastUpdate: result.data.updatedAt
 							} );
 						} else {
 							result.data.lastUpdate = new Date().getTime();
