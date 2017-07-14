@@ -17,7 +17,6 @@
         "cordova-ios": "^4.4.0",
         "cordova-plugin-3dtouch": "^1.3.5",
         "cordova-plugin-compat": "^1.1.0",
-        "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-geolocation": "^2.4.3",
         "cordova-plugin-inappbrowser": "https://github.com/apache/cordova-plugin-inappbrowser.git",
         "cordova-plugin-network-information": "^1.3.3",
@@ -57,29 +56,9 @@
         "shelljs": "~0.7.5",
         "yargs": "~6.4.0"
     },
-    "cordovaPlugins": [
-        "cordova-plugin-device",
-        "cordova-plugin-whitelist",
-        "cordova-plugin-splashscreen",
-        "cordova-plugin-statusbar",
-        "cordova-plugin-3dtouch",
-        "cordova-plugin-geolocation",
-        "cordova-plugin-inappbrowser",
-        "cordova-plugin-safariviewcontroller",
-        "cordova-plugin-network-information",
-        "cordova-plugin-networkinterface",
-        "ionic-plugin-keyboard"
-    ],
-    "cordovaPlatforms": [
-        "ios",
-        "android",
-        "windows",
-        "osx"
-    ],
     "cordova": {
         "plugins": {
             "cordova-plugin-3dtouch": {},
-            "cordova-plugin-device": {},
             "cordova-plugin-geolocation": {
                 "GEOLOCATION_USAGE_DESCRIPTION": " "
             },
