@@ -157,6 +157,7 @@ angular.module( "opengarage.utils", [] )
 							$rootScope.controllers[ index ] = controller;
 							$rootScope.activeController = controller;
 							$rootScope.$broadcast( "controllerUpdated" );
+                            $rootScope.$broadcast( "controllersUpdated" );
 							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
 						}
 					} );

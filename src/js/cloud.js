@@ -212,6 +212,7 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
 						headers: {
 							"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
 						},
+                        suppressLoader: true,
                         data: $httpParamSerializerJQLike( {
                             action: "saveSites",
                             token: data.cloudToken,
