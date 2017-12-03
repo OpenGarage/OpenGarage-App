@@ -7,8 +7,5 @@ before_install:
 install: npm install
 before_script:
  - travis_retry gulp
-script:
- - cordova platform add osx
- - cordova build osx
 notifications:
   on_failure: change
