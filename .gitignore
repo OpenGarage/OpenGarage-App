@@ -6,7 +6,7 @@ platforms/
 plugins/
 project.xcworkspace/
 xcuserdata/
-.vscode/
+typings/
 jsconfig.json
 .io-config.json
 .env

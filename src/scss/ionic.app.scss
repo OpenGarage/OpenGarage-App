@@ -74,8 +74,12 @@ textarea {
   color: #fff !important
 }
 
-.bar-footer button {
-  font-size: larger !important
+.bar-footer {
+    padding-bottom: calc( 14px + constant(safe-area-inset-bottom)) !important;
+
+    button {
+        font-size: larger !important
+    }
 }
 
 #login {

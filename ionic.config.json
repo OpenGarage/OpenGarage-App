@@ -10,5 +10,8 @@
   "watchPatterns": [
     "www/**/*"
   ],
-  "type": "ionic1"
+  "type": "ionic1",
+  "integrations": {
+    "cordova": {}
+  }
 }
