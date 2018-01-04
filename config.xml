@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="13" id="com.albahra.opengarage" ios-CFBundleVersion="2.1.2" version="2.1.2" versionCode="13" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget android-versionCode="14" id="com.albahra.opengarage" ios-CFBundleVersion="2.1.2" version="2.1.2" versionCode="14" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OpenGarage</name>
     <description>
 		Designed to allow intuitive control of the OpenGarage garage door opener.
@@ -44,7 +44,7 @@
             <string>Your current location will be used to configure OpenGarage.</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="CFBundleShortVersionString">
-            <string>13</string>
+            <string>14</string>
         </edit-config>
         <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
         <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
@@ -112,7 +112,6 @@
         <splash height="300" src="resources/windows/splash/landscape.png" width="620" />
         <splash height="1920" src="resources/windows/splash/portrait.png" width="1152" />
     </platform>
-    <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-plugin-3dtouch" spec="^1.3.5" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
@@ -125,4 +124,5 @@
     <plugin name="cordova-plugin-statusbar" spec="^2.3.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>

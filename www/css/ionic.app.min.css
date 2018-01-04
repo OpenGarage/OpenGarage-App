@@ -2051,7 +2051,7 @@ to{transform:scale(1);opacity:1}
 .limit-width{max-width:800px;margin:0 auto}
 .ui-disabled{opacity:.3;zoom:1;cursor:default!important;pointer-events:none}
 .white{color:#fff!important}
-.bar-footer{padding-bottom:calc(14px + constant(safe-area-inset-bottom))!important}
+.bar-footer{padding-bottom:calc(14px + env(safe-area-inset-bottom))!important}
 .bar-footer button{font-size:larger!important}
 #login{background:url(../img/login_bg.jpg) center center no-repeat #1c2627;background-size:cover}
 #login .login-content{max-width:400px;margin:0 auto}
