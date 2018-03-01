@@ -147,7 +147,7 @@ angular.module( "opengarage.utils", [] )
 						angular.extend( controller, data );
 					};
 
-				$q.when()
+				return $q.when()
 					.then( function() { return getControllerSettings( save ); } )
 					.then( function() { return getControllerOptions( save ); } )
 					.then( function() {
