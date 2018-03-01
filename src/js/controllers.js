@@ -191,7 +191,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				interval = setInterval( function() {
 					if ( $http.pendingRequests.length < 3 ) {
 						Utils.updateController().then( function() {
-                            $scope.apply();
+                            setTimeout( $scope.$apply.bind( this ), 0 );
                         } );
 					}
 				}, 5000 );
