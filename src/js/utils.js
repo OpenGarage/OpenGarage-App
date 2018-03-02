@@ -72,7 +72,7 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( true || token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
+				if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
 					promise = $q.all( {
                         name: $http( {
                             method: "POST",
@@ -121,7 +121,7 @@ angular.module( "opengarage.utils", [] )
 
 							callback( {
 								name: result.name.data.name,
-								door: parseInt( result.door.data[ 0 ] ),
+								door: parseInt( result.door.data[ 0 ] ) === 255 ? true : false,
 								dist: parseInt( result.dist.data[ 0 ] ),
 								rcnt: parseInt( result.rcnt.data[ 0 ] ),
 								lastUpdate: result.name.data.updatedAt
