@@ -604,7 +604,7 @@ angular.module( "opengarage.utils", [] )
 				                suppressLoader: true,
 								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} );
-						}, 1000 );
+						}, $rootScope.activeController.cdt || 1000 );
 					} );
 				} else {
 					promise = $http.get( "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
