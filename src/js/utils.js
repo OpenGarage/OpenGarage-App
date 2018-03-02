@@ -121,7 +121,7 @@ angular.module( "opengarage.utils", [] )
 
 							callback( {
 								name: result.name.data.name,
-								door: parseInt( result.door.data[ 0 ] ) === 255 ? true : false,
+								door: parseInt( result.door.data[ 0 ] ) === 255 ? 1 : 0,
 								dist: parseInt( result.dist.data[ 0 ] ),
 								rcnt: parseInt( result.rcnt.data[ 0 ] ),
 								lastUpdate: result.name.data.updatedAt
