@@ -10,7 +10,7 @@
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
-    <preference name="phonegap-version" value="cli-7.0.1" />
+    <preference name="phonegap-version" value="cli-8.0.0" />
     <preference name="WebSecurity" value="disable" />
     <preference name="BackupWebStorage" value="local" />
     <preference name="UseLegacySwiftLanguageVersion" value="true" />

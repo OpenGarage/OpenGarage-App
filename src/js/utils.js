@@ -87,20 +87,6 @@ angular.module( "opengarage.utils", [] )
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
                             data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
                             suppressLoader: true
-                        } ),
-                        dist: $http( {
-                            method: "POST",
-                            url: "https://opengarage.io/wp-admin/admin-ajax.php",
-                            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V3",
-                            suppressLoader: true
-                        } ),
-                        rcnt: $http( {
-                            method: "POST",
-                            url: "https://opengarage.io/wp-admin/admin-ajax.php",
-                            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
-                            suppressLoader: true
                         } )
                     } );
 				} else {
@@ -114,7 +100,7 @@ angular.module( "opengarage.utils", [] )
 	            return promise.then(
 					function( result ) {
 						if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
-							if ( result.data === "Invalid token." ) {
+							if ( result.name.data === "Invalid token." ) {
 								callback( false );
 								return;
 							}
@@ -122,8 +108,6 @@ angular.module( "opengarage.utils", [] )
 							callback( {
 								name: result.name.data.name,
 								door: parseInt( result.door.data[ 0 ] ) === 255 ? 1 : 0,
-								dist: parseInt( result.dist.data[ 0 ] ),
-								rcnt: parseInt( result.rcnt.data[ 0 ] ),
 								lastUpdate: result.name.data.updatedAt
 							} );
 						} else {
@@ -260,7 +244,7 @@ angular.module( "opengarage.utils", [] )
 					if ( data.token ) {
 						$http( {
 							method: "POST",
-							url: "https://openthings.io/wp-admin/admin-ajax.php",
+							url: "https://opengarage.io/wp-admin/admin-ajax.php",
 			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 							data: "action=blynkCloud&path=" + data.token + "/get/V2",
 							suppressLoader: true
@@ -592,14 +576,14 @@ angular.module( "opengarage.utils", [] )
 				if ( auth || ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
 					promise = $http( {
 						method: "POST",
-						url: "https://openthings.io/wp-admin/admin-ajax.php",
+						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 						data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
 					} ).then( function() {
 						setTimeout( function() {
 							$http( {
 								method: "POST",
-								url: "https://openthings.io/wp-admin/admin-ajax.php",
+								url: "https://opengarage.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 				                suppressLoader: true,
 								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
