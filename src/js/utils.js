@@ -68,6 +68,7 @@ angular.module( "opengarage.utils", [] )
 					return;
 				}
 
+                $q = $q || $injector.get( "$q" );
 				$http = $http || $injector.get( "$http" );
 
 				var promise;
@@ -216,11 +217,11 @@ angular.module( "opengarage.utils", [] )
 						callback( false );
 					}
 
+                    $filter = $filter || $injector.get( "$filter" );
+
 					if ( result.mac ) {
 						result.ip = data.ip;
 						result.password = data.password;
-
-						$filter = $filter || $injector.get( "$filter" );
 
 						if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
 							$ionicPopup.alert( {
@@ -655,7 +656,8 @@ angular.module( "opengarage.utils", [] )
 						return;
 					}
 
-					$http = $http || $injector.get( "$http" );
+                    $http = $http || $injector.get( "$http" );
+                    $filter = $filter || $injector.get( "$filter" );
 
 		            $http( {
 		                method: "GET",
