@@ -131,8 +131,7 @@ angular.module( "opengarage.utils", [] )
 	            return $http( {
 	                method: "GET",
 	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jo",
-                    suppressLoader: showLoader ? false : true,
-                    timeout: 1500
+                    suppressLoader: showLoader ? false : true
 	            } ).then(
 					function( result ) {
 						callback( result.data );

@@ -187,14 +187,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	} )
 
 	.controller( "HomeCtrl", function( $rootScope, $scope, $filter, $http, $timeout, Utils ) {
-		var startInterval = function() {
-				interval = setInterval( function() {
-					if ( $http.pendingRequests.length < 3 ) {
-						Utils.updateController();
-					}
-				}, 5000 );
-			},
-			interval;
+        var interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;
 		$scope.selectPhoto = Utils.selectPhoto;
@@ -211,14 +204,16 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 			}
 
 			$scope.currentIndex = to;
-			Utils.setController( to, startInterval );
+			Utils.setController( to );
 		};
 
 		$scope.$on( "$ionicView.beforeLeave", function() {
 			clearInterval( interval );
 		} );
 
-		$scope.$on( "$ionicView.beforeEnter", startInterval );
+		$scope.$on( "$ionicView.beforeEnter", function() {
+            interval = setInterval( Utils.updateController, 5000 );
+        } );
 
 		$rootScope.$on( "controllerUpdated", function() {
 			$scope.currentIndex = Utils.getControllerIndex();
