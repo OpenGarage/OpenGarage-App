@@ -142,9 +142,6 @@ angular.module( "opengarage.utils", [] )
 				);
 	        },
 	        updateController = function() {
-				$q = $q || $injector.get( "$q" );
-				$filter = $filter || $injector.get( "$filter" );
-
 				var controller = angular.copy( $rootScope.activeController ) || {};
 
 				return getControllerSettings( function( data ) {
