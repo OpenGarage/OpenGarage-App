@@ -194,8 +194,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.currentIndex = Utils.getControllerIndex();
 
 		$scope.changeController = function( direction ) {
-			clearInterval( interval );
-
 			var current = Utils.getControllerIndex(),
 				to = current + direction;
 
