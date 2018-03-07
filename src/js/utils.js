@@ -131,8 +131,7 @@ angular.module( "opengarage.utils", [] )
 	            return $http( {
 	                method: "GET",
 	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jo",
-                    suppressLoader: showLoader ? false : true,
-                    timeout: 1500
+                    suppressLoader: showLoader ? false : true
 	            } ).then(
 					function( result ) {
 						callback( result.data );
@@ -146,26 +145,27 @@ angular.module( "opengarage.utils", [] )
 				$q = $q || $injector.get( "$q" );
 				$filter = $filter || $injector.get( "$filter" );
 
-				var controller = angular.copy( $rootScope.activeController ) || {},
-					save = function( data ) {
-						$rootScope.connected = true;
-						angular.extend( controller, data );
-					};
+				var controller = angular.copy( $rootScope.activeController ) || {};
 
-				return $q.when()
-					.then( function() { return getControllerSettings( save ); } )
-					.then( function() { return getControllerOptions( save ); } )
-					.then( function() {
-						var index = getControllerIndex();
+				return getControllerSettings( function( data ) {
+                    if ( data === false ) {
+                        $rootScope.connected = false;
+                        return;
+                    }
 
-						if ( index >= 0 && controller.mac === $rootScope.activeController.mac ) {
-							$rootScope.controllers[ index ] = controller;
-							$rootScope.activeController = controller;
-							$rootScope.$broadcast( "controllerUpdated" );
-                            $rootScope.$broadcast( "controllersUpdated" );
-							storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
-						}
-					} );
+                    $rootScope.connected = true;
+                    angular.extend( controller, data );
+                } ).then( function() {
+                    var index = getControllerIndex();
+
+                    if ( index >= 0 && controller.mac === $rootScope.activeController.mac ) {
+                        $rootScope.controllers[ index ] = controller;
+                        $rootScope.activeController = controller;
+                        $rootScope.$broadcast( "controllerUpdated" );
+                        $rootScope.$broadcast( "controllersUpdated" );
+                        storage.set( { "controllers": JSON.stringify( $rootScope.controllers ), "activeController": JSON.stringify( $rootScope.activeController ) } );
+                    }
+                } );
 	        },
 	        getControllerIndex = function( mac ) {
 				if ( !$rootScope.activeController && !mac ) {
