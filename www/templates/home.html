@@ -12,7 +12,7 @@
 	<ion-footer-bar class="bar bar-footer center">
 		<button class="button round-button" ng-class="{'button-assertive': !$root.connected, 'button-balanced': $root.connected}"></button>
 		<h5 class="padding-left padding-right">{{ $root.connected ? "connected" : "disconnected" }}</h5>
-		<button class="button round-button" ng-class="{'button-assertive': !$root.activeController.door, 'button-balanced': $root.activeController.door}"></button>
+		<button class="button round-button" ng-class="{'button-assertive': $root.activeController.door, 'button-balanced': !$root.activeController.door}"></button>
 		<h5 class="padding-left">{{ $root.activeController.door ? "opened" : "closed" }}</h5>
 	</ion-footer-bar>
 </ion-view>
