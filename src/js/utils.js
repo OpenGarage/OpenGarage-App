@@ -109,7 +109,8 @@ angular.module( "opengarage.utils", [] )
 							callback( {
 								name: result.name.data.name,
 								door: parseInt( result.door.data[ 0 ] ) === 255 ? 1 : 0,
-								lastUpdate: result.name.data.updatedAt
+                                lastUpdate: result.name.data.updatedAt,
+                                vehicle: undefined
 							} );
 						} else {
 							result.data.lastUpdate = new Date().getTime();
