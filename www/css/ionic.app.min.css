@@ -866,7 +866,7 @@ a{color:#387ef5}
 a.subdued{padding-right:10px;color:#888;text-decoration:none}
 a.subdued:hover{text-decoration:none}
 a.subdued:last-child{padding-right:0}
-.action-sheet-backdrop{-webkit-transition:background-color 150ms ease-in-out;transition:background-color 150ms ease-in-out;position:fixed;top:0;left:0;z-index:11;width:100%;height:100%;background-color:transparent}
+.action-sheet-backdrop{-webkit-transition:background-color 150ms ease-in-out;transition:background-color 150ms ease-in-out;position:fixed;top:0;left:0;z-index:11;width:100%;height:100%;background-color:rgba(0,0,0,0)}
 .action-sheet-backdrop.active{background-color:rgba(0,0,0,.4)}
 .action-sheet-wrapper{-webkit-transform:translate3d(0,100%,0);transform:translate3d(0,100%,0);-webkit-transition:all cubic-bezier(.36,.66,.04,1) .5s;transition:all cubic-bezier(.36,.66,.04,1) .5s;position:absolute;max-width:500px;margin:auto}
 .action-sheet-up,.bar{-webkit-transform:translate3d(0,0,0)}
@@ -1247,7 +1247,7 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.activated,ion-tabs.tabs-s
 }
 .modal-open .modal,.modal-open .modal-backdrop{pointer-events:auto}
 .modal-open.loading-active .modal,.modal-open.loading-active .modal-backdrop,.popover-open{pointer-events:none}
-.popover-backdrop{position:fixed;top:0;left:0;z-index:10;width:100%;height:100%;background-color:transparent}
+.popover-backdrop{position:fixed;top:0;left:0;z-index:10;width:100%;height:100%;background-color:rgba(0,0,0,0)}
 .popover-backdrop.active{background-color:rgba(0,0,0,.1)}
 .popover{position:absolute;top:25%;left:50%;margin-top:12px;margin-left:-110px;height:280px;width:220px;background-color:#fff;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.4);box-shadow:0 1px 3px rgba(0,0,0,.4);opacity:0}
 .popover .item:first-child{border-top:0}
@@ -1276,7 +1276,7 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.activated,ion-tabs.tabs-s
 .popover-open.loading-active .popover,.popover-open.loading-active .popover-backdrop,.popup-open,.popup-open.modal-open .modal{pointer-events:none}
 @media (min-width:680px){.popover{width:360px;margin-left:-180px}
 }
-.popup-container{background:0 0;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-moz-justify-content:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;-moz-align-items:center;align-items:center;z-index:12}
+.popup-container{background:rgba(0,0,0,0);display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-moz-justify-content:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;-moz-align-items:center;align-items:center;z-index:12}
 .popup-container.popup-showing{visibility:visible}
 .popup-container.popup-hidden .popup{-webkit-animation-name:scaleOut;animation-name:scaleOut;-webkit-animation-duration:.1s;animation-duration:.1s;-webkit-animation-timing-function:ease-in-out;animation-timing-function:ease-in-out;-webkit-animation-fill-mode:both;animation-fill-mode:both}
 .popup-container.active .popup{-webkit-animation-name:superScaleIn;animation-name:superScaleIn;-webkit-animation-duration:.2s;animation-duration:.2s;-webkit-animation-timing-function:ease-in-out;animation-timing-function:ease-in-out;-webkit-animation-fill-mode:both;animation-fill-mode:both}
@@ -1506,10 +1506,10 @@ button.swiper-pagination-bullet{border:none;margin:0;padding:0;-webkit-box-shado
 .swiper-container-3d{-webkit-perspective:1200px;-o-perspective:1200px;perspective:1200px}
 .swiper-container-3d .swiper-cube-shadow,.swiper-container-3d .swiper-slide,.swiper-container-3d .swiper-slide-shadow-bottom,.swiper-container-3d .swiper-slide-shadow-left,.swiper-container-3d .swiper-slide-shadow-right,.swiper-container-3d .swiper-slide-shadow-top,.swiper-container-3d .swiper-wrapper{-webkit-transform-style:preserve-3d;transform-style:preserve-3d}
 .swiper-container-3d .swiper-slide-shadow-bottom,.swiper-container-3d .swiper-slide-shadow-left,.swiper-container-3d .swiper-slide-shadow-right,.swiper-container-3d .swiper-slide-shadow-top{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:10}
-.swiper-container-3d .swiper-slide-shadow-left{background-image:-webkit-gradient(linear,right top,left top,from(rgba(0,0,0,.5)),to(transparent));background-image:linear-gradient(to left,rgba(0,0,0,.5),transparent)}
-.swiper-container-3d .swiper-slide-shadow-right{background-image:-webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.5)),to(transparent));background-image:linear-gradient(to right,rgba(0,0,0,.5),transparent)}
-.swiper-container-3d .swiper-slide-shadow-top{background-image:-webkit-gradient(linear,left bottom,left top,from(rgba(0,0,0,.5)),to(transparent));background-image:linear-gradient(to top,rgba(0,0,0,.5),transparent)}
-.swiper-container-3d .swiper-slide-shadow-bottom{background-image:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,.5)),to(transparent));background-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent)}
+.swiper-container-3d .swiper-slide-shadow-left{background-image:-webkit-gradient(linear,right top,left top,from(rgba(0,0,0,.5)),to(rgba(0,0,0,0)));background-image:linear-gradient(to left,rgba(0,0,0,.5),rgba(0,0,0,0))}
+.swiper-container-3d .swiper-slide-shadow-right{background-image:-webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.5)),to(rgba(0,0,0,0)));background-image:linear-gradient(to right,rgba(0,0,0,.5),rgba(0,0,0,0))}
+.swiper-container-3d .swiper-slide-shadow-top{background-image:-webkit-gradient(linear,left bottom,left top,from(rgba(0,0,0,.5)),to(rgba(0,0,0,0)));background-image:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0))}
+.swiper-container-3d .swiper-slide-shadow-bottom{background-image:-webkit-gradient(linear,left top,left bottom,from(rgba(0,0,0,.5)),to(rgba(0,0,0,0)));background-image:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0))}
 .swiper-container-coverflow .swiper-wrapper{-ms-perspective:1200px}
 .swiper-container-fade.swiper-container-free-mode .swiper-slide{-webkit-transition-timing-function:ease-out;transition-timing-function:ease-out}
 .swiper-container-fade .swiper-slide,.swiper-container-fade .swiper-slide .swiper-slide{pointer-events:none}
