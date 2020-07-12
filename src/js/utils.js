@@ -88,6 +88,13 @@ angular.module( "opengarage.utils", [] )
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
                             data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
                             suppressLoader: true
+                        } ),
+                        vehicle: $http( {
+                            method: "POST",
+                            url: "https://opengarage.io/wp-admin/admin-ajax.php",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
+                            suppressLoader: true
                         } )
                     } );
 				} else {
@@ -110,7 +117,7 @@ angular.module( "opengarage.utils", [] )
 								name: result.name.data.name,
 								door: parseInt( result.door.data[ 0 ] ) === 255 ? 1 : 0,
                                 lastUpdate: result.name.data.updatedAt,
-                                vehicle: undefined
+                                vehicle: parseInt( result.vehicle.data[ 0 ] ) === 255 ? 1 : 0
 							} );
 						} else {
 							result.data.lastUpdate = new Date().getTime();
