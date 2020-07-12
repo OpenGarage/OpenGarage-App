@@ -1,6 +1,10 @@
 {
   "name": "opengarage",
-  "app_id": "56c2d0eb",
+  "integrations": {
+    "cordova": {},
+    "gulp": {}
+  },
+  "type": "ionic1",
   "gulpStartupTasks": [
     "sass",
     "uglify",
@@ -10,9 +14,5 @@
   "watchPatterns": [
     "www/**/*"
   ],
-  "type": "ionic1",
-  "integrations": {
-    "cordova": {},
-    "gulp": {}
-  }
+  "id": "56c2d0eb"
 }
