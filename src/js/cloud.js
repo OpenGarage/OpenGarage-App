@@ -147,8 +147,13 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                     }
 
                     if ( local.cloudDataToken === undefined || local.cloudDataToken === null ) {
-                        handleInvalidDataToken();
-                        callback( false );
+                        handleInvalidDataToken( function( success ) {
+                            if ( success ) {
+                                getSites( callback );
+                            } else {
+                                callback( false );
+                            }
+                        } );
                         return;
                     }
 
@@ -177,9 +182,14 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                                 sites = sjcl.decrypt( local.cloudDataToken, result.data.sites );
                             } catch ( err ) {
                                 if ( err.message === "ccm: tag doesn't match" ) {
-                                    handleInvalidDataToken();
+                                    handleInvalidDataToken( function( success ) {
+                                        if ( success ) {
+                                            getSites( callback );
+                                        } else {
+                                            callback( false );
+                                        }
+                                    } );
                                 }
-                                callback( false );
                             }
 
                             try {
@@ -234,7 +244,10 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                     } );
                 } );
             },
-            handleInvalidDataToken = function() {
+            handleInvalidDataToken = function( callback ) {
+				if ( typeof callback !== "function" ) {
+	                callback = function() {};
+				}
                 Utils.storage.remove( "cloudDataToken" );
 
                 $ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
@@ -244,12 +257,17 @@ angular.module( "opengarage.cloud", [ "opengarage.utils" ] )
                     template: "Please enter your OpenSprinkler.com password. If you have recently changed your password, you may need to enter your previous password to decrypt the data.",
                     inputType: "password",
                     inputPlaceholder: "Password"
-                } ).then( function( password ) {
-                    Utils.storage.set( {
-                        "cloudDataToken": sjcl.codec.hex.fromBits( sjcl.hash.sha256.hash( password ) )
-                    } );
-                    sync();
-                } );
+                } ).then(
+                    function( password ) {
+                        Utils.storage.set( {
+                            "cloudDataToken": sjcl.codec.hex.fromBits( sjcl.hash.sha256.hash( password ) )
+                        } );
+                        callback( true );
+                    },
+                    function() {
+                        callback( false );
+                    }
+                );
             },
             handleExpiredLogin = function() {
                 Utils.storage.remove( "cloudToken" );
