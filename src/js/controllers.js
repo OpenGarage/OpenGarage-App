@@ -2,7 +2,7 @@
 
 angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.cloud" ] )
 
-	.controller( "LoginCtrl", function( $scope, $rootScope, $state, $ionicPopup, Cloud ) {
+	.controller( "LoginCtrl", function( $scope, $state, $ionicPopup, Cloud ) {
 		$scope.data = {};
 
 		$scope.submit = function() {
@@ -32,7 +32,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		};
 	} )
 
-	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $timeout, $filter, $ionicModal, $ionicHistory, Utils, Cloud ) {
+	.controller( "ControllerSelectCtrl", function( $scope, $state, $rootScope, $ionicHistory, Utils, Cloud ) {
 		$scope.data = {
 			showDelete: false
 		};
@@ -80,7 +80,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		};
 	} )
 
-	.controller( "HistoryCtrl", function( $scope, $filter, Utils ) {
+	.controller( "HistoryCtrl", function( $scope, Utils ) {
         $scope.isLocal = true;
 
 		$scope.$on( "$ionicView.beforeEnter", function() {
@@ -143,7 +143,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		} );
 	} )
 
-	.controller( "MenuCtrl", function( $scope, $rootScope, $ionicActionSheet, $ionicPopup, $ionicSideMenuDelegate, $timeout, Utils ) {
+	.controller( "MenuCtrl", function( $scope, $rootScope, $ionicActionSheet, $ionicPopup, $ionicSideMenuDelegate, Utils ) {
 
 		$scope.sideMenuDraggable = Utils.getControllerIndex() === 0 ? true : false;
 
@@ -189,7 +189,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	    };
 	} )
 
-	.controller( "HomeCtrl", function( $rootScope, $scope, $filter, $http, $timeout, Utils ) {
+	.controller( "HomeCtrl", function( $rootScope, $scope, $timeout, Utils ) {
         var interval;
 
 		$scope.toggleDoor = Utils.toggleDoor;

@@ -234,7 +234,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		} );
 	} )
 
-	.config( function( $stateProvider, $urlRouterProvider, $httpProvider, $compileProvider, $ionicConfigProvider ) {
+	.config( function( $stateProvider, $httpProvider, $compileProvider, $ionicConfigProvider ) {
 
 		if ( /MSIE\s|Trident\/|Edge\//.test( window.navigator.userAgent ) ) {
 

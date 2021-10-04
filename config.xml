@@ -79,6 +79,7 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <platform name="android">
+        <preference name="AndroidXEnabled" value="true" />
         <preference name="android-minSdkVersion" value="21" />
         <preference name="android-targetSdkVersion" value="24" />
         <preference name="android-theme" value="@android:style/Theme.Holo.Light.NoActionBar" />

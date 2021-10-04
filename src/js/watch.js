@@ -2,7 +2,7 @@
 
 // OpenGarage
 angular.module( "opengarage.watch", [] )
-    .factory( "Watch", [ "$injector", "$rootScope", function( $injector, $rootScope ) {
+    .factory( "Watch", [ "$rootScope", function( $rootScope ) {
 
 		var loadApp = function() {
             window.applewatch.loadAppMain( {
