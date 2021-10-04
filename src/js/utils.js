@@ -110,11 +110,6 @@ angular.module( "opengarage.utils", [] )
 
 	            return promise.then(
 					function( result ) {
-                        if ( result.status !== 200 ) {
-                            callback( false );
-                            return;
-                        }
-
 						if ( ( token && !isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) ) {
 							if ( result.name.data === "Invalid token." ) {
 								callback( false );
@@ -128,7 +123,12 @@ angular.module( "opengarage.utils", [] )
                                 vehicle: parseInt( result.vehicle.data[ 0 ] ) === 255 ? 1 : 0
 							} );
 						} else {
-							result.data.lastUpdate = new Date().getTime();
+                            if ( result.status !== 200 ) {
+                                callback( false );
+                                return;
+                            }
+
+                            result.data.lastUpdate = new Date().getTime();
 							callback( result.data );
 						}
 					},
