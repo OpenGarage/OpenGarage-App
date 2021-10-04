@@ -43,7 +43,7 @@ sh.config.silent = true;
 // If undefined in our process, load our local file
 // (i.e. we aren't on an external server where we set these differently)
 if ( !process.env.DEPLOY_HOST ) {
-	require( "dotenv" ).load();
+	require( "dotenv" ).config();
 }
 
 // 3. TASKS
