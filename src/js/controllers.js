@@ -81,12 +81,12 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	} )
 
 	.controller( "HistoryCtrl", function( $scope, $filter, Utils ) {
+        $scope.isLocal = true;
+
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			Utils.getLogs( function( reply ) {
 				if ( reply ) {
 					var i, current, day;
-
-					$scope.isLocal = true;
 
 					for ( i = 0; i < reply.length; i++ ) {
 						current = new Date( reply[ i ][ 0 ] * 1000 ).toDateString();
@@ -107,6 +107,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 	.controller( "SettingsCtrl", function( $scope, $state, $ionicPopup, Utils ) {
 		$scope.settings = {};
+        $scope.isLocal = true;
 
 		$scope.changePassword = Utils.changePassword;
 		$scope.restart = Utils.restartController;
@@ -130,7 +131,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			Utils.getControllerOptions( function( reply ) {
 				if ( reply ) {
-					$scope.isLocal = true;
 
 					// Remove unused options to prevent accidental change
 					delete reply.mod;
