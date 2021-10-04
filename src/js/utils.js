@@ -137,7 +137,7 @@ angular.module( "opengarage.utils", [] )
 					}
 				);
 	        },
-	        getControllerOptions = function( callback, ip, showLoader ) {
+	        getControllerOptions = function( callback, ip, token, showLoader ) {
 				if ( ( !ip && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip && !isOTCToken( $rootScope.activeController.auth ) ) ) {
 					callback( false );
 					return;
@@ -147,7 +147,7 @@ angular.module( "opengarage.utils", [] )
 
 	            return $http( {
 	                method: "GET",
-	                url: getBaseUrl( ip ) + "/jo",
+	                url: getBaseUrl( ip, token ) + "/jo",
                     suppressLoader: showLoader ? false : true
 	            } ).then(
 					function( result ) {
@@ -248,13 +248,17 @@ angular.module( "opengarage.utils", [] )
 							return;
 						}
 
-						getControllerOptions( function( reply ) {
-							angular.extend( result, reply );
-							$rootScope.controllers.push( result );
-							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-							$rootScope.$broadcast( "controllersUpdated" );
-							callback( true );
-						}, data.ip );
+						getControllerOptions(
+                            function( reply ) {
+                                angular.extend( result, reply );
+                                $rootScope.controllers.push( result );
+                                storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+                                $rootScope.$broadcast( "controllersUpdated" );
+                                callback( true );
+                            },
+                            data.token ? null : data.ip,
+                            data.token ? data.token : null
+                        );
 					}
 
 					if ( data.token && !isOTCToken( data.token ) ) {

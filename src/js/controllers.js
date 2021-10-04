@@ -139,7 +139,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				} else {
 					$scope.isLocal = false;
 				}
-			}, null, true );
+			}, null, null, true );
 		} );
 	} )
 
