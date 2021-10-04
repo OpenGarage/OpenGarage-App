@@ -493,7 +493,7 @@ angular.module( "opengarage.utils", [] )
                 }
             },
             isOTCToken = function( token ) {
-                return token && token.startsWith( "OTC-" );
+                return token && token.startsWith( "OT" );
             },
 			$http, $q, $filter, $ionicPopup, $ionicModal;
 
