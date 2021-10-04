@@ -81,12 +81,12 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 	} )
 
 	.controller( "HistoryCtrl", function( $scope, $filter, Utils ) {
+        $scope.isLocal = true;
+
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			Utils.getLogs( function( reply ) {
 				if ( reply ) {
 					var i, current, day;
-
-					$scope.isLocal = true;
 
 					for ( i = 0; i < reply.length; i++ ) {
 						current = new Date( reply[ i ][ 0 ] * 1000 ).toDateString();
@@ -107,6 +107,7 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 
 	.controller( "SettingsCtrl", function( $scope, $state, $ionicPopup, Utils ) {
 		$scope.settings = {};
+        $scope.isLocal = true;
 
 		$scope.changePassword = Utils.changePassword;
 		$scope.restart = Utils.restartController;
@@ -130,7 +131,6 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 		$scope.$on( "$ionicView.beforeEnter", function() {
 			Utils.getControllerOptions( function( reply ) {
 				if ( reply ) {
-					$scope.isLocal = true;
 
 					// Remove unused options to prevent accidental change
 					delete reply.mod;
@@ -156,15 +156,18 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				buttons: [
 					{ text: "<i class='icon ion-plus-circled'></i> Add by IP" },
 					{ text: "<i class='icon ion-network'></i> Add by Blynk Token" },
+					{ text: "<i class='icon ion-network'></i> Add by OpenThings Cloud Token" },
 					{ text: "<i class='icon ion-ios-color-wand'></i> Setup New Device" }
 				],
 				titleText: "Add Controller",
 				cancelText: "Cancel",
 				buttonClicked: function( index ) {
-					if ( index === 1 ) {
-						Utils.showAddBlynk();
-					} else if ( index === 0 ) {
+					if ( index === 0 ) {
 						Utils.showAddController();
+					} else if ( index === 1 ) {
+						Utils.showAddBlynk();
+                    } else if ( index === 2 ) {
+                        Utils.showAddOtc();
 					} else {
 						Utils.checkNewController( function( result ) {
 							if ( !result ) {

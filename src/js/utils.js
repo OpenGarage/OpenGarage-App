@@ -1,5 +1,8 @@
 /* global angular, window */
 
+// TODO make this configurable.
+var OPENTHINGS_CLOUD_HOST = "https://cloud.openthings.io";
+
 // OpenGarage
 angular.module( "opengarage.utils", [] )
     .factory( "Utils", [ "$injector", "$rootScope", function( $injector, $rootScope ) {
@@ -73,7 +76,7 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
+				if ( ( token && !isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) ) {
 					promise = $q.all( {
                         name: $http( {
                             method: "POST",
@@ -100,14 +103,19 @@ angular.module( "opengarage.utils", [] )
 				} else {
 					promise = $http( {
 						method: "GET",
-						url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jc",
+						url: getBaseUrl( ip, token ) + "/jc",
 						suppressLoader: ip ? false : true
 					} );
 				}
 
 	            return promise.then(
 					function( result ) {
-						if ( token || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth ) ) ) {
+                        if ( result.status !== 200 ) {
+                            callback( false );
+                            return;
+                        }
+
+						if ( ( token && !isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) ) {
 							if ( result.name.data === "Invalid token." ) {
 								callback( false );
 								return;
@@ -130,7 +138,7 @@ angular.module( "opengarage.utils", [] )
 				);
 	        },
 	        getControllerOptions = function( callback, ip, showLoader ) {
-				if ( ( !ip && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip ) ) {
+				if ( ( !ip && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip && !isOTCToken( $rootScope.activeController.auth ) ) ) {
 					callback( false );
 					return;
 				}
@@ -139,7 +147,7 @@ angular.module( "opengarage.utils", [] )
 
 	            return $http( {
 	                method: "GET",
-	                url: "http://" + ( ip || $rootScope.activeController.ip ) + "/jo",
+	                url: getBaseUrl( ip ) + "/jo",
                     suppressLoader: showLoader ? false : true
 	            } ).then(
 					function( result ) {
@@ -211,7 +219,7 @@ angular.module( "opengarage.utils", [] )
 
 				if ( data.token && data.token.length !== 32 ) {
 					$ionicPopup.alert( {
-						template: "<p class='center'>A valid Blynk token is required. Please verify your token and try again.</p>"
+						template: "<p class='center'>A valid " + ( data.token.startsWith( "OT" ) ? "OpenThings Cloud" : "Blynk" ) + " token is required. Please verify your token and try again.</p>"
 					} );
 					callback( false );
 					return;
@@ -229,6 +237,7 @@ angular.module( "opengarage.utils", [] )
 
 					if ( result.mac ) {
 						result.ip = data.ip;
+                        result.auth = data.token;
 						result.password = data.password;
 
 						if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
@@ -248,7 +257,7 @@ angular.module( "opengarage.utils", [] )
 						}, data.ip );
 					}
 
-					if ( data.token ) {
+					if ( data.token && !isOTCToken( data.token ) ) {
 						$http( {
 							method: "POST",
 							url: "https://opengarage.io/wp-admin/admin-ajax.php",
@@ -472,6 +481,20 @@ angular.module( "opengarage.utils", [] )
 					}
 				} );
 			},
+            /**
+             * Returns the URL that requests to a controller should be relative to. If neither an IP address nor an
+             * OpenThings Cloud token are specified, the active controller will be used.
+             */
+             getBaseUrl = function( ip, token ) {
+                if ( ( token && isOTCToken( token ) || ( !ip && ( $rootScope.activeController && isOTCToken( $rootScope.activeController.auth ) ) ) ) ) {
+                    return OPENTHINGS_CLOUD_HOST + "/forward/v1/" + ( token || $rootScope.activeController.auth );
+                } else {
+                    return "http://" + ( ip || $rootScope.activeController.ip );
+                }
+            },
+            isOTCToken = function( token ) {
+                return token && token.startsWith( "OT" );
+            },
 			$http, $q, $filter, $ionicPopup, $ionicModal;
 
 	    if ( isFireFox ) {
@@ -569,6 +592,21 @@ angular.module( "opengarage.utils", [] )
 					}
 				} );
 			},
+			showAddOtc: function( callback ) {
+				callback = callback || function() {};
+				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
+
+				$ionicPopup.prompt( {
+					title: "Add Controller by OpenThings Cloud",
+					template: "Enter your OpenThings Cloud auth token below:",
+					inputType: "text",
+					inputPlaceholder: "Your OpenThings Auth token"
+				} ).then( function( token ) {
+					if ( token ) {
+						addController( { token: token }, callback );
+					}
+				} );
+			},
 			toggleDoor: function( auth, callback ) {
 				if ( typeof auth === "function" ) {
 					callback = auth;
@@ -580,7 +618,7 @@ angular.module( "opengarage.utils", [] )
 
 				var promise;
 
-				if ( auth || ( $rootScope.activeController && $rootScope.activeController.auth ) ) {
+				if ( ( auth && !isOTCToken( auth ) ) || ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) {
 					promise = $http( {
 						method: "POST",
 						url: "https://opengarage.io/wp-admin/admin-ajax.php",
@@ -598,7 +636,7 @@ angular.module( "opengarage.utils", [] )
 						}, $rootScope.activeController.cdt || 1000 );
 					} );
 				} else {
-					promise = $http.get( "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
+					promise = $http.get( getBaseUrl() + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
 				}
 
 	            promise.then(
@@ -620,7 +658,7 @@ angular.module( "opengarage.utils", [] )
 						template: "<p class='center'>Are you sure you want to restart the controller?</p>"
 					} ).then( function( result ) {
 						if ( result ) {
-							$http.get( "http://" + $rootScope.activeController.ip + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&reboot=1" );
+							$http.get( getBaseUrl() + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&reboot=1" );
 						}
 					} );
 				}
@@ -630,7 +668,7 @@ angular.module( "opengarage.utils", [] )
 
 	            return $http( {
 	                method: "GET",
-	                url: "http://" + $rootScope.activeController.ip + "/co?dkey=" + $rootScope.activeController.password,
+	                url: getBaseUrl() + "/co?dkey=" + $rootScope.activeController.password,
 					params: settings,
 					paramSerializer: "$httpParamSerializerJQLike"
 	            } ).then(
@@ -669,7 +707,7 @@ angular.module( "opengarage.utils", [] )
 
 		            $http( {
 		                method: "GET",
-		                url: "http://" + $rootScope.activeController.ip + "/co?dkey=" + $rootScope.activeController.password,
+		                url: getBaseUrl() + "/co?dkey=" + $rootScope.activeController.password,
 						params: scope.pwd,
 						paramSerializer: "$httpParamSerializerJQLike"
 		            } ).then( function() {
@@ -689,7 +727,7 @@ angular.module( "opengarage.utils", [] )
 				} );
 			},
 			getLogs: function( callback ) {
-				if ( !$rootScope.activeController || !$rootScope.activeController.ip ) {
+				if ( !$rootScope.activeController || !isOTCToken( $rootScope.activeController.auth ) ) {
 					callback( false );
 					return;
 				}
@@ -698,7 +736,7 @@ angular.module( "opengarage.utils", [] )
 
 	            $http( {
 	                method: "GET",
-	                url: "http://" + $rootScope.activeController.ip + "/jl"
+	                url: getBaseUrl() + "/jl"
 	            } ).then(
 					function( result ) {
 						callback( result.data.logs.sort( function( a, b ) { return b[ 0 ] - a[ 0 ]; } ) );
