@@ -156,15 +156,18 @@ angular.module( "opengarage.controllers", [ "opengarage.utils", "opengarage.clou
 				buttons: [
 					{ text: "<i class='icon ion-plus-circled'></i> Add by IP" },
 					{ text: "<i class='icon ion-network'></i> Add by Blynk Token" },
+					{ text: "<i class='icon ion-network'></i> Add by OpenThings Cloud Token" },
 					{ text: "<i class='icon ion-ios-color-wand'></i> Setup New Device" }
 				],
 				titleText: "Add Controller",
 				cancelText: "Cancel",
 				buttonClicked: function( index ) {
-					if ( index === 1 ) {
-						Utils.showAddBlynk();
-					} else if ( index === 0 ) {
+					if ( index === 0 ) {
 						Utils.showAddController();
+					} else if ( index === 1 ) {
+						Utils.showAddBlynk();
+                    } else if ( index === 2 ) {
+                        Utils.showAddOtc();
 					} else {
 						Utils.checkNewController( function( result ) {
 							if ( !result ) {

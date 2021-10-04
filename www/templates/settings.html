@@ -1,8 +1,8 @@
 <ion-view view-title="Settings">
 	<ion-content has-bouncing="false" ng-class="{'vertical-center': !isLocal }">
 		<div ng-show="!isLocal" class="center padding">
-			<h1>Local Connection Required</h1>
-			<p>OpenGarage can only be configured when the app is on the same network. Please ensure the same WiFi network is being used and try again.</p>
+			<h1>Blynk Token Unsupported</h1>
+			<p>OpenGarage log data cannot be accessed using Blynk. Please switch to an OpenThings Cloud Token or connect to the same WiFi network.</p>
 		</div>
 		<form ng-show="isLocal" name="form" novalidate="novalidate" class="settings padding limit-width">
 			<div class="list">
@@ -41,8 +41,8 @@
 					<select ng-model="settings.acc" ng-options="o.val as o.name for o in [{val:0,name:'Local Only'},{val:1,name:'Local + Cloud'},{val:2,name:'Cloud Only'}]"></select>
 				</label>
 				<label class="item item-input" ng-show="settings.acc > 0">
-					<span class="input-label">Blynk Token</span>
-					<input type="text" placeholder="Blynk Token" ng-maxlength="32" ng-model="settings.auth">
+					<span class="input-label">Token (Blynk or OpenThings Cloud)</span>
+					<input type="text" placeholder="Token (Blynk or OpenThings Cloud)" ng-maxlength="32" ng-model="settings.auth">
 				</label>
 				<label class="item item-input" ng-show="settings.acc < 2">
 					<span class="input-label">HTTP Port</span>
