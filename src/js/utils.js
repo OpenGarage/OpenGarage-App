@@ -138,7 +138,7 @@ angular.module( "opengarage.utils", [] )
 				);
 	        },
 	        getControllerOptions = function( callback, ip, token, showLoader ) {
-				if ( ( !ip && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip && !isOTCToken( $rootScope.activeController.auth ) ) ) {
+				if ( ( !ip && !token && !$rootScope.activeController ) || ( $rootScope.activeController && !$rootScope.activeController.ip && !isOTCToken( $rootScope.activeController.auth ) ) ) {
 					callback( false );
 					return;
 				}
@@ -490,7 +490,7 @@ angular.module( "opengarage.utils", [] )
              * OpenThings Cloud token are specified, the active controller will be used.
              */
              getBaseUrl = function( ip, token ) {
-                if ( ( token && isOTCToken( token ) || ( !ip && ( $rootScope.activeController && isOTCToken( $rootScope.activeController.auth ) ) ) ) ) {
+                if ( ( token && isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && isOTCToken( $rootScope.activeController.auth ) ) ) ) {
                     return OPENTHINGS_CLOUD_HOST + "/forward/v1/" + ( token || $rootScope.activeController.auth );
                 } else {
                     return "http://" + ( ip || $rootScope.activeController.ip );
@@ -640,7 +640,7 @@ angular.module( "opengarage.utils", [] )
 						}, $rootScope.activeController.cdt || 1000 );
 					} );
 				} else {
-					promise = $http.get( getBaseUrl() + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
+					promise = $http.get( getBaseUrl( null, auth ) + "/cc?dkey=" + encodeURIComponent( $rootScope.activeController.password ) + "&click=1" );
 				}
 
 	            promise.then(
@@ -731,7 +731,7 @@ angular.module( "opengarage.utils", [] )
 				} );
 			},
 			getLogs: function( callback ) {
-				if ( !$rootScope.activeController || !isOTCToken( $rootScope.activeController.auth ) ) {
+				if ( !$rootScope.activeController || ( !$rootScope.activeController.ip && !isOTCToken( $rootScope.activeController.auth ) ) ) {
 					callback( false );
 					return;
 				}
