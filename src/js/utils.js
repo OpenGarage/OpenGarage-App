@@ -397,48 +397,53 @@ angular.module( "opengarage.utils", [] )
 					return;
 				}
 
-				window.networkinterface.getWiFiIPAddress( function( router ) {
-					if ( !router ) {
-						callback( false );
-						return;
-					}
+				window.networkinterface.getWiFiIPAddress(
+                    function( address ) {
+                        if ( !address ) {
+                            callback( false );
+                            return;
+                        }
 
-					$q = $q || $injector.get( "$q" );
-					$http = $http || $injector.get( "$http" );
-					router = router.split( "." );
-					router.pop();
+                        $q = $q || $injector.get( "$q" );
+                        $http = $http || $injector.get( "$http" );
+                        var router = address.ip.split( "." );
+                        router.pop();
 
-					var baseip = router.join( "." ),
-						check = function( ip ) {
-							return $http( {
-									method: "GET",
-									url: "http://" + baseip + "." + ip + "/jc",
-									suppressLoader: true,
-									timeout: 6000,
-									retryCount: 3
-								} )
-								.then( function( result ) {
-									if ( result.data && result.data.mac ) {
-										matches.push( baseip + "." + ip );
-									}
-								} )
-								.catch( function() {
-									return false;
-								} );
-						},
-						queue = [], matches = [], i;
+                        var baseip = router.join( "." ),
+                            check = function( ip ) {
+                                return $http( {
+                                        method: "GET",
+                                        url: "http://" + baseip + "." + ip + "/jc",
+                                        suppressLoader: true,
+                                        timeout: 6000,
+                                        retryCount: 3
+                                    } )
+                                    .then( function( result ) {
+                                        if ( result.data && result.data.mac ) {
+                                            matches.push( baseip + "." + ip );
+                                        }
+                                    } )
+                                    .catch( function() {
+                                        return false;
+                                    } );
+                            },
+                            queue = [], matches = [], i;
 
-					$rootScope.$broadcast( "loading:show" );
+                        $rootScope.$broadcast( "loading:show" );
 
-				    for ( i = 1; i <= 244; i++ ) {
-				        queue.push( check( i ) );
-				    }
+                        for ( i = 1; i <= 244; i++ ) {
+                            queue.push( check( i ) );
+                        }
 
-				    $q.all( queue ).then( function() {
-						$rootScope.$broadcast( "loading:hide" );
-						callback( matches );
-				    } );
-				} );
+                        $q.all( queue ).then( function() {
+                            $rootScope.$broadcast( "loading:hide" );
+                            callback( matches );
+                        } );
+                    },
+                    function() {
+                        callback( false );
+                    }
+                );
 			},
 			requestPassword = function( callback ) {
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
