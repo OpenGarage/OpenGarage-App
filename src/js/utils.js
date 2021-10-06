@@ -397,7 +397,7 @@ angular.module( "opengarage.utils", [] )
 					return;
 				}
 
-				window.networkinterface.getIPAddress( function( router ) {
+				window.networkinterface.getWiFiIPAddress( function( router ) {
 					if ( !router ) {
 						callback( false );
 						return;
