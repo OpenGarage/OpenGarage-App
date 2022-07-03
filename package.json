@@ -57,7 +57,8 @@
     "plugins": {
       "cordova-plugin-3dtouch": {},
       "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": " "
+        "GEOLOCATION_USAGE_DESCRIPTION": " ",
+        "GPS_REQUIRED": "true"
       },
       "cordova-plugin-network-information": {},
       "cordova-plugin-networkinterface": {},
