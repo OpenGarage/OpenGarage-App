@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20" id="com.albahra.opengarage" ios-CFBundleVersion="2.2.1" version="2.2.1" versionCode="20" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget android-versionCode="23" id="com.albahra.opengarage" ios-CFBundleVersion="2.3.3" version="2.3.3" versionCode="23" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OpenGarage</name>
     <description>
 		Designed to allow intuitive control of the OpenGarage garage door opener.
@@ -41,7 +41,7 @@
             <string>Your current location will be used to configure OpenGarage.</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="CFBundleShortVersionString">
-            <string>20</string>
+            <string>23</string>
         </edit-config>
         <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
         <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />

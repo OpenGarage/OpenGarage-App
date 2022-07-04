@@ -78,7 +78,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 								if ( controller &&
 									( data[ 0 ] === "open" && controller.door === 0 ) &&
 									( data[ 0 ] === "close" && controller.door === 1 ) ) {
-										Utils.toggleDoor( controller.auth );
+										Utils.toggleDoor( controller.auth, null, controller.bdmn + ":" + controller.bprt );
 								}
 							} );
 						} );
@@ -101,7 +101,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 					if ( data[ 0 ] === "toggle" ) {
 						var controller = $filter( "filter" )( $rootScope.controllers, { "mac": data[ 1 ] } );
 						if ( controller ) {
-							Utils.toggleDoor( controller.auth );
+							Utils.toggleDoor( controller.auth, null, controller.bdmn + ":" + controller.bprt );
 						}
 					}
 				};
@@ -111,7 +111,7 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 				window.applewatch.init( angular.noop );
 
 				window.toggleDoorByIndex = function( index ) {
-					Utils.toggleDoor( $rootScope.controllers[ index ].auth );
+					Utils.toggleDoor( $rootScope.controllers[ index ].auth, null, $rootScope.controllers[ index ].bdmn + ":" + $rootScope.controllers[ index ].bprt );
 				};
 
 				window.applewatch.callback.onLoadAppMainRequest = Watch.loadApp;

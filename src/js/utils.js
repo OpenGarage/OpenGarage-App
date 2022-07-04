@@ -65,7 +65,7 @@ angular.module( "opengarage.utils", [] )
 			intToIP = function( int ) {
 				return ( int % 256 ) + "." + ( ( int / 256 >> 0 ) % 256 ) + "." + ( ( ( int / 256 >> 0 ) / 256 >> 0 ) % 256 ) + "." + ( ( ( int / 256 >> 0 ) / 256 >> 0 ) / 256 >> 0 );
 			},
-	        getControllerSettings = function( callback, ip, token ) {
+	        getControllerSettings = function( callback, ip, token, blynkServer ) {
 				if ( !ip && !token && !$rootScope.activeController ) {
 					callback( false );
 					return;
@@ -77,26 +77,38 @@ angular.module( "opengarage.utils", [] )
 				var promise;
 
 				if ( ( token && !isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) ) {
-					promise = $q.all( {
+                    if ( !blynkServer ) {
+                        if ( !$rootScope.activeController.bdmn ) {
+                            blynkServer = "blynk-cloud.com";
+                        } else {
+                            blynkServer = $rootScope.activeController.bdmn;
+                        }
+
+                        if ( $rootScope.activeController.bprt ) {
+                            blynkServer += ":" + $rootScope.activeController.bprt;
+                        }
+                    }
+
+                    promise = $q.all( {
                         name: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
                             suppressLoader: true
                         } ),
                         door: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
                             suppressLoader: true
                         } ),
                         vehicle: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
                             suppressLoader: true
                         } )
                     } );
@@ -219,7 +231,7 @@ angular.module( "opengarage.utils", [] )
 
 				if ( data.token && data.token.length !== 32 ) {
 					$ionicPopup.alert( {
-						template: "<p class='center'>A valid " + ( data.token.startsWith( "OT" ) ? "OpenThings Cloud" : "Blynk" ) + " token is required. Please verify your token and try again.</p>"
+						template: "<p class='center'>A valid " + ( isOTCToken( data.token ) ? "OpenThings Cloud" : "Blynk" ) + " token is required. Please verify your token and try again.</p>"
 					} );
 					callback( false );
 					return;
@@ -262,42 +274,19 @@ angular.module( "opengarage.utils", [] )
 					}
 
 					if ( data.token && !isOTCToken( data.token ) ) {
-						$http( {
-							method: "POST",
-							url: "https://opengarage.io/wp-admin/admin-ajax.php",
-			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-							data: "action=blynkCloud&path=" + data.token + "/get/V2",
-							suppressLoader: true
-						} ).then( function( reply ) {
-							if ( reply.data === "Invalid token." ) {
-								$ionicPopup.alert( {
-									template: "<p class='center'>Invalid Blynk token.</p>"
-								} );
-								callback( false );
-								return;
-							}
+                        result.auth = data.token;
+                        result.bdmn = data.bdmn;
+                        result.bprt = data.bprt;
 
-							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
-							result.mac = "5C:CF:7F:" + reply.match( /.{1,2}/g ).join( ":" );
-							result.auth = data.token;
-
-							if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
-								$ionicPopup.alert( {
-									template: "<p class='center'>Device already added to site list.</p>"
-								} );
-								callback( false );
-								return;
-							}
-
-							$rootScope.controllers.push( result );
-							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-							$rootScope.$broadcast( "controllersUpdated" );
-							callback( true );
-						} );
+                        $rootScope.controllers.push( result );
+                        storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+                        $rootScope.$broadcast( "controllersUpdated" );
+                        callback( true );
 					}
 				},
 				data.token ? null : data.ip,
-				data.token ? data.token : null
+				data.token ? data.token : null,
+                data.bdmn && data.bprt ? data.bdmn + ":" + data.bprt : null
 				);
 			},
 			checkNewController = function( callback, suppressLoader ) {
@@ -590,16 +579,44 @@ angular.module( "opengarage.utils", [] )
 				callback = callback || function() {};
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
-				$ionicPopup.prompt( {
+				var scope = $rootScope.$new();
+				scope.data = {};
+				var popup = $ionicPopup.show( {
+					templateUrl: "templates/addControllerBlynk.html",
 					title: "Add Controller by Blynk",
-					template: "Enter your Blynk Auth token below:",
-					inputType: "text",
-					inputPlaceholder: "Your Blynk Auth token"
-				} ).then( function( token ) {
-					if ( token ) {
-						addController( { token: token }, callback );
-					}
+					scope: scope,
+					buttons: [
+						{ text: "Cancel" },
+						{
+							text: "<b>OK</b>",
+							type: "button-positive",
+							onTap: function( e ) {
+								if ( !scope.data.token ) {
+									e.preventDefault();
+									return;
+								}
+
+								return true;
+							}
+						}
+					]
 				} );
+
+				popup.then(
+					function( isValid ) {
+						if ( isValid ) {
+                            if ( !scope.data.bdmn ) {
+                                scope.data.bdmn = "blynk-cloud.com";
+                            }
+
+                            if ( !scope.data.bprt ) {
+                                scope.data.bprt = 80;
+                            }
+
+							addController( scope.data, callback );
+						}
+					}
+				);
 			},
 			showAddOtc: function( callback ) {
 				callback = callback || function() {};
@@ -616,7 +633,7 @@ angular.module( "opengarage.utils", [] )
 					}
 				} );
 			},
-			toggleDoor: function( auth, callback ) {
+			toggleDoor: function( auth, callback, blynkServer ) {
 				if ( typeof auth === "function" ) {
 					callback = auth;
 					auth = null;
@@ -628,11 +645,23 @@ angular.module( "opengarage.utils", [] )
 				var promise;
 
 				if ( ( auth && !isOTCToken( auth ) ) || ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) {
+                    if ( !blynkServer ) {
+                        if ( !$rootScope.activeController.bdmn ) {
+                            blynkServer = "blynk-cloud.com";
+                        } else {
+                            blynkServer = $rootScope.activeController.bdmn;
+                        }
+
+                        if ( $rootScope.activeController.bprt ) {
+                            blynkServer += ":" + $rootScope.activeController.bprt;
+                        }
+                    }
+
 					promise = $http( {
 						method: "POST",
 						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
+						data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
 					} ).then( function() {
 						setTimeout( function() {
 							$http( {
@@ -640,7 +669,7 @@ angular.module( "opengarage.utils", [] )
 								url: "https://opengarage.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 				                suppressLoader: true,
-								data: "action=blynkCloud&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
+								data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} );
 						}, $rootScope.activeController.cdt || 1000 );
 					} );

@@ -1,0 +1,14 @@
+<ion-list>
+	<ion-item class="item-input item-floating-label">
+		<span class="input-label">Enter your Blynk Auth token below:</span>
+		<input placeholder="Your Blynk Auth token" type="text" name="token" ng-model="data.token" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
+	</ion-item>
+	<ion-item class="item-input item-floating-label">
+		<span class="input-label">Enter the Blynk Server Hostname (optional)</span>
+		<input placeholder="Blynk Hostname (optional)" name="bdmn" type="text" ng-model="data.bdmn">
+	</ion-item>
+    <ion-item class="item-input item-floating-label">
+		<span class="input-label">Enter the Blynk Server Port (optional)</span>
+		<input placeholder="Blynk Port (optional)" name="bprt" type="number" ng-model="data.bprt">
+	</ion-item>
+</ion-list>
