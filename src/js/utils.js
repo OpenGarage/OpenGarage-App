@@ -272,40 +272,14 @@ angular.module( "opengarage.utils", [] )
 					}
 
 					if ( data.token && !isOTCToken( data.token ) ) {
-						$http( {
-							method: "POST",
-							url: "https://opengarage.io/wp-admin/admin-ajax.php",
-			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-							data: "action=blynkCloud&server=" + encodeURIComponent( data.bdmn + ":" + data.bprt ) + "&path=" + data.token + "/get/V2",
-							suppressLoader: true
-						} ).then( function( reply ) {
-							if ( reply.data === "Invalid token." ) {
-								$ionicPopup.alert( {
-									template: "<p class='center'>Invalid Blynk token.</p>"
-								} );
-								callback( false );
-								return;
-							}
+                        result.auth = data.token;
+                        result.bdmn = data.bdmn;
+                        result.bprt = data.bprt;
 
-							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
-							result.mac = "5C:CF:7F:" + reply.match( /.{1,2}/g ).join( ":" );
-							result.auth = data.token;
-                            result.bdmn = data.bdmn;
-                            result.bprt = data.bprt;
-
-							if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
-								$ionicPopup.alert( {
-									template: "<p class='center'>Device already added to site list.</p>"
-								} );
-								callback( false );
-								return;
-							}
-
-							$rootScope.controllers.push( result );
-							storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
-							$rootScope.$broadcast( "controllersUpdated" );
-							callback( true );
-						} );
+                        $rootScope.controllers.push( result );
+                        storage.set( { controllers: JSON.stringify( $rootScope.controllers ) } );
+                        $rootScope.$broadcast( "controllersUpdated" );
+                        callback( true );
 					}
 				},
 				data.token ? null : data.ip,
