@@ -77,29 +77,36 @@ angular.module( "opengarage.utils", [] )
 				var promise;
 
 				if ( ( token && !isOTCToken( token ) ) || ( !ip && ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) ) {
-					promise = $q.all( {
+                    if ( !blynkServer ) {
+                        if ( !$rootScope.activeController.bdmn ) {
+                            blynkServer = "blynk-cloud.com";
+                        }
+
+                        if ( $rootScope.activeController.bprt ) {
+                            blynkServer += ":" + $rootScope.activeController.bprt;
+                        }
+                    }
+
+                    promise = $q.all( {
                         name: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
-                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
                             suppressLoader: true
                         } ),
                         door: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
-                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
                             suppressLoader: true
                         } ),
                         vehicle: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
-                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
                             suppressLoader: true
                         } )
                     } );
@@ -662,12 +669,21 @@ angular.module( "opengarage.utils", [] )
 				var promise;
 
 				if ( ( auth && !isOTCToken( auth ) ) || ( $rootScope.activeController && $rootScope.activeController.auth && !isOTCToken( $rootScope.activeController.auth ) ) ) {
+                    if ( !blynkServer ) {
+                        if ( !$rootScope.activeController.bdmn ) {
+                            blynkServer = "blynk-cloud.com";
+                        }
+
+                        if ( $rootScope.activeController.bprt ) {
+                            blynkServer += ":" + $rootScope.activeController.bprt;
+                        }
+                    }
+
 					promise = $http( {
 						method: "POST",
 						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
-                            "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
+						data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
 					} ).then( function() {
 						setTimeout( function() {
 							$http( {
@@ -675,8 +691,7 @@ angular.module( "opengarage.utils", [] )
 								url: "https://opengarage.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 				                suppressLoader: true,
-								data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
-                                    "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
+								data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} );
 						}, $rootScope.activeController.cdt || 1000 );
 					} );
