@@ -13,6 +13,7 @@ img/logo.png
 img/placeholder.png
 js/app.min.js
 templates/addController.html
+templates/addControllerBlynk.html
 templates/changePassword.html
 templates/cloudLogin.html
 templates/controllerSelect.html
@@ -38,4 +39,4 @@ index.html
 NETWORK:
 *
 
-# hash: 1bf416b51c14fcdf00652b5ffc2c85faf41629ab36adbf9925e5fdce79cf09d3
+# hash: 36dbfbba3f0122052cabbf0d89bb0732a2a9d184704a7b158846a32a6bfee7c0
