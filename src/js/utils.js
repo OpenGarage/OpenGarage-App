@@ -80,6 +80,8 @@ angular.module( "opengarage.utils", [] )
                     if ( !blynkServer ) {
                         if ( !$rootScope.activeController.bdmn ) {
                             blynkServer = "blynk-cloud.com";
+                        } else {
+                            blynkServer = $rootScope.activeController.bdmn;
                         }
 
                         if ( $rootScope.activeController.bprt ) {
@@ -646,6 +648,8 @@ angular.module( "opengarage.utils", [] )
                     if ( !blynkServer ) {
                         if ( !$rootScope.activeController.bdmn ) {
                             blynkServer = "blynk-cloud.com";
+                        } else {
+                            blynkServer = $rootScope.activeController.bdmn;
                         }
 
                         if ( $rootScope.activeController.bprt ) {
