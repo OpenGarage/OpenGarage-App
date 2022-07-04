@@ -266,7 +266,7 @@ angular.module( "opengarage.utils", [] )
 							method: "POST",
 							url: "https://opengarage.io/wp-admin/admin-ajax.php",
 			                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-							data: "action=blynkCloud&server=" + encodeURIComponent( data.blynkServer ) + "&path=" + data.token + "/get/V2",
+							data: "action=blynkCloud&server=" + encodeURIComponent( data.bdmn + ":" + data.bprt ) + "&path=" + data.token + "/get/V2",
 							suppressLoader: true
 						} ).then( function( reply ) {
 							if ( reply.data === "Invalid token." ) {
@@ -280,7 +280,8 @@ angular.module( "opengarage.utils", [] )
 							reply = reply.data.pop().split( " " )[ 1 ].split( "_" )[ 1 ];
 							result.mac = "5C:CF:7F:" + reply.match( /.{1,2}/g ).join( ":" );
 							result.auth = data.token;
-                            result.blynkServer = data.blynkServer;
+                            result.bdmn = data.bdmn;
+                            result.bprt = data.bprt;
 
 							if ( $filter( "filter" )( $rootScope.controllers, { "mac": result.mac } ).length > 0 ) {
 								$ionicPopup.alert( {
@@ -299,7 +300,7 @@ angular.module( "opengarage.utils", [] )
 				},
 				data.token ? null : data.ip,
 				data.token ? data.token : null,
-                data.blynkServer ? data.blynkServer : null
+                data.bdmn && data.bprt ? data.bdmn + ":" + data.bprt : null
 				);
 			},
 			checkNewController = function( callback, suppressLoader ) {
@@ -593,9 +594,7 @@ angular.module( "opengarage.utils", [] )
 				$ionicPopup = $ionicPopup || $injector.get( "$ionicPopup" );
 
 				var scope = $rootScope.$new();
-				scope.data = {
-					blynkServer: "blynk-cloud.com"
-				};
+				scope.data = {};
 				var popup = $ionicPopup.show( {
 					templateUrl: "templates/addControllerBlynk.html",
 					title: "Add Controller by Blynk",
@@ -606,7 +605,7 @@ angular.module( "opengarage.utils", [] )
 							text: "<b>OK</b>",
 							type: "button-positive",
 							onTap: function( e ) {
-								if ( !scope.data.token || !scope.data.blynkServer ) {
+								if ( !scope.data.token ) {
 									e.preventDefault();
 									return;
 								}
@@ -620,6 +619,14 @@ angular.module( "opengarage.utils", [] )
 				popup.then(
 					function( isValid ) {
 						if ( isValid ) {
+                            if ( !scope.data.bdmn ) {
+                                scope.data.bdmn = "blynk-cloud.com";
+                            }
+
+                            if ( !scope.data.bprt ) {
+                                scope.data.bprt = 80;
+                            }
+
 							addController( scope.data, callback );
 						}
 					}
@@ -656,7 +663,8 @@ angular.module( "opengarage.utils", [] )
 						method: "POST",
 						url: "https://opengarage.io/wp-admin/admin-ajax.php",
 		                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-						data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
+						data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
+                            "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=1" )
 					} ).then( function() {
 						setTimeout( function() {
 							$http( {
@@ -664,7 +672,8 @@ angular.module( "opengarage.utils", [] )
 								url: "https://opengarage.io/wp-admin/admin-ajax.php",
 				                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
 				                suppressLoader: true,
-								data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.blynkServer ) + "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
+								data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
+                                    "&path=" + encodeURIComponent( ( auth || $rootScope.activeController.auth ) + "/update/V1?value=0" )
 							} );
 						}, $rootScope.activeController.cdt || 1000 );
 					} );
