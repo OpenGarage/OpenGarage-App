@@ -82,21 +82,24 @@ angular.module( "opengarage.utils", [] )
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
+                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/project",
                             suppressLoader: true
                         } ),
                         door: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
+                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V0",
                             suppressLoader: true
                         } ),
                         vehicle: $http( {
                             method: "POST",
                             url: "https://opengarage.io/wp-admin/admin-ajax.php",
                             headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer ) + "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
+                            data: "action=blynkCloud&server=" + encodeURIComponent( blynkServer || $rootScope.activeController.bdmn + ":" + $rootScope.activeController.bprt ) +
+                                "&path=" + encodeURIComponent( token || $rootScope.activeController.auth ) + "/get/V4",
                             suppressLoader: true
                         } )
                     } );
