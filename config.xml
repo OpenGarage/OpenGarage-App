@@ -33,6 +33,7 @@
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <platform name="ios">
+        <preference name="scheme" value="ionic" />
         <preference name="Orientation" value="all" />
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
             <string>Your current location will be used to allow OpenGarage to trigger rules based on your location.</string>

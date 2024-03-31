@@ -24,14 +24,13 @@
     "cordova-plugin-inappbrowser": "^6.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-networkinterface": "^2.2.0",
-    "cordova-plugin-safariviewcontroller": "^2.0.0",
     "cordova-plugin-statusbar": "^4.0.0",
+    "cordova-plugin-transport-security": "^0.1.2",
     "dotenv": "^16.4.5",
     "fs-extra": "~11.2.0",
     "gulp": "^5.0.0",
     "gulp-autoprefixer": "~9.0.0",
     "gulp-concat": "~2.6.1",
-    "gulp-imagemin": "~9.0.0",
     "gulp-jscs": "~4.1.0",
     "gulp-jshint": "~2.1.0",
     "gulp-manifest3": "^0.1.2",
@@ -61,9 +60,9 @@
       },
       "cordova-plugin-network-information": {},
       "cordova-plugin-networkinterface": {},
-      "cordova-plugin-safariviewcontroller": {},
       "cordova-plugin-statusbar": {},
-      "ionic-plugin-keyboard": {}
+      "ionic-plugin-keyboard": {},
+      "cordova-plugin-transport-security": {}
     },
     "platforms": [
       "ios",
