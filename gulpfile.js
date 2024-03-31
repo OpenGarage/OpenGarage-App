@@ -172,8 +172,7 @@ gulp.task( "sass", function() {
 			keepBreaks:true
 		} ) )
 		.pipe( rename( { extname: ".min.css" } ) )
-        .pipe( gulp.dest( "./www/css/", { mode: "0755" } ) )
-        .pipe( notify( { message: "CSS processing complete..." } ) );
+        .pipe( gulp.dest( "./www/css/", { mode: "0755" } ) );
 } );
 
 // Lint task
@@ -265,6 +264,4 @@ gulp.task( "manifest", function() {
 	.pipe( gulp.dest( "www" ) );
 } );
 
-gulp.task( "default", gulp.series( "parse-args", "lint", "sass", "uglify", "manifest", function( done ) {
-    done();
-} ) );
+gulp.task( "default", gulp.series( "parse-args", "lint", "sass", "uglify", "manifest" ) );
