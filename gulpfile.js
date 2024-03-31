@@ -258,6 +258,7 @@ gulp.task( "manifest", function() {
 	.pipe( manifest( {
 		hash: true,
 		preferOnline: false,
+        timestamp: false,
 		network: [ "*" ],
 		filename: "cache.manifest"
 	} ) )
