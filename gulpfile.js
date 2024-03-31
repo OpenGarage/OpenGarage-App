@@ -5,29 +5,26 @@
 // 1. LIBRARIES
 // - - - - - - - - - - - - - - -
 
-var gulp         = require( "gulp" ),               // Gulp
-    gutil        = require( "gulp-util" ),          // Gulp Utilities
-    merge		 = require( "merge-stream" ),		// Merge streams
-    autoprefixer = require( "gulp-autoprefixer" ),  // CSS Vendor Prefixing
-    bower        = require( "bower" ),              // Bower
-	fs           = require( "fs-extra" ),           // Node File Read/Write
-	imagemin     = require( "gulp-imagemin" ),      // Image Optimization
-	minifyCss    = require( "gulp-minify-css" ),    // CSS Minification
-	notify       = require( "gulp-notify" ),        // Advanced Notifications
-	rename       = require( "gulp-rename" ),        // Rename Files & Directories
-	sass         = require( "gulp-sass" ),          // SASS Compilation
-	sh           = require( "shelljs" ),            // Command Line Tools
-	jshint       = require( "gulp-jshint" ),        // JSHint syntax check
-	jscs         = require( "gulp-jscs" ),          // Javascript style checker
-	sassLint     = require( "gulp-sass-lint" ),     // SASS syntax/style check
-	uglify       = require( "gulp-uglify" ),        // Javascript minification
-	concat       = require( "gulp-concat" ),        // Concatenate multiple files
-	sourcemaps   = require( "gulp-sourcemaps" ),	// Generate sourcemap for minfied JS
-	runSequence  = require( "run-sequence" ),       // Runs tasks in sequence
-	manifest	 = require( "gulp-manifest" ),
-	replace		 = require( "gulp-replace" ),
-	argv		 = require( "yargs" ).argv,
-	pkg			 = require( "./package.json" );
+var gulp         = require( "gulp" ),                          // Gulp
+    gutil        = require( "gulp-util" ),                     // Gulp Utilities
+    merge        = require( "merge-stream" ),                  // Merge streams
+    bower        = require( "bower" ),                         // Bower
+    fs           = require( "fs-extra" ),                      // Node File Read/Write
+    minifyCss    = require( "gulp-minify-css" ),               // CSS Minification
+    notify       = require( "gulp-notify" ),                   // Advanced Notifications
+    rename       = require( "gulp-rename" ),                   // Rename Files & Directories
+    sass         = require( "gulp-sass" )( require( "sass" ) ),// SASS Compilation
+    sh           = require( "shelljs" ),                       // Command Line Tools
+    jshint       = require( "gulp-jshint" ),                   // JSHint syntax check
+    jscs         = require( "gulp-jscs" ),                     // Javascript style checker
+    sassLint     = require( "gulp-sass-lint" ),                // SASS syntax/style check
+    uglify       = require( "gulp-uglify" ),                   // Javascript minification
+    concat       = require( "gulp-concat" ),                   // Concatenate multiple files
+    sourcemaps   = require( "gulp-sourcemaps" ),               // Generate sourcemap for minfied JS
+    manifest     = require( "gulp-manifest3" ),
+    replace      = require( "gulp-replace" ),
+    argv         = require( "yargs" ).argv,
+    pkg          = require( "./package.json" );
 
 // 2. SET VARIABLES
 // - - - - - - - - - - - - - - -
@@ -49,12 +46,8 @@ if ( !process.env.DEPLOY_HOST ) {
 // 3. TASKS
 // - - - - - - - - - - - - - - -
 
-gulp.task( "default", function( callback ) {
-	runSequence( "parse-args", "lint", "sass", "uglify", "manifest", callback );
-} );
-
 gulp.task( "build", function( callback ) {
-	runSequence( "default", "images", "clean", callback );
+	gulp.series( "default", "images", "clean", callback );
 } );
 
 gulp.task( "bump", function() {
@@ -99,11 +92,6 @@ gulp.task( "parse-args", function() {
 // Optimizes Images
 gulp.task( "images", function( done ) {
 	var runner = gulp.src( "resources/**/**/*.*" )
-		.pipe( imagemin( {
-			optimizationLevel: 5,
-			progressive: true,
-			interlaced: true
-		} ) )
 		.pipe( gulp.dest( "resources" ) );
 
 	runner.on( "end", function() {
@@ -180,9 +168,6 @@ gulp.task( "sass", function() {
 			    return notify().write( err );
 			}
 		} ) )
-		.pipe( autoprefixer( {
-			browsers: [ "last 2 versions", "ie 9", "ie 10" ]
-		} ) )
 		.pipe( minifyCss( {
 			keepBreaks:true
 		} ) )
@@ -192,8 +177,6 @@ gulp.task( "sass", function() {
 } );
 
 // Lint task
-gulp.task( "lint", [ "lint-syntax", "lint-style", "lint-sass" ] );
-
 gulp.task( "lint-syntax", function() {
   return gulp.src( [ paths.js, "*.js",  "./hooks/**/*.js", "!./hooks/after_prepare/uglify.js" ] )
     .pipe( jshint() )
@@ -215,6 +198,8 @@ gulp.task( "lint-sass", function() {
 		.pipe( sassLint.failOnError() );
 } );
 
+gulp.task( "lint", gulp.series( "lint-syntax", "lint-style", "lint-sass" ) );
+
 // Javascript minification
 gulp.task( "uglify", function() {
     return gulp.src( paths.js )
@@ -233,13 +218,6 @@ gulp.task( "watch", function() {
 } );
 
 // Git
-gulp.task( "install", [ "git-check" ], function() {
-	return bower.commands.install()
-		.on( "log", function( data ) {
-			gutil.log( "bower", gutil.colors.cyan( data.id ), data.message );
-		} );
-} );
-
 gulp.task( "git-check", function( done ) {
 	if ( !sh.which( "git" ) ) {
 		console.log(
@@ -252,6 +230,13 @@ gulp.task( "git-check", function( done ) {
 	}
 	done();
 } );
+
+gulp.task( "install", gulp.series( "git-check", function() {
+	return bower.commands.install()
+		.on( "log", function( data ) {
+			gutil.log( "bower", gutil.colors.cyan( data.id ), data.message );
+		} );
+} ) );
 
 gulp.task( "manifest", function() {
 	return gulp.src( [
@@ -279,3 +264,7 @@ gulp.task( "manifest", function() {
     .pipe( replace( /ionicons\.(eot|svg|ttf|woff)/g, "ionicons.$1?v=2.0.1" ) )
 	.pipe( gulp.dest( "www" ) );
 } );
+
+gulp.task( "default", gulp.series( "parse-args", "lint", "sass", "uglify", "manifest", function( done ) {
+    done();
+} ) );

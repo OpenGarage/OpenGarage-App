@@ -104,8 +104,8 @@
     // used to create a larger (but hidden) hit area to slide the handle
     position: absolute;
     top: -4px;
-    left: ( ($toggle-handle-width / 2) * -1) - 8;
-    padding: ($toggle-handle-height / 2) + 5 ($toggle-handle-width + 7);
+    left: ( calc($toggle-handle-width / 2) * -1) - 8;
+    padding: calc($toggle-handle-height / 2) + 5 ($toggle-handle-width + 7);
     content: " ";
   }
 }
@@ -133,7 +133,7 @@
 .item-toggle .toggle {
   // position the toggle to the right within a list item
   position: absolute;
-  top: ($item-padding / 2) + 2;
+  top: calc($item-padding / 2) + 2;
   right: $item-padding;
   z-index: $z-index-item-toggle;
 }
