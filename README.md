@@ -1,10 +1,10 @@
 <img align="left" height="150" src="https://github.com/OpenGarage/OpenGarage-App/blob/master/resources/icon.png?raw=true"><h3>&nbsp;OpenGarage App [![GitHub version](https://badge.fury.io/gh/OpenGarage%2FOpenGarage-App.svg)](http://badge.fury.io/gh/OpenGarage%2FOpenGarage-App)</h3>
-&nbsp;[![Build Status](https://travis-ci.org/OpenGarage/OpenGarage-App.svg?branch=master)](https://travis-ci.org/OpenGarage/OpenGarage-App) [![devDependency Status](https://david-dm.org/OpenGarage/OpenGarage-App/dev-status.svg)](https://david-dm.org/OpenGarage/OpenGarage-App#info=devDependencies)  
-&nbsp;[Official Site][official] | [Support][help] | [Changelog][changelog]  
-&nbsp;&copy; 2016 [Samer Albahra][salbahra] ([@salbahra](https://twitter.com/salbahra))  
+&nbsp;[![Build Status](https://travis-ci.org/OpenGarage/OpenGarage-App.svg?branch=master)](https://travis-ci.org/OpenGarage/OpenGarage-App) [![devDependency Status](https://david-dm.org/OpenGarage/OpenGarage-App/dev-status.svg)](https://david-dm.org/OpenGarage/OpenGarage-App#info=devDependencies)
+&nbsp;[Official Site][official] | [Support][help] | [Changelog][changelog]
+&nbsp;&copy; 2016 [Samer Albahra][salbahra] ([@salbahra](https://twitter.com/salbahra))
 <br>
 Designed to allow intuitive control of the OpenGarage garage door opener.
-  
+
 ---
 
 [official]: https://opengarage.io
@@ -25,7 +25,7 @@ Designed to allow intuitive control of the OpenGarage garage door opener.
 1) Brief
 ------------------------------------------
 
-The project uses Ionic/AngularJS for templating and HTML5 design. The application is bundled for native deployment using Cordova on the following platforms: iOS, Android, OS X and Windows.
+The project uses Ionic/AngularJS for templating and HTML5 design. The application is bundled for native deployment using Cordova on the following platforms: iOS, Android, and OS X.
 
 The project uses package.json as the primary repository of settings which are enforced when using the `gulp` tasks. These include the app version name and build number.
 
@@ -73,7 +73,7 @@ gulp build
 
 Below are the instructions outlined per platform:
 
-<h3>a) Cordova ( iOS / Android / OS X / Windows )</h3>
+<h3>a) Cordova ( iOS / Android / OS X )</h3>
 
 If you are deploying for iOS on an OS X machine with X Code installed, you may run the following commands for iOS:
 

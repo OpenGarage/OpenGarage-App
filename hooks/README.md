@@ -59,7 +59,6 @@ The following subdirectories will be used for hooks:
     before_prepare/
     before_run/
     before_serve/
-    pre_package/ <-- Windows 8 and Windows Phone only.
 
 ## Script Interface
 

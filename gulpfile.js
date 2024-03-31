@@ -244,7 +244,6 @@ gulp.task( "manifest", function() {
 		"www/img/**/*",
 		"www/js/app.min.js",
 		"www/templates/*.html",
-		"www/lib/win-jscompat.js",
 		"www/lib/ionic/js/ionic.bundle.min.js",
 		"www/lib/ionic/fonts/ionicons.eot",
 		"www/lib/ionic/fonts/ionicons.svg",

@@ -14,7 +14,6 @@ img/login_bg.jpg
 img/logo.png
 img/placeholder.png
 js/app.min.js
-lib/win-jscompat.js
 templates/addController.html
 templates/addControllerBlynk.html
 templates/changePassword.html
@@ -39,4 +38,4 @@ lib/ionic/js/ionic.bundle.min.js
 NETWORK:
 *
 
-# hash: 85ca30302a74d1fd309888ba136f30256e261a796c512c95ba8216b8f6214dc7
+# hash: e6659ed6a367ba765177a62b09d3d604d619deda282e483b7dc34ef0f2edf010
