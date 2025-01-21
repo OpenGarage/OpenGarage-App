@@ -1,6 +1,8 @@
 CACHE MANIFEST
 
 CACHE:
+favicon.ico
+index.html
 css/ionic.app.min.css
 img/Roboto-Light.ttf
 img/Roboto-Light.woff2
@@ -27,16 +29,13 @@ templates/menu.html
 templates/newControllerSetup.html
 templates/rules.html
 templates/settings.html
-lib/win-jscompat.js
-lib/ionic/js/ionic.bundle.min.js
 lib/ionic/fonts/ionicons.eot?v=2.0.1
 lib/ionic/fonts/ionicons.svg?v=2.0.1
 lib/ionic/fonts/ionicons.ttf?v=2.0.1
 lib/ionic/fonts/ionicons.woff?v=2.0.1
-favicon.ico
-index.html
+lib/ionic/js/ionic.bundle.min.js
 
 NETWORK:
 *
 
-# hash: 74821a5908a30e87cd616e5db6f64af0ce698b94f960f89886488046dcaafb48
+# hash: 4562b2b125eb1b031683d3aaa2057dc993a13a13117d7d7c657a43d45dc9f9ee

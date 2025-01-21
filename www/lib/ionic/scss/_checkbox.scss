@@ -10,7 +10,7 @@
 
   position: relative;
   display: inline-block;
-  padding: ($checkbox-height / 4) ($checkbox-width / 4);
+  padding: calc($checkbox-height / 4) calc($checkbox-width / 4);
   cursor: pointer;
 }
 .checkbox-light  {
@@ -95,8 +95,8 @@ input:checked + .checkbox-icon:before {
   top: 33%;
   left: 25%;
   display: table;
-  width: ($checkbox-width / 2);
-  height: ($checkbox-width / 4) - 1;
+  width: calc($checkbox-width / 2);
+  height: calc($checkbox-width / 4) - 1;
   border: $checkbox-check-width solid $checkbox-check-color;
   border-top: 0;
   border-right: 0;
@@ -123,7 +123,7 @@ input:checked + .checkbox-icon:before {
   border-width: 2px;
   top: 19%;
   left: 25%;
-  width: ($checkbox-width / 2) - 1;
+  width: calc($checkbox-width / 2) - 1;
   height: 7px;
 }
 
@@ -162,10 +162,10 @@ input:checked + .checkbox-icon:after {
 .item-checkbox .checkbox {
   position: absolute;
   top: 50%;
-  right: $item-padding / 2;
-  left: $item-padding / 2;
+  right: calc($item-padding / 2);
+  left: calc($item-padding / 2);
   z-index: $z-index-item-checkbox;
-  margin-top: (($checkbox-height + ($checkbox-height / 2)) / 2) * -1;
+  margin-top: calc(($checkbox-height + calc($checkbox-height / 2)) / 2) * -1;
 }
 
 

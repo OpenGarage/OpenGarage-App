@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="24" id="com.albahra.opengarage" ios-CFBundleVersion="2.3.3" version="2.3.3" versionCode="24" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget android-versionCode="25" id="com.albahra.opengarage" ios-CFBundleVersion="2.3.4" version="2.3.4" versionCode="25" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OpenGarage</name>
     <description>
 		Designed to allow intuitive control of the OpenGarage garage door opener.
@@ -25,14 +25,12 @@
     <preference name="HideMousePointer" value="1" />
     <preference name="WindowSize" value="900x760" />
     <preference name="EnableWebGL" value="true" />
-    <preference name="windows-appx-target" value="uap" />
-    <preference name="WindowsStorePublisherName" value="" />
-    <preference name="windows-identity-name" value="" />
     <preference name="SplashScreenBackgroundColor" value="0xffffff" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <platform name="ios">
+        <preference name="scheme" value="ionic" />
         <preference name="Orientation" value="all" />
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
             <string>Your current location will be used to allow OpenGarage to trigger rules based on your location.</string>
@@ -41,7 +39,7 @@
             <string>Your current location will be used to configure OpenGarage.</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="CFBundleShortVersionString">
-            <string>24</string>
+            <string>25</string>
         </edit-config>
         <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
         <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
@@ -79,13 +77,12 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <platform name="android">
-        <preference name="AndroidXEnabled" value="true" />
-        <preference name="android-minSdkVersion" value="21" />
-        <preference name="android-targetSdkVersion" value="30" />
+        <preference name="Scheme" value="http" />
+        <preference name="android-minSdkVersion" value="24" />
+        <preference name="android-targetSdkVersion" value="34" />
         <preference name="android-theme" value="@android:style/Theme.Holo.Light.NoActionBar" />
-        <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/supports-screens">
-            <supports-screens android:largeScreens="true" android:smallScreens="true" android:xlargeScreens="true" />
-        </edit-config>
+		<preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/android/splash/splash.png" />
+		<preference name="AndroidWindowSplashScreenBackground" value="#1c2627" />
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:usesCleartextTraffic="true" />
         </edit-config>
@@ -95,22 +92,5 @@
         <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
         <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
         <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
-        <splash density="ldpi" src="resources/android/splash/ldpi.9.png" />
-        <splash density="mdpi" src="resources/android/splash/mdpi.9.png" />
-        <splash density="hdpi" src="resources/android/splash/hdpi.9.png" />
-        <splash density="xhdpi" src="resources/android/splash/xhdpi.9.png" />
-        <splash density="xxhdpi" src="resources/android/splash/xxhdpi.9.png" />
-    </platform>
-    <platform name="windows">
-        <icon height="50" src="resources/windows/icon/icon50.png" width="50" />
-        <icon height="30" src="resources/windows/icon/icon30.png" width="30" />
-        <icon height="44" src="resources/windows/icon/icon44.png" width="44" />
-        <icon height="70" src="resources/windows/icon/icon70.png" width="70" />
-        <icon height="71" src="resources/windows/icon/icon71.png" width="71" />
-        <icon height="150" src="resources/windows/icon/icon150.png" width="150" />
-        <icon height="310" src="resources/windows/icon/icon310.png" width="310" />
-        <icon height="150" src="resources/windows/icon/iconw.png" width="310" />
-        <splash height="300" src="resources/windows/splash/landscape.png" width="620" />
-        <splash height="1920" src="resources/windows/splash/portrait.png" width="1152" />
     </platform>
 </widget>

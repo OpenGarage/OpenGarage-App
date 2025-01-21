@@ -41,6 +41,8 @@ angular.module( "opengarage", [ "ionic", "uiCropper", "opengarage.controllers", 
 		        //Change the status bar color to match the header
                 window.StatusBar.backgroundColorByHexString( "#444" );
 
+                window.StatusBar.overlaysWebView( false );
+
 		        // Scroll to the top of the page when the status bar is tapped
 				angular.element( $window ).on( "statusTap", function() {
 					$ionicScrollDelegate.scrollTop();

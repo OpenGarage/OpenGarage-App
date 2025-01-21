@@ -125,7 +125,7 @@
 
     .item-content {
       padding: $item-padding
-        calc(constant(safe-area-inset-right) + #{(ceil( ($item-padding * 3) + ($item-padding / 3)) - 5)})
+        calc(constant(safe-area-inset-right) + #{(ceil( ($item-padding * 3) + calc($item-padding / 3)) - 5)})
         $item-padding
         calc(constant(safe-area-inset-left) + #{$item-padding});
     }

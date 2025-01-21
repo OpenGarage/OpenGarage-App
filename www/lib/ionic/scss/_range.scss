@@ -41,7 +41,7 @@
   &::-webkit-slider-thumb:before{
     /* what creates the colorful line on the left side of the slider */
     position: absolute;
-    top: ($range-slider-height / 2) - ($range-track-height / 2);
+    top: calc($range-slider-height / 2) - calc($range-track-height / 2);
     left: -2001px;
     width: 2000px;
     height: $range-track-height;
